@@ -2,7 +2,7 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oelu8"]
 
-[node name="Walls" type="StaticBody2D"]
+[node name="Walls" type="StaticBody2D" groups=["walls"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_oelu8")

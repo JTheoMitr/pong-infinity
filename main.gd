@@ -2,8 +2,8 @@
 extends Node2D
 
 @onready var ball: RigidBody2D        = $Ball
-@onready var paddle_left: Area2D      = $PaddleLeft
-@onready var paddle_right: Area2D     = $PaddleRight
+@onready var paddle_left: StaticBody2D      = $PaddleLeft
+@onready var paddle_right: StaticBody2D     = $PaddleRight
 @onready var hud: CanvasLayer         = $HUD
 @onready var cam: Camera2D            = $Camera2D
 

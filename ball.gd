@@ -1,31 +1,54 @@
 # res://Scripts/ball.gd
 extends RigidBody2D
 
-@export var speed: float = 400.0
+@export var base_speed: float = 400.0
+var direction: Vector2 = Vector2.ZERO
 @onready var sprite: Sprite2D = $Sprite2D
 
-# Called when the node enters the scene tree
+
 func _ready() -> void:
+	gravity_scale = 0.0
+	linear_damp = 0.0
+	angular_damp = 0.0
 	reset()
 
 
 func launch() -> void:
-	# Start moving slightly off-center to avoid straight bounce
-	var dir := Vector2.LEFT.rotated(deg_to_rad(randf_range(-15.0, 15.0)))
-	linear_velocity = dir * speed
+	# Launch either left or right randomly at a slight vertical angle
+	var side: int = -1 if randi() % 2 == 0 else 1
+	var angle_offset: float = deg_to_rad(randf_range(-15.0, 15.0))
+	direction = Vector2(side, 0).rotated(angle_offset).normalized()
+	linear_velocity = direction * base_speed
 
 
 func reset() -> void:
-	# Recenter the ball in the middle of the viewport
 	position = get_viewport_rect().size * 0.5
 	linear_velocity = Vector2.ZERO
+	direction = Vector2.ZERO
 
 
-func _physics_process(_delta: float) -> void:
-	# Check if the ball is out of bounds (missed by paddles)
-	var screen_size := get_viewport_rect().size
-	if position.x < 0.0 or position.x > screen_size.x \
-	or position.y < 0.0 or position.y > screen_size.y:
+func _on_body_entered(body: Node) -> void:
+	if body.is_in_group("wall"):
 		if get_tree().current_scene.has_method("game_over"):
 			get_tree().current_scene.game_over()
 		reset()
+	elif body.is_in_group("paddle"):
+		print("paddle hit")
+		# Optional: add points or speed up ball
+		# base_speed *= 1.03  # small speed-up each bounce
+
+
+func bounce_from_paddle(paddle: Node) -> void:
+	# Reflect direction depending on where on the paddle you hit
+	var normal: Vector2 = (position - paddle.position).normalized()
+	direction = direction.bounce(normal).normalized()
+
+	# --- keep constant speed ---
+	linear_velocity = direction * base_speed
+
+
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	# Maintain exact constant speed each physics tick
+	if linear_velocity.length() > 0.0:
+		direction = linear_velocity.normalized()
+		linear_velocity = direction * base_speed

@@ -1,13 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://bc6k7vt46fl5l"]
+[gd_scene load_steps=6 format=3 uid="uid://bc6k7vt46fl5l"]
 
 [ext_resource type="Script" uid="uid://cgp2mf8m7h5bs" path="res://paddle.gd" id="1_0sbc1"]
 [ext_resource type="Material" uid="uid://c6ic038xtix64" path="res://Assets/Shaders/glow_material.tres" id="2_r112f"]
 [ext_resource type="Texture2D" uid="uid://devvw2y3iu7sp" path="res://Assets/Sprites/paddle_sprite.png" id="3_2bcmx"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_r112f"]
+friction = 0.0
+bounce = 1.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0sbc1"]
 size = Vector2(34.5, 85)
 
-[node name="Paddle" type="Area2D"]
+[node name="Paddle" type="StaticBody2D" groups=["paddle"]]
+physics_material_override = SubResource("PhysicsMaterial_r112f")
 script = ExtResource("1_0sbc1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

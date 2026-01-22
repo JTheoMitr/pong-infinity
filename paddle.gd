@@ -1,5 +1,5 @@
 # res://Scripts/paddle.gd
-extends Area2D
+extends StaticBody2D
 
 @export var is_left: bool = true
 @export var speed: float = 400.0

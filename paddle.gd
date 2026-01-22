@@ -9,6 +9,15 @@ var perimeter_pos: float = 0.0
 var touch_y: float = -1.0
 var touch_active: bool = false
 
+func _ready() -> void:
+	var screen := get_viewport_rect().size
+	if is_left:
+		perimeter_pos = 0.875    # halfway up the left edge
+	else:
+		perimeter_pos = 0.375    # halfway down the right edge
+	position = perimeter_to_screen(perimeter_pos)
+
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Handle touch and mouse drag the same way

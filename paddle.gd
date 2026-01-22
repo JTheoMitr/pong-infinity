@@ -43,9 +43,9 @@ func _process(delta: float) -> void:
 
 	# --- Keyboard for desktop testing ---
 	if is_left:
-		input_value = Input.get_axis("ui_up", "ui_down")
+		input_value = Input.get_axis("s", "w")
 	else:
-		input_value = Input.get_axis("w", "s")
+		input_value = Input.get_axis("ui_up", "ui_down")
 
 	# --- Touch / Mouse drag for mobile or desktop ---
 	if touch_active:
@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 		elif touch_y > position.y:
 			input_value = -1.0
 
-	perimeter_pos = fmod(perimeter_pos + input_value * (speed / 1000.0) * delta, 1.0)
+	perimeter_pos = fmod(perimeter_pos + 1.0 + input_value * (speed / 1000.0) * delta, 1.0)
 	position = perimeter_to_screen(perimeter_pos)
 
 

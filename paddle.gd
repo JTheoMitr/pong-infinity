@@ -56,6 +56,18 @@ func _process(delta: float) -> void:
 
 	perimeter_pos = fmod(perimeter_pos + 1.0 + input_value * (speed / 1000.0) * delta, 1.0)
 	position = perimeter_to_screen(perimeter_pos)
+	rotation = get_rotation_for_t(perimeter_pos)
+
+func get_rotation_for_t(t: float) -> float:
+	if t < 0.25:
+		return deg_to_rad(90)
+	elif t < 0.5:
+		return deg_to_rad(180)
+	elif t < 0.75:
+		return deg_to_rad(270)
+	else:
+		return deg_to_rad(0)
+
 
 
 func perimeter_to_screen(t: float) -> Vector2:

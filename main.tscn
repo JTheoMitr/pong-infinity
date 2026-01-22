@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bhonme2b72bsb"]
+
+[ext_resource type="Script" uid="uid://bu4t8m3k3xdwq" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://q0kry56wwfql" path="res://walls.tscn" id="2_lquwl"]
+[ext_resource type="PackedScene" uid="uid://bc6k7vt46fl5l" path="res://paddle.tscn" id="3_7mycd"]
+[ext_resource type="PackedScene" uid="uid://bgwonp5ln5nay" path="res://ball.tscn" id="4_272bh"]
+[ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="5_5vw27"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ig7tw")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Walls" parent="." instance=ExtResource("2_lquwl")]
+
+[node name="PaddleLeft" parent="." instance=ExtResource("3_7mycd")]
+
+[node name="PaddleRight" parent="." instance=ExtResource("3_7mycd")]
+is_left = false
+
+[node name="Ball" parent="." instance=ExtResource("4_272bh")]
+
+[node name="HUD" parent="." instance=ExtResource("5_5vw27")]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 524.0
+offset_top = 113.0
+offset_right = 610.0
+offset_bottom = 194.0
+color = Color(0.7879751, 0.13707343, 0.36434984, 1)

@@ -24,11 +24,20 @@ func _ready() -> void:
 
 
 func reset_positions(screen_center: Vector2) -> void:
-	ball.position = screen_center
+	# Fully reset ball motion
+	ball.sleeping = true
+	ball.linear_velocity = Vector2.ZERO
+	ball.angular_velocity = 0.0
+	ball.direction = Vector2.ZERO
+
+	# Force physics engine to accept new transform
+	var new_transform := ball.transform
+	new_transform.origin = screen_center
+	PhysicsServer2D.body_set_state(ball.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM, new_transform)
+
+	# Reset paddles
 	paddle_left.position = Vector2(50.0, screen_center.y)
 	paddle_right.position = Vector2(get_viewport_rect().size.x - 50.0, screen_center.y)
-	ball.linear_velocity = Vector2.ZERO
-	ball.direction = Vector2.ZERO
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -38,8 +47,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_start_button_pressed() -> void:
 	if game_over_state:
+		print("game over")
 		game_over_state = false
-		reset_positions(get_viewport_rect().size * 0.5)
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	reset_positions(screen_center)
 	await countdown_and_start()
 
 
@@ -48,9 +60,11 @@ func countdown_and_start() -> void:
 		hud.show_countdown(i)
 		await get_tree().create_timer(1.0).timeout
 	hud.hide_countdown()
+
+	# Wake the ball back up
+	ball.sleeping = false
 	start_game()
-
-
+	
 func start_game() -> void:
 	hud.hide_start_message()
 	game_started = true

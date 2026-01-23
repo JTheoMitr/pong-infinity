@@ -13,6 +13,7 @@ var game_over_state: bool = false
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
 	hud.show_start_message("Start Game")
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 
@@ -41,14 +42,31 @@ func reset_positions(screen_center: Vector2) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# --- Start game with Space / Start button ---
 	if not game_started and event.is_action_pressed("ui_accept"):
 		_on_start_button_pressed()
+
+	# --- Pause / Unpause ---
+	elif game_started and event.is_action_pressed("ui_pause"):
+		toggle_pause()
+
+	# --- Mobile tap pause: tap center third of screen ---
+	elif game_started and event is InputEventScreenTouch and event.pressed:
+		var screen_size := get_viewport_rect().size
+		var third_x := screen_size.x / 3.0
+		if event.position.x > third_x and event.position.x < third_x * 2:
+			toggle_pause()
+
+func toggle_pause() -> void:
+	get_tree().paused = !get_tree().paused
+	hud.show_pause_overlay(get_tree().paused)
 
 
 func _on_start_button_pressed() -> void:
 	if game_over_state:
 		print("game over")
 		game_over_state = false
+	hud.hide_start_message()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	reset_positions(screen_center)
@@ -66,7 +84,7 @@ func countdown_and_start() -> void:
 	start_game()
 	
 func start_game() -> void:
-	hud.hide_start_message()
+	
 	game_started = true
 	ball.launch()
 

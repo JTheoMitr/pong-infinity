@@ -4,14 +4,16 @@ extends CanvasLayer
 @onready var label: Label = $CenterContainer/VBoxContainer/Label
 @onready var start_button: Button = $CenterContainer/VBoxContainer/StartButton
 @onready var countdown_label: Label = $CountdownLabel
-
+@onready var pause_label: Label = $PauseLabel
 signal start_button_pressed
+
 
 func _ready() -> void:
 	label.text = "PONG ∞"
 	label.visible = true
 	countdown_label.visible = false
 	start_button.visible = true
+	pause_label.visible = false
 	start_button.pressed.connect(_on_start_button_pressed)
 
 
@@ -21,6 +23,8 @@ func _on_start_button_pressed() -> void:
 	countdown_label.visible = true
 	emit_signal("start_button_pressed")
 
+func show_pause_overlay(paused: bool) -> void:
+	pause_label.visible = paused
 
 func show_start_message(text: String) -> void:
 	label.text = text

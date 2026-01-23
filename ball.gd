@@ -32,17 +32,13 @@ func _on_body_entered(body: Node) -> void:
 		if get_tree().current_scene.has_method("game_over"):
 			get_tree().current_scene.game_over()
 		reset()
-	elif body.is_in_group("paddle"):
-		print("paddle hit")
-		# Optional: add points or speed up ball
-		# base_speed *= 1.03  # small speed-up each bounce
 
 
 func bounce_from_paddle(paddle: Node) -> void:
 	# Reflect direction depending on where on the paddle you hit
 	var normal: Vector2 = (position - paddle.position).normalized()
 	direction = direction.bounce(normal).normalized()
-
+	print("bounce")
 	# --- keep constant speed ---
 	linear_velocity = direction * base_speed
 

@@ -56,6 +56,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var third_x := screen_size.x / 3.0
 		if event.position.x > third_x and event.position.x < third_x * 2:
 			toggle_pause()
+			print("pause by touch")
 
 func toggle_pause() -> void:
 	get_tree().paused = !get_tree().paused

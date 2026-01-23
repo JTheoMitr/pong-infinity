@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bc6k7vt46fl5l"]
+[gd_scene load_steps=7 format=3 uid="uid://bc6k7vt46fl5l"]
 
 [ext_resource type="Script" uid="uid://cgp2mf8m7h5bs" path="res://paddle.gd" id="1_0sbc1"]
 [ext_resource type="Material" uid="uid://c6ic038xtix64" path="res://Assets/Shaders/glow_material.tres" id="2_r112f"]
@@ -11,6 +11,9 @@ bounce = 1.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0sbc1"]
 size = Vector2(34.5, 85)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r112f"]
+size = Vector2(42, 93)
+
 [node name="Paddle" type="StaticBody2D" groups=["paddle"]]
 physics_material_override = SubResource("PhysicsMaterial_r112f")
 script = ExtResource("1_0sbc1")
@@ -22,3 +25,11 @@ texture = ExtResource("3_2bcmx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_0sbc1")
+
+[node name="Area2D" type="Area2D" parent="." groups=["paddle"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_r112f")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -80,3 +80,11 @@ func perimeter_to_screen(t: float) -> Vector2:
 		return Vector2(screen.x - (t - 0.5) * 4.0 * screen.x, screen.y)
 	else:
 		return Vector2(0.0, screen.y - (t - 0.75) * 4.0 * screen.y)
+
+
+
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("ball"):
+		print("paddlehit")

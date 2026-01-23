@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bhonme2b72bsb"]
+[gd_scene load_steps=7 format=3 uid="uid://bhonme2b72bsb"]
 
 [ext_resource type="Script" uid="uid://bu4t8m3k3xdwq" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://c3en4el6vagxt" path="res://Assets/Bgnd/green_grid_background.png" id="2_7mycd"]
 [ext_resource type="PackedScene" uid="uid://q0kry56wwfql" path="res://walls.tscn" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://bc6k7vt46fl5l" path="res://paddle.tscn" id="3_7mycd"]
 [ext_resource type="PackedScene" uid="uid://bgwonp5ln5nay" path="res://ball.tscn" id="4_272bh"]
@@ -8,6 +9,12 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ig7tw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(576, 325.00003)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_7mycd")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 324)

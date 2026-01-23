@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var start_button: Button = $CenterContainer/VBoxContainer/StartButton
 @onready var countdown_label: Label = $CountdownLabel
 @onready var pause_label: Label = $PauseLabel
+@onready var center_container = $CenterContainer
 signal start_button_pressed
 
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	start_button.visible = true
 	pause_label.visible = false
 	start_button.pressed.connect(_on_start_button_pressed)
+	
 
 
 func _on_start_button_pressed() -> void:

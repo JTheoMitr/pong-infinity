@@ -1,26 +1,44 @@
 # res://Scripts/hud.gd
 extends CanvasLayer
 
-@onready var label: Label = $Label
+@onready var label: Label = $CenterContainer/VBoxContainer/Label
+@onready var start_button: Button = $CenterContainer/VBoxContainer/StartButton
+@onready var countdown_label: Label = $CountdownLabel
+
+signal start_button_pressed
 
 func _ready() -> void:
-	label.visible = true
 	label.text = "PONG ∞"
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.anchor_left = 0.0
-	label.anchor_top = 0.0
-	label.anchor_right = 1.0
-	label.anchor_bottom = 1.0
-	label.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	label.grow_vertical = Control.GROW_DIRECTION_BOTH
+	label.visible = true
+	countdown_label.visible = false
+	start_button.visible = true
+	start_button.pressed.connect(_on_start_button_pressed)
+
+
+func _on_start_button_pressed() -> void:
+	start_button.visible = false
+	label.visible = false
+	countdown_label.visible = true
+	emit_signal("start_button_pressed")
 
 
 func show_start_message(text: String) -> void:
 	label.text = text
 	label.visible = true
+	start_button.visible = true
+	countdown_label.visible = false
 
 
 func hide_start_message() -> void:
 	label.visible = false
+	start_button.visible = false
+	countdown_label.visible = false
+
+
+func show_countdown(number: int) -> void:
+	countdown_label.text = str(number)
+	countdown_label.visible = true
+
+
+func hide_countdown() -> void:
+	countdown_label.visible = false

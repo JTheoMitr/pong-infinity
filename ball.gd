@@ -28,7 +28,7 @@ func reset() -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if body.is_in_group("wall"):
+	if body.is_in_group("walls"):
 		if get_tree().current_scene.has_method("game_over"):
 			get_tree().current_scene.game_over()
 		reset()

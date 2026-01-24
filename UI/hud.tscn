@@ -54,4 +54,11 @@ offset_right = 26.5
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "PAUSD"
+text = "PAUSED"
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 546.0
+offset_top = 332.0
+offset_right = 606.0
+offset_bottom = 355.0
+text = "Score: 0"

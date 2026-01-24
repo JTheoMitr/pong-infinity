@@ -9,6 +9,7 @@ extends Node2D
 
 var game_started: bool = false
 var game_over_state: bool = false
+var score := 0
 
 
 func _ready() -> void:
@@ -22,6 +23,9 @@ func _ready() -> void:
 	cam.enabled = true
 	cam.position = screen_center
 	reset_positions(screen_center)
+	
+	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
+	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 
 
 func reset_positions(screen_center: Vector2) -> void:
@@ -95,3 +99,8 @@ func game_over() -> void:
 	game_over_state = true
 	ball.linear_velocity = Vector2.ZERO
 	hud.show_start_message("Game Over - Click to Restart")
+
+func _on_paddle_hit(paddle: Node) -> void:
+	score += 1
+	hud.update_score(score)
+	ball.base_speed *= 1.03

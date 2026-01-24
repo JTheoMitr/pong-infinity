@@ -9,6 +9,8 @@ var perimeter_pos: float = 0.0
 var touch_y: float = -1.0
 var touch_active: bool = false
 
+signal ball_hit_paddle(paddle: Node)
+
 func _ready() -> void:
 	var screen := get_viewport_rect().size
 	if is_left:
@@ -88,3 +90,4 @@ func perimeter_to_screen(t: float) -> Vector2:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
 		print("paddlehit")
+		emit_signal("ball_hit_paddle", self)

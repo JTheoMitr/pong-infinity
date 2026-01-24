@@ -55,3 +55,9 @@ func hide_countdown() -> void:
 	
 func update_score(value: int) -> void:
 	score_label.text = "Score: " + str(value)
+	
+func show_score() -> void:
+	score_label.visible = true
+	
+func hide_score() -> void:
+	score_label.visible = false

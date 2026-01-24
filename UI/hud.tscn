@@ -11,9 +11,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -48.0
+offset_left = -576.0
 offset_top = -29.0
-offset_right = 48.0
+offset_right = 576.0
 offset_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -23,6 +23,8 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
+text = "PONG ∞"
+horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -34,13 +36,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -31.5
+offset_left = -576.0
 offset_top = -11.5
-offset_right = 31.5
+offset_right = 576.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "PONG ∞"
+text = "timer"
+horizontal_alignment = 1
 
 [node name="PauseLabel" type="Label" parent="."]
 anchors_preset = 8
@@ -48,17 +51,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -26.5
+offset_left = -576.0
 offset_top = -11.5
-offset_right = 26.5
+offset_right = 576.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "PAUSED"
+horizontal_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="."]
-offset_left = 546.0
 offset_top = 332.0
-offset_right = 606.0
+offset_right = 1152.0
 offset_bottom = 355.0
 text = "Score: 0"
+horizontal_alignment = 1

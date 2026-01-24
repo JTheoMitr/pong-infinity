@@ -15,7 +15,7 @@ var score := 0
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
-	hud.show_start_message("Start Game")
+	hud.show_start_message("PONG ∞")
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 
 	var screen_size := get_viewport_rect().size
@@ -72,6 +72,7 @@ func _on_start_button_pressed() -> void:
 		print("game over")
 		game_over_state = false
 	hud.hide_start_message()
+	hud.hide_score()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	reset_positions(screen_center)
@@ -98,6 +99,7 @@ func game_over() -> void:
 	game_started = false
 	game_over_state = true
 	ball.linear_velocity = Vector2.ZERO
+	hud.show_score()
 	hud.show_start_message("Game Over - Click to Restart")
 
 func _on_paddle_hit(paddle: Node) -> void:

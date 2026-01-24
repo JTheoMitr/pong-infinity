@@ -73,6 +73,7 @@ func _on_start_button_pressed() -> void:
 		game_over_state = false
 	hud.hide_start_message()
 	hud.hide_score()
+	reset_score()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	reset_positions(screen_center)
@@ -106,3 +107,7 @@ func _on_paddle_hit(paddle: Node) -> void:
 	score += 1
 	hud.update_score(score)
 	ball.base_speed *= 1.03
+	
+func reset_score() -> void:
+	score = 0
+	hud.update_score(score)

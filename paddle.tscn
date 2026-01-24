@@ -9,10 +9,10 @@ friction = 0.0
 bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0sbc1"]
-size = Vector2(34.5, 85)
+size = Vector2(34.5, 119)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r112f"]
-size = Vector2(42, 93)
+size = Vector2(42, 127)
 
 [node name="Paddle" type="StaticBody2D" groups=["paddle"]]
 physics_material_override = SubResource("PhysicsMaterial_r112f")
@@ -20,10 +20,12 @@ script = ExtResource("1_0sbc1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = ExtResource("2_r112f")
-scale = Vector2(2.15625, 2.65625)
+position = Vector2(0, -0.4999981)
+scale = Vector2(2.15625, 3.7187502)
 texture = ExtResource("3_2bcmx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_0sbc1")
 
 [node name="Area2D" type="Area2D" parent="." groups=["paddle"]]

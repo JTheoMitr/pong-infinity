@@ -12,13 +12,7 @@ var touch_active: bool = false
 signal ball_hit_paddle(paddle: Node)
 
 func _ready() -> void:
-	var screen := get_viewport_rect().size
-	if is_left:
-		perimeter_pos = 0.875    # halfway up the left edge
-	else:
-		perimeter_pos = 0.375    # halfway down the right edge
-	position = perimeter_to_screen(perimeter_pos)
-
+	reset_paddle()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -91,3 +85,19 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
 		print("paddlehit")
 		emit_signal("ball_hit_paddle", self)
+		
+		
+func reset_paddle() -> void:
+	var screen := get_viewport_rect().size
+
+	if is_left:
+		perimeter_pos = 0.875    # halfway up the left edge
+	else:
+		perimeter_pos = 0.375    # halfway down the right edge
+
+	position = perimeter_to_screen(perimeter_pos)
+	rotation = get_rotation_for_t(perimeter_pos)
+
+	# Clear any lingering input state
+	touch_active = false
+	touch_y = -1.0

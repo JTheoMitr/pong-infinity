@@ -3,6 +3,11 @@ extends StaticBody2D
 
 @export var is_left: bool = true
 @export var speed: float = 400.0
+@export var rotate_speed := 2.5   # radians per second
+@export var rotate_return_speed := 6.0
+
+var rotation_offset := 0.0
+
 var perimeter_pos: float = 0.0
 
 # Touch handling
@@ -52,7 +57,22 @@ func _process(delta: float) -> void:
 
 	perimeter_pos = fmod(perimeter_pos + 1.0 + input_value * (speed / 1000.0) * delta, 1.0)
 	position = perimeter_to_screen(perimeter_pos)
-	rotation = get_rotation_for_t(perimeter_pos)
+	rotation = get_rotation_for_t(perimeter_pos) + rotation_offset
+	
+	var rotate_input := 0.0
+
+	if Input.is_action_pressed("ui_paddle_rotate_clockwise"):
+		rotate_input += 1.0
+	if Input.is_action_pressed("ui_paddle_rotate_counterclockwise"):
+		rotate_input -= 1.0
+
+	if rotate_input != 0.0:
+		rotation_offset += rotate_input * rotate_speed * delta
+	else:
+		# Smoothly return to neutral when released
+		rotation_offset = lerp(rotation_offset, 0.0, rotate_return_speed * delta)
+	rotation_offset = clamp(rotation_offset, -PI / 2, PI / 2)
+
 
 func get_rotation_for_t(t: float) -> float:
 	if t < 0.25:

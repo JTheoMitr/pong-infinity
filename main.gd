@@ -76,6 +76,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func toggle_pause() -> void:
 	get_tree().paused = !get_tree().paused
 	hud.show_pause_overlay(get_tree().paused)
+	print(ball.base_speed)
 
 
 func _on_start_button_pressed() -> void:
@@ -102,7 +103,7 @@ func countdown_and_start() -> void:
 	start_game()
 	
 func start_game() -> void:
-	
+	ball.base_speed = 400.0
 	game_started = true
 	ball.launch()
 

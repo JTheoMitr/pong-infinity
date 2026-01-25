@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://beheaght5w878"]
+
+[ext_resource type="Script" uid="uid://ddnixvoqhyqv" path="res://corner_paddle.gd" id="1_1rt8u"]
+[ext_resource type="Material" uid="uid://c6ic038xtix64" path="res://Assets/Shaders/glow_material.tres" id="2_j44rw"]
+[ext_resource type="Texture2D" uid="uid://devvw2y3iu7sp" path="res://Assets/Sprites/paddle_sprite.png" id="3_mia51"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_r112f"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0sbc1"]
+size = Vector2(34.5, 119)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r112f"]
+size = Vector2(42, 127)
+
+[node name="CornerPaddle" type="StaticBody2D" groups=["paddle"]]
+physics_material_override = SubResource("PhysicsMaterial_r112f")
+script = ExtResource("1_1rt8u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("2_j44rw")
+position = Vector2(0, -0.4999981)
+scale = Vector2(2.15625, 3.7187502)
+texture = ExtResource("3_mia51")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+material = ExtResource("2_j44rw")
+position = Vector2(41.999996, -43.000004)
+rotation = 1.5707964
+scale = Vector2(2.15625, 3.7187502)
+texture = ExtResource("3_mia51")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_0sbc1")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(42, -43)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_0sbc1")
+
+[node name="Area2D" type="Area2D" parent="." groups=["paddle"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_r112f")
+
+[node name="Area2D2" type="Area2D" parent="." groups=["paddle"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(63, -43)
+rotation = 1.5707964
+scale = Vector2(1, 0.65)
+shape = SubResource("RectangleShape2D_r112f")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Area2D2" to="." method="_on_area_2d_body_entered"]

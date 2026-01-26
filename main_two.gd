@@ -4,6 +4,8 @@ extends Node2D
 @onready var ball: RigidBody2D = $Ball
 @onready var paddle_left: StaticBody2D = $PaddleLeft
 @onready var paddle_right: StaticBody2D = $PaddleRight
+@onready var paddle_top: StaticBody2D = $PaddleTop
+@onready var paddle_bottom: StaticBody2D = $PaddleBottom
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
 @onready var bgnd_layer_2: Sprite2D = $Sprite2D2
@@ -31,6 +33,9 @@ func _ready() -> void:
 	ball.visible = false
 	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
+	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
+	paddle_bottom.ball_hit_paddle.connect(_on_paddle_hit)
+
 	
 
 func reset_positions(screen_center: Vector2) -> void:
@@ -48,6 +53,9 @@ func reset_positions(screen_center: Vector2) -> void:
 	# Reset paddles
 	paddle_left.reset_paddle()
 	paddle_right.reset_paddle()
+	paddle_top.reset_paddle()
+	paddle_bottom.reset_paddle()
+
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -71,6 +79,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Reset paddles
 		paddle_left.reset_paddle()
 		paddle_right.reset_paddle()
+		paddle_top.reset_paddle()
+		paddle_bottom.reset_paddle()
+		
 
 
 func toggle_pause() -> void:

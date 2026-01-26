@@ -1,11 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=10 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="Texture2D" uid="uid://c3en4el6vagxt" path="res://Assets/Bgnd/green_grid_background.png" id="2_xauyo"]
 [ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="3_pclk0"]
 [ext_resource type="PackedScene" uid="uid://q0kry56wwfql" path="res://walls.tscn" id="4_wuyf0"]
-[ext_resource type="PackedScene" uid="uid://bc6k7vt46fl5l" path="res://paddle.tscn" id="5_q6xn0"]
+[ext_resource type="PackedScene" uid="uid://bjkjs1mv4op3x" path="res://mode_2_paddle_LR.tscn" id="5_xauyo"]
 [ext_resource type="PackedScene" uid="uid://bgwonp5ln5nay" path="res://ball.tscn" id="6_0wljb"]
+[ext_resource type="PackedScene" uid="uid://bxg7jeyx8lckr" path="res://mode_2_paddle_TB.tscn" id="6_pclk0"]
 [ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
 [ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
 
@@ -30,10 +31,15 @@ position = Vector2(576, 324)
 
 [node name="Walls" parent="." instance=ExtResource("4_wuyf0")]
 
-[node name="PaddleLeft" parent="." instance=ExtResource("5_q6xn0")]
+[node name="PaddleLeft" parent="." instance=ExtResource("5_xauyo")]
 
-[node name="PaddleRight" parent="." instance=ExtResource("5_q6xn0")]
+[node name="PaddleRight" parent="." instance=ExtResource("5_xauyo")]
 is_left = false
+
+[node name="PaddleTop" parent="." instance=ExtResource("6_pclk0")]
+
+[node name="PaddleBottom" parent="." instance=ExtResource("6_pclk0")]
+is_top = false
 
 [node name="Ball" parent="." instance=ExtResource("6_0wljb")]
 

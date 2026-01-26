@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=3 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
+[ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
 
 [node name="hud" type="CanvasLayer"]
 script = ExtResource("1_37p78")
@@ -61,8 +62,11 @@ text = "PAUSED"
 horizontal_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="."]
-offset_top = 332.0
+offset_top = 355.0
 offset_right = 1152.0
-offset_bottom = 355.0
+offset_bottom = 378.0
+theme_override_colors/font_color = Color(0.4627451, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2_bytes")
+theme_override_font_sizes/font_size = 31
 text = "Score: 0"
 horizontal_alignment = 1

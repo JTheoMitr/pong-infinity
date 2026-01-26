@@ -132,5 +132,5 @@ func is_game_active() -> bool:
 func start_background_glow() -> void:
 	var tween := create_tween()
 	tween.set_loops()
-	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.8, 2.0)
-	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.25, 2.0)
+	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.85, 2.0)
+	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.15, 2.0)

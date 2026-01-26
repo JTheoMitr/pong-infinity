@@ -28,7 +28,7 @@ func _ready() -> void:
 	cam.enabled = true
 	cam.position = screen_center
 	reset_positions(screen_center)
-	
+	ball.visible = false
 	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	
@@ -85,6 +85,7 @@ func _on_start_button_pressed() -> void:
 		game_over_state = false
 	hud.hide_start_message()
 	hud.hide_score()
+	ball.visible = true
 	reset_score()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -132,5 +133,5 @@ func is_game_active() -> bool:
 func start_background_glow() -> void:
 	var tween := create_tween()
 	tween.set_loops()
-	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.85, 2.0)
-	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.15, 2.0)
+	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.95, 2.0)
+	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.10, 2.0)

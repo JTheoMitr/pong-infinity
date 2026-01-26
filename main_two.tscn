@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://dxvl21qqp0idg"]
+
+[ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
+[ext_resource type="Texture2D" uid="uid://c3en4el6vagxt" path="res://Assets/Bgnd/green_grid_background.png" id="2_xauyo"]
+[ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="3_pclk0"]
+[ext_resource type="PackedScene" uid="uid://q0kry56wwfql" path="res://walls.tscn" id="4_wuyf0"]
+[ext_resource type="PackedScene" uid="uid://bc6k7vt46fl5l" path="res://paddle.tscn" id="5_q6xn0"]
+[ext_resource type="PackedScene" uid="uid://bgwonp5ln5nay" path="res://ball.tscn" id="6_0wljb"]
+[ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
+[ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
+
+[node name="MainTwo" type="Node2D"]
+script = ExtResource("1_cg087")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(576, 325.00003)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_xauyo")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.59607846)
+position = Vector2(576, 325.00003)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_pclk0")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Walls" parent="." instance=ExtResource("4_wuyf0")]
+
+[node name="PaddleLeft" parent="." instance=ExtResource("5_q6xn0")]
+
+[node name="PaddleRight" parent="." instance=ExtResource("5_q6xn0")]
+is_left = false
+
+[node name="Ball" parent="." instance=ExtResource("6_0wljb")]
+
+[node name="HUD" parent="." instance=ExtResource("7_m0f0d")]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Corners" type="Node2D" parent="."]
+
+[node name="CornerTL" parent="Corners" instance=ExtResource("8_fokku")]
+position = Vector2(-2, 43)
+
+[node name="CornerTR" parent="Corners" instance=ExtResource("8_fokku")]
+position = Vector2(1110, -1)
+rotation = 1.5707964
+
+[node name="CornerBR" parent="Corners" instance=ExtResource("8_fokku")]
+position = Vector2(1152, 605)
+rotation = 3.1415927
+
+[node name="CornerBL" parent="Corners" instance=ExtResource("8_fokku")]
+position = Vector2(42, 651)
+rotation = -1.5707964
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

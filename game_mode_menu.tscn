@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://b13h03mmmxsjm"]
+
+[ext_resource type="Script" uid="uid://ch8kovea75ois" path="res://game_mode_menu.gd" id="1_go7ia"]
+[ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_rougk"]
+
+[node name="GameModeMenu" type="Node2D"]
+script = ExtResource("1_go7ia")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1146.0
+offset_bottom = 668.0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(35, 35)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 1106.0
+offset_bottom = 670.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_rougk")
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "[center][rainbow]PONG INFINITY"
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 25)
+layout_mode = 2
+text = "Mode 1"
+
+[node name="Button2" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 25)
+layout_mode = 2
+text = "Mode 2
+"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

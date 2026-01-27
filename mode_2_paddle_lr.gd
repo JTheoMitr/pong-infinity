@@ -2,7 +2,7 @@
 extends StaticBody2D
 
 @export var is_left: bool = true
-@export var speed: float = 500.0
+@export var speed: float = 1000.0
 @export var base_rotation := 0.0
 @export var rotate_speed := 2.5
 @export var rotate_return_speed := 6.0

@@ -130,7 +130,7 @@ func game_over() -> void:
 func _on_paddle_hit(paddle: Node) -> void:
 	score += 1
 	hud.update_score(score)
-	ball.base_speed *= 1.03
+	ball.base_speed *= 1.01 #was 1.03
 	
 func reset_score() -> void:
 	score = 0

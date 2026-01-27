@@ -1,4 +1,4 @@
-# res://Scripts/main.gd
+# res://Scripts/main_two.gd
 extends Node2D
 
 @onready var ball: RigidBody2D = $Ball
@@ -9,6 +9,12 @@ extends Node2D
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
 @onready var bgnd_layer_2: Sprite2D = $Sprite2D2
+@onready var particles_root: Node2D = $Particles
+
+
+@export var impact_particles_scene: PackedScene
+
+
 
 var game_started: bool = false
 var game_over_state: bool = false
@@ -35,7 +41,8 @@ func _ready() -> void:
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_bottom.ball_hit_paddle.connect(_on_paddle_hit)
-
+	await get_tree().create_timer(1.0).timeout
+	spawn_impact_particles(get_viewport_rect().size * 0.5, Vector2.RIGHT)
 	
 
 func reset_positions(screen_center: Vector2) -> void:
@@ -132,6 +139,10 @@ func _on_paddle_hit(paddle: Node) -> void:
 	hud.update_score(score)
 	ball.base_speed *= 1.01 #was 1.03
 	
+	# Spawn particles at impact
+	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
+	spawn_impact_particles(ball.global_position, hit_dir)
+	
 func reset_score() -> void:
 	score = 0
 	hud.update_score(score)
@@ -146,3 +157,20 @@ func start_background_glow() -> void:
 	tween.set_loops()
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.95, 2.0)
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.10, 2.0)
+
+func spawn_impact_particles(pos: Vector2, dir: Vector2) -> void:
+	print("Spawning particles at:", pos)
+
+	var p := impact_particles_scene.instantiate()
+	print("Particle instance:", p)
+
+	particles_root.add_child(p)
+	print("Added to tree:", p.is_inside_tree())
+
+	p.global_position = pos
+	p.global_rotation = dir.angle()
+	p.z_index = 100
+
+	# 🔥 Critical Godot 4 sequence
+	p.emitting = false
+	p.emitting = true

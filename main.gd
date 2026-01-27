@@ -7,6 +7,8 @@ extends Node2D
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
 @onready var bgnd_layer_2: Sprite2D = $Sprite2D2
+@export var impact_particles_scene: PackedScene
+
 
 var game_started: bool = false
 var game_over_state: bool = false
@@ -135,3 +137,9 @@ func start_background_glow() -> void:
 	tween.set_loops()
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.95, 2.0)
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.10, 2.0)
+
+func spawn_impact_particles(pos: Vector2, normal: Vector2) -> void:
+	var p := impact_particles_scene.instantiate()
+	add_child(p)
+	p.global_position = pos
+	p.rotation = normal.angle()

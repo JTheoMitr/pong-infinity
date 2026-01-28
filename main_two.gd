@@ -28,7 +28,7 @@ var glow_time := 0.0
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
-	hud.show_start_message("PONG ∞")
+	hud.show_start_message("RICOCHET")
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 	start_background_glow()
 	var screen_size := get_viewport_rect().size
@@ -158,19 +158,18 @@ func start_background_glow() -> void:
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.95, 2.0)
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.10, 2.0)
 
-func spawn_impact_particles(pos: Vector2, dir: Vector2) -> void:
-	print("Spawning particles at:", pos)
-
-	var p := impact_particles_scene.instantiate()
-	print("Particle instance:", p)
-
+func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
+	var p := impact_particles_scene.instantiate() as GPUParticles2D
 	particles_root.add_child(p)
-	print("Added to tree:", p.is_inside_tree())
+
+	var screen_center := get_viewport_rect().size * 0.5
+	var to_center: Vector2 = (screen_center - pos).normalized()
 
 	p.global_position = pos
-	p.global_rotation = dir.angle()
-	p.z_index = 100
 
-	# 🔥 Critical Godot 4 sequence
+	# 🔑 Godot 4 particles emit along -Y, so rotate by +90°
+	p.global_rotation = to_center.angle() + PI / 2.0
+
+	p.z_index = 100
 	p.emitting = false
 	p.emitting = true

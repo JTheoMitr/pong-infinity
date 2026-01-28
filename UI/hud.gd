@@ -12,7 +12,7 @@ signal start_button_pressed
 
 
 func _ready() -> void:
-	label.text = "PONG ∞"
+	label.text = "RICOCHET"
 	label.visible = true
 	countdown_label.visible = false
 	start_button.visible = true

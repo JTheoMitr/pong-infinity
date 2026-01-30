@@ -1,7 +1,7 @@
 # res://Scripts/main_two.gd
 extends Node2D
 
-@onready var ball: RigidBody2D = $Ball
+@onready var ball: CharacterBody2D = $Ball
 @onready var paddle_left: StaticBody2D = $PaddleLeft
 @onready var paddle_right: StaticBody2D = $PaddleRight
 @onready var paddle_top: StaticBody2D = $PaddleTop
@@ -37,25 +37,22 @@ func _ready() -> void:
 	cam.position = screen_center
 	reset_positions(screen_center)
 	ball.visible = false
+	
+	await get_tree().create_timer(1.0).timeout
+	spawn_impact_particles(get_viewport_rect().size * 0.5, Vector2.RIGHT)
+	
 	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_bottom.ball_hit_paddle.connect(_on_paddle_hit)
-	await get_tree().create_timer(1.0).timeout
-	spawn_impact_particles(get_viewport_rect().size * 0.5, Vector2.RIGHT)
+	
 	
 
 func reset_positions(screen_center: Vector2) -> void:
-	# Fully reset ball motion
-	ball.sleeping = true
-	ball.linear_velocity = Vector2.ZERO
-	ball.angular_velocity = 0.0
+	# Reset ball (CharacterBody2D)
+	ball.global_position = screen_center
+	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
-
-	# Force physics engine to accept new transform
-	var new_transform := ball.transform
-	new_transform.origin = screen_center
-	PhysicsServer2D.body_set_state(ball.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM, new_transform)
 
 	# Reset paddles
 	paddle_left.reset_paddle()
@@ -118,7 +115,6 @@ func countdown_and_start() -> void:
 	hud.hide_countdown()
 
 	# Wake the ball back up
-	ball.sleeping = false
 	start_game()
 	
 func start_game() -> void:
@@ -130,7 +126,8 @@ func start_game() -> void:
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
-	ball.linear_velocity = Vector2.ZERO
+	ball.velocity = Vector2.ZERO
+	ball.direction = Vector2.ZERO
 	hud.show_score()
 	hud.show_start_message("Game Over - Click to Restart")
 

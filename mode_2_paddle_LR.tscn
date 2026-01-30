@@ -1687,6 +1687,8 @@ animations = [{
 }]
 
 [node name="Mode2PaddleLR" type="StaticBody2D" groups=["paddle"]]
+process_mode = 1
+collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_r112f")
 script = ExtResource("1_xkhcn")
 
@@ -1698,10 +1700,14 @@ scale = Vector2(2.15625, 3.7187502)
 texture = ExtResource("3_a3uw6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_0sbc1")
 
 [node name="Area2D" type="Area2D" parent="." groups=["paddle"]]
+visible = false
+collision_layer = 4
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -0.5)

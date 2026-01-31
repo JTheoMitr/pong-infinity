@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=12 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bxg7jeyx8lckr" path="res://mode_2_paddle_TB.tscn" id="6_pclk0"]
 [ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
 [ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
+[ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
 
 [node name="MainTwo" type="Node2D"]
 script = ExtResource("1_cg087")
@@ -70,5 +71,8 @@ rotation = -1.5707964
 
 [node name="Particles" type="Node2D" parent="."]
 process_mode = 3
+
+[node name="Multiplier1" parent="." instance=ExtResource("11_wuyf0")]
+position = Vector2(385, 270)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

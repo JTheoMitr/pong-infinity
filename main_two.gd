@@ -6,6 +6,11 @@ extends Node2D
 @onready var paddle_right: StaticBody2D = $PaddleRight
 @onready var paddle_top: StaticBody2D = $PaddleTop
 @onready var paddle_bottom: StaticBody2D = $PaddleBottom
+@onready var corner_tl: StaticBody2D = $Corners/CornerTL
+@onready var corner_tr: StaticBody2D = $Corners/CornerTR
+@onready var corner_br: StaticBody2D = $Corners/CornerBR
+@onready var corner_bl: StaticBody2D = $Corners/CornerBL
+
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
 @onready var bgnd_layer_2: Sprite2D = $Sprite2D2
@@ -13,6 +18,7 @@ extends Node2D
 
 
 @export var impact_particles_scene: PackedScene
+@export var impact_particles_multiplier_1: PackedScene
 
 
 
@@ -45,6 +51,10 @@ func _ready() -> void:
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_bottom.ball_hit_paddle.connect(_on_paddle_hit)
+	corner_tl.ball_hit_paddle.connect(_on_paddle_hit)
+	corner_tr.ball_hit_paddle.connect(_on_paddle_hit)
+	corner_br.ball_hit_paddle.connect(_on_paddle_hit)
+	corner_bl.ball_hit_paddle.connect(_on_paddle_hit)
 	
 	
 
@@ -166,6 +176,15 @@ func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
 
 	# 🔑 Godot 4 particles emit along -Y, so rotate by +90°
 	p.global_rotation = to_center.angle() + PI / 2.0
+
+	p.z_index = 100
+	p.emitting = false
+	p.emitting = true
+
+func spawn_impact_particles_buff1(pos: Vector2, _dir_unused: Vector2) -> void:
+	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
+	particles_root.add_child(p)
+	p.global_position = pos
 
 	p.z_index = 100
 	p.emitting = false

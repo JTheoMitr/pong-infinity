@@ -50,10 +50,6 @@ is_top = false
 
 [node name="HUD" parent="." instance=ExtResource("7_m0f0d")]
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
-autostart = true
-
 [node name="Corners" type="Node2D" parent="."]
 
 [node name="CornerTL" parent="Corners" instance=ExtResource("8_fokku")]
@@ -76,5 +72,3 @@ process_mode = 3
 
 [node name="Multiplier1" parent="." instance=ExtResource("11_wuyf0")]
 position = Vector2(385, 270)
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

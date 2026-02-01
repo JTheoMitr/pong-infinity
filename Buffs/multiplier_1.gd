@@ -1,11 +1,10 @@
 extends Area2D
 
-
-
-func _on_area_entered(_area: Area2D) -> void:
-	print("multiplier_1")
+signal ball_hit_multiplier_1(multiplier: Node)
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
+		emit_signal("ball_hit_multiplier_1", self)
+		self.hide() # this should be an anim that gives a shatter or breaking effect
 		print("multiplier_1")

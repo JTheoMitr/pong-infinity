@@ -10,6 +10,7 @@ extends Node2D
 @onready var corner_tr: StaticBody2D = $Corners/CornerTR
 @onready var corner_br: StaticBody2D = $Corners/CornerBR
 @onready var corner_bl: StaticBody2D = $Corners/CornerBL
+@onready var multi_1: Area2D = $Multiplier1
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -45,7 +46,7 @@ func _ready() -> void:
 	ball.visible = false
 	
 	await get_tree().create_timer(1.0).timeout
-	spawn_impact_particles(get_viewport_rect().size * 0.5, Vector2.RIGHT)
+	spawn_impact_particles(get_viewport_rect().size * 2.5, Vector2.RIGHT)
 	
 	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
@@ -55,6 +56,7 @@ func _ready() -> void:
 	corner_tr.ball_hit_paddle.connect(_on_paddle_hit)
 	corner_br.ball_hit_paddle.connect(_on_paddle_hit)
 	corner_bl.ball_hit_paddle.connect(_on_paddle_hit)
+	multi_1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
 	
 	
 
@@ -142,13 +144,31 @@ func game_over() -> void:
 	hud.show_start_message("Game Over - Click to Restart")
 
 func _on_paddle_hit(paddle: Node) -> void:
-	score += 1
+	score += 15
 	hud.update_score(score)
 	ball.base_speed *= 1.01 #was 1.03
-	
+	print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles(ball.global_position, hit_dir)
+
+func _on_corner_hit(paddle: Node) -> void:
+	score += 5
+	hud.update_score(score)
+	ball.base_speed *= 1.01 #was 1.03
+	print("corner hit")
+	# Spawn particles at impact
+	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
+	spawn_impact_particles(ball.global_position, hit_dir)
+
+func _on_multiplier_hit(_multi: Node) -> void:
+	score *= 2
+	hud.update_score(score)
+	#ball.base_speed *= 1.01 #was 1.03
+	print("multi hit")
+	# Spawn particles at impact
+	spawn_impact_particles_multiplier1(ball.global_position)
+	
 	
 func reset_score() -> void:
 	score = 0
@@ -181,7 +201,7 @@ func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
 	p.emitting = false
 	p.emitting = true
 
-func spawn_impact_particles_buff1(pos: Vector2, _dir_unused: Vector2) -> void:
+func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
 	particles_root.add_child(p)
 	p.global_position = pos

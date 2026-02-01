@@ -11,6 +11,7 @@ extends Node2D
 @onready var corner_br: StaticBody2D = $Corners/CornerBR
 @onready var corner_bl: StaticBody2D = $Corners/CornerBL
 
+@onready var multi1_timer: Timer = $Timer
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -115,6 +116,7 @@ func _on_start_button_pressed() -> void:
 	hud.hide_score()
 	ball.visible = true
 	reset_score()
+	multi1_timer.start()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	reset_positions(screen_center)
@@ -139,6 +141,7 @@ func start_game() -> void:
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
+	stop_all_timers()
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
 	hud.show_score()
@@ -164,8 +167,8 @@ func _on_corner_hit(paddle: Node) -> void:
 
 func _on_multiplier_hit(_multi: Node) -> void:
 	score *= 2
+	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
-	#ball.base_speed *= 1.01 #was 1.03
 	print("multi hit")
 	# Spawn particles at impact
 	spawn_impact_particles_multiplier1(ball.global_position)
@@ -223,3 +226,11 @@ func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 
 func _on_timer_timeout() -> void:
 	spawn_multi_1()
+	
+func stop_all_timers() -> void:
+	multi1_timer.stop()
+	
+#need a method to clear all buffs
+#each buff: needs a spinning anim, an entry anim, and a shatter/break/disintegrate anim
+#follow multi1 template on incorporating
+	

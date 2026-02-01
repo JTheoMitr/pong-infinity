@@ -10,7 +10,7 @@ extends Node2D
 @onready var corner_tr: StaticBody2D = $Corners/CornerTR
 @onready var corner_br: StaticBody2D = $Corners/CornerBR
 @onready var corner_bl: StaticBody2D = $Corners/CornerBL
-@onready var multi_1: Area2D = $Multiplier1
+
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -20,6 +20,7 @@ extends Node2D
 
 @export var impact_particles_scene: PackedScene
 @export var impact_particles_multiplier_1: PackedScene
+@export var multiplier_1: PackedScene
 
 
 
@@ -56,7 +57,7 @@ func _ready() -> void:
 	corner_tr.ball_hit_paddle.connect(_on_paddle_hit)
 	corner_br.ball_hit_paddle.connect(_on_paddle_hit)
 	corner_bl.ball_hit_paddle.connect(_on_paddle_hit)
-	multi_1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
+
 	
 	
 
@@ -200,6 +201,15 @@ func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
 	p.z_index = 100
 	p.emitting = false
 	p.emitting = true
+	
+func spawn_multi_1() -> void:
+	var multi1 := multiplier_1.instantiate()
+	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
+	get_parent().add_child(multi1)
+	var screen_size := get_viewport_rect().size
+	var rndX = randf_range(0, screen_size.x)
+	var rndY = randf_range(0, screen_size.y)
+	multi1.global_position = Vector2(rndX, rndY)
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
@@ -209,3 +219,7 @@ func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 	p.z_index = 100
 	p.emitting = false
 	p.emitting = true
+
+
+func _on_timer_timeout() -> void:
+	spawn_multi_1()

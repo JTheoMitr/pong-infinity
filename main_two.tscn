@@ -17,6 +17,7 @@
 script = ExtResource("1_cg087")
 impact_particles_scene = ExtResource("2_pclk0")
 impact_particles_multiplier_1 = ExtResource("3_q6xn0")
+multiplier_1 = ExtResource("11_wuyf0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(576, 325.00003)
@@ -70,5 +71,8 @@ rotation = -1.5707964
 [node name="Particles" type="Node2D" parent="."]
 process_mode = 3
 
-[node name="Multiplier1" parent="." instance=ExtResource("11_wuyf0")]
-position = Vector2(385, 270)
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

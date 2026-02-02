@@ -1,4 +1,4 @@
-[gd_scene load_steps=320 format=3 uid="uid://bb3f52h6hdcqj"]
+[gd_scene load_steps=328 format=3 uid="uid://bb3f52h6hdcqj"]
 
 [ext_resource type="Script" uid="uid://pvwuvyaxxick" path="res://Buffs/multiplier_1.gd" id="1_qimbc"]
 [ext_resource type="Texture2D" uid="uid://bfdo7nol1gk72" path="res://Assets/Anims/red_pyramid_anim/frame_000_delay-0.02s.png" id="2_ag5qp"]
@@ -316,6 +316,7 @@
 [ext_resource type="Texture2D" uid="uid://do2x15uvlkl0h" path="res://Assets/Anims/red_pyramid_anim/frame_312_delay-0.02s.png" id="314_giwxx"]
 [ext_resource type="Texture2D" uid="uid://d0yw3bf5bq4yu" path="res://Assets/Anims/red_pyramid_anim/frame_313_delay-0.02s.png" id="315_s00jo"]
 [ext_resource type="Texture2D" uid="uid://dynv35fhltuhp" path="res://Assets/Anims/red_pyramid_anim/frame_314_delay-0.02s.png" id="316_h4mkf"]
+[ext_resource type="Texture2D" uid="uid://c8v1ytbd3t4qa" path="res://Assets/Anims/lightning_burst_magenta_anim.png" id="317_s6nuc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5kny7"]
 radius = 51.24451
@@ -1268,7 +1269,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("316_h4mkf")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 60.0
 }]
@@ -2226,14 +2227,62 @@ animations = [{
 "speed": 80.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_m55ld"]
+atlas = ExtResource("317_s6nuc")
+region = Rect2(0, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofxut"]
+atlas = ExtResource("317_s6nuc")
+region = Rect2(128, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yd3jk"]
+atlas = ExtResource("317_s6nuc")
+region = Rect2(256, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vx8yi"]
+atlas = ExtResource("317_s6nuc")
+region = Rect2(0, 256, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbm03"]
+atlas = ExtResource("317_s6nuc")
+region = Rect2(128, 256, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kf636"]
+atlas = ExtResource("317_s6nuc")
+region = Rect2(256, 256, 128, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e73xu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m55ld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofxut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yd3jk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vx8yi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbm03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kf636")
+}],
+"loop": false,
+"name": &"default",
+"speed": 15.0
+}]
+
 [node name="Multiplier1" type="Area2D"]
-scale = Vector2(0.7, 0.7)
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_qimbc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_5kny7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -2251,5 +2300,13 @@ sprite_frames = SubResource("SpriteFrames_ag5qp")
 autoplay = "default"
 frame_progress = 0.3767484
 
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -118.00001)
+scale = Vector2(1.2, 1.2)
+sprite_frames = SubResource("SpriteFrames_e73xu")
+frame = 5
+frame_progress = 1.0
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D3" to="." method="_on_animated_sprite_2d_3_animation_finished"]

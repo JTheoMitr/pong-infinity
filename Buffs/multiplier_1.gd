@@ -1,5 +1,6 @@
 extends Area2D
 
+const thunder_sfx = preload("res://Assets/SFX/sfx_thunder_2.tscn")
 
 @onready var lightning_anim: AnimatedSprite2D = $AnimatedSprite2D3
 @onready var spinning_pyramid_pink: AnimatedSprite2D = $AnimatedSprite2D
@@ -8,6 +9,8 @@ signal ball_hit_multiplier_1(multiplier: Node)
 
 func _ready() -> void:
 	lightning_anim.play()
+	var thunder_strike = thunder_sfx.instantiate()
+	get_parent().add_child(thunder_strike)
 	spinning_pyramid_pink.hide()
 
 func _on_body_entered(body: Node2D) -> void:
@@ -22,3 +25,7 @@ func _on_animated_sprite_2d_3_animation_finished() -> void:
 	lightning_anim.hide()
 	spinning_pyramid_pink.show()
 	
+
+
+func _on_timer_timeout() -> void:
+	self.queue_free()

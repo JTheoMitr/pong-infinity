@@ -2307,6 +2307,12 @@ sprite_frames = SubResource("SpriteFrames_e73xu")
 frame = 5
 frame_progress = 1.0
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.5
+one_shot = true
+autostart = true
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="AnimatedSprite2D3" to="." method="_on_animated_sprite_2d_3_animation_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

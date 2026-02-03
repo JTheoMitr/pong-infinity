@@ -5,6 +5,8 @@
 
 [node name="SFX_Thunder_2" type="AudioStreamPlayer"]
 stream = ExtResource("1_q5a8u")
+volume_db = 0.85
+pitch_scale = 1.4
 autoplay = true
 script = ExtResource("2_r58eh")
 

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://864oxgaa5xjy"]
+
+[ext_resource type="AudioStream" uid="uid://bexbidpb12ov0" path="res://Assets/SFX/thunder1.wav" id="1_vcygp"]
+[ext_resource type="Script" uid="uid://v8mh5g3aehrc" path="res://Assets/SFX/sfx_default.gd" id="2_eypjc"]
+
+[node name="SFX_Thunder_1" type="AudioStreamPlayer"]
+stream = ExtResource("1_vcygp")
+autoplay = true
+script = ExtResource("2_eypjc")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

@@ -1,6 +1,9 @@
 # res://Scripts/main_two.gd
 extends Node2D
 
+const game_over_sfx = preload("res://Assets/SFX/sfx_game_over.tscn")
+const paddle_hit_sfx = preload("res://Assets/SFX/sfx_paddle_hit_1.tscn")
+
 @onready var ball: CharacterBody2D = $Ball
 @onready var paddle_left: StaticBody2D = $PaddleLeft
 @onready var paddle_right: StaticBody2D = $PaddleRight
@@ -11,7 +14,7 @@ extends Node2D
 @onready var corner_br: StaticBody2D = $Corners/CornerBR
 @onready var corner_bl: StaticBody2D = $Corners/CornerBL
 
-@onready var multi1_timer: Timer = $Timer
+@onready var multi1_timer: Timer = $Multi1Timer
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -141,6 +144,8 @@ func start_game() -> void:
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
+	var game_over_chime = game_over_sfx.instantiate()
+	get_parent().add_child(game_over_chime)
 	stop_all_timers()
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
@@ -148,6 +153,8 @@ func game_over() -> void:
 	hud.show_start_message("Game Over - Click to Restart")
 
 func _on_paddle_hit(paddle: Node) -> void:
+	var paddle_bonk = paddle_hit_sfx.instantiate()
+	get_parent().add_child(paddle_bonk)
 	score += 15
 	hud.update_score(score)
 	ball.base_speed *= 1.01 #was 1.03

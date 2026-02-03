@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=14 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
 [ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
+[ext_resource type="AudioStream" uid="uid://dcnu7dd53hb8t" path="res://Assets/Music/DEFLECT_Lvl1.mp3" id="13_0wljb"]
 
 [node name="MainTwo" type="Node2D"]
 script = ExtResource("1_cg087")
@@ -71,7 +72,12 @@ rotation = -1.5707964
 [node name="Particles" type="Node2D" parent="."]
 process_mode = 3
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
+[node name="Multi1Timer" type="Timer" parent="."]
+wait_time = 15.0
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_0wljb")
+volume_db = -9.0
+autoplay = true
+
+[connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]

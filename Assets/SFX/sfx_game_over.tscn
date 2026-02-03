@@ -5,6 +5,7 @@
 
 [node name="SFX_Game_Over" type="AudioStreamPlayer"]
 stream = ExtResource("1_e4efc")
+volume_db = 5.0
 autoplay = true
 script = ExtResource("2_ssqrh")
 

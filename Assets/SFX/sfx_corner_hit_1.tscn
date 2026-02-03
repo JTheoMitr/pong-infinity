@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2yrr7vq1fbnf"]
+
+[ext_resource type="AudioStream" uid="uid://d13vu6q61r6r" path="res://Assets/SFX/corner_hit_1.wav" id="1_u5j3l"]
+[ext_resource type="Script" uid="uid://v8mh5g3aehrc" path="res://Assets/SFX/sfx_default.gd" id="2_4vcdv"]
+
+[node name="SFX_Corner_Hit_1" type="AudioStreamPlayer"]
+stream = ExtResource("1_u5j3l")
+pitch_scale = 0.84
+autoplay = true
+script = ExtResource("2_4vcdv")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

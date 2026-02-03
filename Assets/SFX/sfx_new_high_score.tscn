@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://mte2pq5okibn"]
+
+[ext_resource type="AudioStream" uid="uid://dsahbnk7xqg2t" path="res://Assets/SFX/new_high_score.wav" id="1_nb5tr"]
+[ext_resource type="Script" uid="uid://v8mh5g3aehrc" path="res://Assets/SFX/sfx_default.gd" id="2_avv3d"]
+
+[node name="SFX_New_High_Score" type="AudioStreamPlayer"]
+stream = ExtResource("1_nb5tr")
+autoplay = true
+script = ExtResource("2_avv3d")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

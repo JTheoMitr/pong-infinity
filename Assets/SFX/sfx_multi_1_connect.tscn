@@ -5,6 +5,7 @@
 
 [node name="SFX_Multi_1_Connect" type="AudioStreamPlayer"]
 stream = ExtResource("1_djye7")
+volume_db = -3.0
 pitch_scale = 0.84
 autoplay = true
 script = ExtResource("2_ste4h")

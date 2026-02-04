@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=4 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_7vrkn")
@@ -9,6 +12,7 @@ script = ExtResource("1_7vrkn")
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1146.0
 offset_bottom = 668.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7vrkn")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 custom_minimum_size = Vector2(35, 35)
@@ -17,10 +21,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 1106.0
-offset_bottom = 670.0
+offset_left = 7.0
+offset_top = -14.0
+offset_right = 1146.0
+offset_bottom = 676.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -32,7 +36,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("1_06t4h")
-theme_override_font_sizes/normal_font_size = 35
+theme_override_font_sizes/normal_font_size = 61
 bbcode_enabled = true
 text = "[center][rainbow]RICOCHET"
 

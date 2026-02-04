@@ -5,8 +5,8 @@
 
 [node name="SFX_Corner_Hit_1" type="AudioStreamPlayer"]
 stream = ExtResource("1_u5j3l")
-volume_db = 3.0
-pitch_scale = 0.5
+volume_db = -2.0
+pitch_scale = 0.75
 autoplay = true
 script = ExtResource("2_4vcdv")
 

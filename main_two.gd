@@ -43,7 +43,7 @@ var glow_time := 0.0
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
-	hud.show_start_message("RICOCHET")
+	hud.show_start_message("Get Ready")
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 	start_background_glow()
 	var screen_size := get_viewport_rect().size
@@ -60,10 +60,10 @@ func _ready() -> void:
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_bottom.ball_hit_paddle.connect(_on_paddle_hit)
-	corner_tl.ball_hit_paddle.connect(_on_paddle_hit)
-	corner_tr.ball_hit_paddle.connect(_on_paddle_hit)
-	corner_br.ball_hit_paddle.connect(_on_paddle_hit)
-	corner_bl.ball_hit_paddle.connect(_on_paddle_hit)
+	corner_tl.ball_hit_paddle.connect(_on_corner_hit)
+	corner_tr.ball_hit_paddle.connect(_on_corner_hit)
+	corner_br.ball_hit_paddle.connect(_on_corner_hit)
+	corner_bl.ball_hit_paddle.connect(_on_corner_hit)
 
 	
 	
@@ -245,6 +245,9 @@ func _on_timer_timeout() -> void:
 func stop_all_timers() -> void:
 	multi1_timer.stop()
 	
+func clear_all_buffs() -> void:
+	get_parent().remove_child(instance_from_id(multiplier_1.get_instance_id()))
+	#test this, see errors on game over? its thiss...
 #need a method to clear all buffs
 #each buff: needs a spinning anim, an entry anim, and a shatter/break/disintegrate anim
 #follow multi1 template on incorporating

@@ -77,7 +77,7 @@ wait_time = 15.0
 
 [node name="LevelMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_0wljb")
-volume_db = -9.0
+volume_db = -11.0
 autoplay = true
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]

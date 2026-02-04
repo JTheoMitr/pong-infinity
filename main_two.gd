@@ -3,6 +3,9 @@ extends Node2D
 
 const game_over_sfx = preload("res://Assets/SFX/sfx_game_over.tscn")
 const paddle_hit_sfx = preload("res://Assets/SFX/sfx_paddle_hit_1.tscn")
+const multi_connect_sfx = preload("res://Assets/SFX/sfx_multi_1_connect.tscn")
+const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
+
 
 @onready var ball: CharacterBody2D = $Ball
 @onready var paddle_left: StaticBody2D = $PaddleLeft
@@ -147,6 +150,7 @@ func game_over() -> void:
 	var game_over_chime = game_over_sfx.instantiate()
 	get_parent().add_child(game_over_chime)
 	stop_all_timers()
+	#create method to clear all buffs as well
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
 	hud.show_score()
@@ -164,6 +168,8 @@ func _on_paddle_hit(paddle: Node) -> void:
 	spawn_impact_particles(ball.global_position, hit_dir)
 
 func _on_corner_hit(paddle: Node) -> void:
+	var corner_bonk = corner_hit_sfx.instantiate()
+	get_parent().add_child(corner_bonk)
 	score += 5
 	hud.update_score(score)
 	ball.base_speed *= 1.01 #was 1.03
@@ -174,6 +180,8 @@ func _on_corner_hit(paddle: Node) -> void:
 
 func _on_multiplier_hit(_multi: Node) -> void:
 	score *= 2
+	var multi_1_bonk = multi_connect_sfx.instantiate()
+	get_parent().add_child(multi_1_bonk)
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
 	print("multi hit")
@@ -217,8 +225,8 @@ func spawn_multi_1() -> void:
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
 	get_parent().add_child(multi1)
 	var screen_size := get_viewport_rect().size
-	var rndX = randf_range(0, screen_size.x)
-	var rndY = randf_range(0, screen_size.y)
+	var rndX = randf_range(100, screen_size.x - 100)
+	var rndY = randf_range(200, screen_size.y + 100)
 	multi1.global_position = Vector2(rndX, rndY)
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:

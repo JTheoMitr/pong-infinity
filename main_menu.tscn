@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=5 format=3 uid="uid://bvsrkd2lk0v1l"]
 
-[ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
+[ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
+[ext_resource type="AudioStream" uid="uid://jwyqtpo8r4hp" path="res://Assets/Music/DEFLECT_Menu_1.mp3" id="3_fu7sn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
 bg_color = Color(0, 0, 0, 1)
@@ -29,16 +30,16 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(35, 35)
+custom_minimum_size = Vector2(350, 35)
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("1_06t4h")
-theme_override_font_sizes/normal_font_size = 61
+theme_override_fonts/normal_font = ExtResource("2_7vrkn")
+theme_override_font_sizes/normal_font_size = 74
 bbcode_enabled = true
-text = "[center][rainbow]RICOCHET"
+text = "[center]RICOCHET"
 
 [node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(20, 25)
@@ -49,5 +50,9 @@ text = "Start"
 custom_minimum_size = Vector2(20, 25)
 layout_mode = 2
 text = "Controls"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fu7sn")
+autoplay = true
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

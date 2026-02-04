@@ -1269,7 +1269,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("316_h4mkf")
 }],
-"loop": false,
+"loop": true,
 "name": &"default",
 "speed": 60.0
 }]
@@ -2290,7 +2290,8 @@ self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
 scale = Vector2(0.28, 0.28)
 sprite_frames = SubResource("SpriteFrames_mfkcd")
 autoplay = "default"
-frame_progress = 0.33371028
+frame = 59
+frame_progress = 0.35780376
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -2298,7 +2299,7 @@ self_modulate = Color(1, 1, 1, 0.7137255)
 scale = Vector2(0.28, 0.28)
 sprite_frames = SubResource("SpriteFrames_ag5qp")
 autoplay = "default"
-frame_progress = 0.3767484
+frame_progress = 0.06324294
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
 position = Vector2(4, -118.00001)
@@ -2312,7 +2313,13 @@ wait_time = 7.0
 one_shot = true
 autostart = true
 
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 8.5
+one_shot = true
+autostart = true
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="AnimatedSprite2D3" to="." method="_on_animated_sprite_2d_3_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

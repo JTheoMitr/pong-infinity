@@ -225,8 +225,8 @@ func spawn_multi_1() -> void:
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
 	get_parent().add_child(multi1)
 	var screen_size := get_viewport_rect().size
-	var rndX = randf_range(100, screen_size.x - 100)
-	var rndY = randf_range(200, screen_size.y + 100)
+	var rndX = randf_range(300, screen_size.x - 300)
+	var rndY = randf_range(300, screen_size.y - 300)
 	multi1.global_position = Vector2(rndX, rndY)
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:

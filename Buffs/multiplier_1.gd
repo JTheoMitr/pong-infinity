@@ -4,6 +4,8 @@ const thunder_sfx = preload("res://Assets/SFX/sfx_thunder_2.tscn")
 
 @onready var lightning_anim: AnimatedSprite2D = $AnimatedSprite2D3
 @onready var spinning_pyramid_pink: AnimatedSprite2D = $AnimatedSprite2D
+@onready var spinning_pyramid_red: AnimatedSprite2D = $AnimatedSprite2D2
+
 signal ball_hit_multiplier_1(multiplier: Node)
 
 
@@ -25,7 +27,12 @@ func _on_animated_sprite_2d_3_animation_finished() -> void:
 	lightning_anim.hide()
 	spinning_pyramid_pink.show()
 	
-
-
+func start_fade_out() -> void:
+	var tween := create_tween()
+	tween.tween_property(spinning_pyramid_pink, "self_modulate:a", 0.0, 1.5)
+	
 func _on_timer_timeout() -> void:
+	start_fade_out()
+	
+func _on_timer_2_timeout() -> void:
 	self.queue_free()

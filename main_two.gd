@@ -32,11 +32,13 @@ const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
 
 
 var game_started: bool = false
+var start_pressed: bool = false
 var game_over_state: bool = false
 var fade_up: bool = false
 var fade_down: bool = true
 var score := 0
 var glow_time := 0.0
+var multi_1_id
 
 
 
@@ -118,15 +120,18 @@ func _on_start_button_pressed() -> void:
 	if game_over_state:
 		print("game over")
 		game_over_state = false
-	hud.hide_start_message()
-	hud.hide_score()
-	ball.visible = true
-	reset_score()
-	multi1_timer.start()
-	var screen_size := get_viewport_rect().size
-	var screen_center := screen_size * 0.5
-	reset_positions(screen_center)
-	await countdown_and_start()
+		clear_all_buffs()
+	if start_pressed == false:
+		hud.hide_start_message()
+		hud.hide_score()
+		ball.visible = true
+		reset_score()
+		multi1_timer.start()
+		var screen_size := get_viewport_rect().size
+		var screen_center := screen_size * 0.5
+		reset_positions(screen_center)
+		start_pressed = true
+		await countdown_and_start()
 
 
 func countdown_and_start() -> void:
@@ -141,6 +146,7 @@ func countdown_and_start() -> void:
 func start_game() -> void:
 	ball.base_speed = 400.0
 	game_started = true
+	start_pressed = false
 	ball.launch()
 
 
@@ -224,6 +230,7 @@ func spawn_multi_1() -> void:
 	var multi1 := multiplier_1.instantiate()
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
 	get_parent().add_child(multi1)
+	multi_1_id = multi1.get_instance_id()
 	var screen_size := get_viewport_rect().size
 	var rndX = randf_range(300, screen_size.x - 300)
 	var rndY = randf_range(300, screen_size.y - 300)
@@ -246,7 +253,7 @@ func stop_all_timers() -> void:
 	multi1_timer.stop()
 	
 func clear_all_buffs() -> void:
-	get_parent().remove_child(instance_from_id(multiplier_1.get_instance_id()))
+	get_parent().remove_child(instance_from_id(multi_1_id))
 	#test this, see errors on game over? its thiss...
 #need a method to clear all buffs
 #each buff: needs a spinning anim, an entry anim, and a shatter/break/disintegrate anim

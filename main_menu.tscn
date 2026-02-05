@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=6 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
+[ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="2_jix8l"]
 [ext_resource type="AudioStream" uid="uid://jwyqtpo8r4hp" path="res://Assets/Music/DEFLECT_Menu_1.mp3" id="3_fu7sn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
@@ -9,6 +10,12 @@ bg_color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_7vrkn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(590.99994, 335.99997)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_jix8l")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1152.0
@@ -30,29 +37,36 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(350, 35)
+custom_minimum_size = Vector2(700, 35)
 layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_7vrkn")
-theme_override_font_sizes/normal_font_size = 74
+theme_override_font_sizes/normal_font_size = 151
 bbcode_enabled = true
 text = "[center]RICOCHET"
 
 [node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(20, 25)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vrkn")
 text = "Start"
 
 [node name="Button2" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(20, 25)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vrkn")
 text = "Controls"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_fu7sn")
 autoplay = true
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -38,7 +38,8 @@ var fade_up: bool = false
 var fade_down: bool = true
 var score := 0
 var glow_time := 0.0
-var multi_1_id
+var buff_ids: Array[int] = []
+
 
 
 
@@ -230,7 +231,7 @@ func spawn_multi_1() -> void:
 	var multi1 := multiplier_1.instantiate()
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
 	get_parent().add_child(multi1)
-	multi_1_id = multi1.get_instance_id()
+	buff_ids.append(multi1.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var rndX = randf_range(300, screen_size.x - 300)
 	var rndY = randf_range(300, screen_size.y - 300)
@@ -253,7 +254,13 @@ func stop_all_timers() -> void:
 	multi1_timer.stop()
 	
 func clear_all_buffs() -> void:
-	get_parent().remove_child(instance_from_id(multi_1_id))
+	for id in buff_ids:
+		if is_instance_id_valid(id):
+			var node := instance_from_id(id)
+			if node:
+				node.queue_free()
+	buff_ids.clear()
+
 	#test this, see errors on game over? its thiss...
 #need a method to clear all buffs
 #each buff: needs a spinning anim, an entry anim, and a shatter/break/disintegrate anim

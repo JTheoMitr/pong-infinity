@@ -1713,7 +1713,7 @@ shape = SubResource("RectangleShape2D_r112f")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 2)
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.35, 0.35)
 sprite_frames = SubResource("SpriteFrames_uh5wp")
 autoplay = "default"
 frame_progress = 0.1568283

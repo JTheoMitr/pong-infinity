@@ -12,7 +12,7 @@ bg_color = Color(0, 0, 0, 1)
 script = ExtResource("1_7vrkn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(590.99994, 335.99997)
+position = Vector2(576, 325)
 rotation = 1.5707964
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_jix8l")

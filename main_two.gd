@@ -5,6 +5,7 @@ const game_over_sfx = preload("res://Assets/SFX/sfx_game_over.tscn")
 const paddle_hit_sfx = preload("res://Assets/SFX/sfx_paddle_hit_1.tscn")
 const multi_connect_sfx = preload("res://Assets/SFX/sfx_multi_1_connect.tscn")
 const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
+const crystal_hit_sfx = preload("res://Assets/SFX/sfx_crystal_hit_1.tscn")
 
 
 @onready var ball: CharacterBody2D = $Ball
@@ -18,6 +19,7 @@ const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
 @onready var corner_bl: StaticBody2D = $Corners/CornerBL
 
 @onready var multi1_timer: Timer = $Multi1Timer
+@onready var crystal1_timer: Timer = $CrystalTimer
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -27,7 +29,9 @@ const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
 
 @export var impact_particles_scene: PackedScene
 @export var impact_particles_multiplier_1: PackedScene
+@export var impact_particles_crystal_1: PackedScene
 @export var multiplier_1: PackedScene
+@export var score_crystal_1: PackedScene
 
 
 
@@ -128,6 +132,7 @@ func _on_start_button_pressed() -> void:
 		ball.visible = true
 		reset_score()
 		multi1_timer.start()
+		crystal1_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
@@ -195,6 +200,16 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	# Spawn particles at impact
 	spawn_impact_particles_multiplier1(ball.global_position)
 	
+func _on_crystal_hit(_multi: Node) -> void:
+	score += 25
+	var crystal_1_bonk = crystal_hit_sfx.instantiate()
+	get_parent().add_child(crystal_1_bonk)
+	#audio here, smash sfx and words (multiplier!)
+	hud.update_score(score)
+	print("crystal hit")
+	# Spawn particles at impact
+	spawn_impact_particles_crystal1(ball.global_position)
+	
 	
 func reset_score() -> void:
 	score = 0
@@ -233,12 +248,30 @@ func spawn_multi_1() -> void:
 	get_parent().add_child(multi1)
 	buff_ids.append(multi1.get_instance_id())
 	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	multi1.global_position = Vector2(screen_center)
+	
+func spawn_score_crystal_1() -> void:
+	var crystal1 := score_crystal_1.instantiate()
+	crystal1.ball_hit_crystal_1.connect(_on_crystal_hit)
+	get_parent().add_child(crystal1)
+	buff_ids.append(crystal1.get_instance_id())
+	var screen_size := get_viewport_rect().size
 	var rndX = randf_range(300, screen_size.x - 300)
 	var rndY = randf_range(300, screen_size.y - 300)
-	multi1.global_position = Vector2(rndX, rndY)
+	crystal1.global_position = Vector2(rndX, rndY)
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
+	particles_root.add_child(p)
+	p.global_position = pos
+
+	p.z_index = 100
+	p.emitting = false
+	p.emitting = true
+	
+func spawn_impact_particles_crystal1(pos: Vector2) -> void:
+	var p := impact_particles_crystal_1.instantiate() as GPUParticles2D
 	particles_root.add_child(p)
 	p.global_position = pos
 
@@ -252,6 +285,7 @@ func _on_timer_timeout() -> void:
 	
 func stop_all_timers() -> void:
 	multi1_timer.stop()
+	crystal1_timer.stop()
 	
 func clear_all_buffs() -> void:
 	for id in buff_ids:
@@ -266,3 +300,7 @@ func clear_all_buffs() -> void:
 #each buff: needs a spinning anim, an entry anim, and a shatter/break/disintegrate anim
 #follow multi1 template on incorporating
 	
+
+
+func _on_crystal_timer_timeout() -> void:
+	spawn_score_crystal_1()

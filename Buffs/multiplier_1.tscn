@@ -2299,14 +2299,12 @@ self_modulate = Color(1, 1, 1, 0.7137255)
 scale = Vector2(0.28, 0.28)
 sprite_frames = SubResource("SpriteFrames_ag5qp")
 autoplay = "default"
-frame_progress = 0.06324294
+frame_progress = 0.43933225
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
 position = Vector2(4, -118.00001)
 scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_e73xu")
-frame = 5
-frame_progress = 1.0
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 7.0

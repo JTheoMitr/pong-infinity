@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1hxpjggmvo7j"]
+
+[ext_resource type="Script" uid="uid://bvpu3xh7gv8r6" path="res://impact_particles.gd" id="1_rgoe1"]
+
+[sub_resource type="Gradient" id="Gradient_me6vb"]
+offsets = PackedFloat32Array(0, 0.14150943, 0.6981132, 1)
+colors = PackedColorArray(0.5176471, 0.91764706, 1, 1, 0.31764707, 0.8156863, 1, 1, 0.17254902, 0.4509804, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qy20h"]
+gradient = SubResource("Gradient_me6vb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ycagn"]
+lifetime_randomness = 0.15
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 354.4
+initial_velocity_max = 433.25998
+gravity = Vector3(0, 0, 0)
+damping_min = 2.0
+damping_max = 2.0
+scale_min = 9.82
+scale_max = 9.82
+color_ramp = SubResource("GradientTexture1D_qy20h")
+
+[node name="ImpactParticlesFullSpreadBlue" type="GPUParticles2D"]
+z_index = 12
+scale = Vector2(3.5, 3.5)
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+speed_scale = 0.35
+explosiveness = 0.81
+randomness = 0.8
+process_material = SubResource("ParticleProcessMaterial_ycagn")
+script = ExtResource("1_rgoe1")

@@ -10,6 +10,7 @@ signal ball_hit_multiplier_1(multiplier: Node)
 
 
 func _ready() -> void:
+	lightning_anim.frame = 0
 	lightning_anim.play()
 	var thunder_strike = thunder_sfx.instantiate()
 	get_parent().add_child(thunder_strike)

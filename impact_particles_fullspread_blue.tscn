@@ -19,8 +19,8 @@ initial_velocity_max = 433.25998
 gravity = Vector3(0, 0, 0)
 damping_min = 2.0
 damping_max = 2.0
-scale_min = 9.82
-scale_max = 9.82
+scale_min = 3.0
+scale_max = 5.0
 color_ramp = SubResource("GradientTexture1D_qy20h")
 
 [node name="ImpactParticlesFullSpreadBlue" type="GPUParticles2D"]

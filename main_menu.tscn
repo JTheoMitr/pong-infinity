@@ -22,6 +22,17 @@ offset_right = 1152.0
 offset_bottom = 668.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7vrkn")
 
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(300, 200)
+offset_left = 226.0
+offset_top = 191.0
+offset_right = 926.0
+offset_bottom = 391.0
+theme_override_fonts/normal_font = ExtResource("2_7vrkn")
+theme_override_font_sizes/normal_font_size = 151
+bbcode_enabled = true
+text = "[center]RICOCHET"
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 custom_minimum_size = Vector2(35, 35)
 anchors_preset = 8
@@ -30,7 +41,7 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 1.0
-offset_top = 4.0
+offset_top = 241.0
 offset_right = 1152.0
 offset_bottom = 636.0
 grow_horizontal = 2
@@ -39,14 +50,6 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(700, 35)
 layout_mode = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(300, 200)
-layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("2_7vrkn")
-theme_override_font_sizes/normal_font_size = 151
-bbcode_enabled = true
-text = "[center]RICOCHET"
 
 [node name="Button" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(20, 25)
@@ -65,7 +68,7 @@ stream = ExtResource("3_fu7sn")
 autoplay = true
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 3.5
 one_shot = true
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

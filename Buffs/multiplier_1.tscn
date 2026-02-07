@@ -2697,7 +2697,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yfsip"]
-size = Vector2(91, 28)
+size = Vector2(119, 43)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0mau0"]
 animations = [{
@@ -4007,27 +4007,27 @@ autostart = true
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers"]
-position = Vector2(-132, -2.5)
+position = Vector2(-133, 0)
 rotation = 1.5707964
 shape = SubResource("RectangleShape2D_yfsip")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Barriers"]
-position = Vector2(132, -2.5)
+position = Vector2(132, 0)
 rotation = 1.5707964
 shape = SubResource("RectangleShape2D_yfsip")
 
 [node name="AnimBarrier" type="AnimatedSprite2D" parent="Barriers"]
 self_modulate = Color(1.177704, 0.3712514, 1.177704, 1)
-position = Vector2(-133, 0)
-scale = Vector2(0.25, 0.25)
+position = Vector2(-133, 5)
+scale = Vector2(0.33, 0.33)
 sprite_frames = SubResource("SpriteFrames_0mau0")
 autoplay = "default"
 frame_progress = 0.24626926
 
 [node name="AnimBarrier2" type="AnimatedSprite2D" parent="Barriers"]
 self_modulate = Color(1.1780599, 0.37137452, 1.1780599, 1)
-position = Vector2(132, 0)
-scale = Vector2(0.25, 0.25)
+position = Vector2(132, 5)
+scale = Vector2(0.33, 0.33)
 sprite_frames = SubResource("SpriteFrames_0mau0")
 autoplay = "default"
 frame_progress = 0.74303776

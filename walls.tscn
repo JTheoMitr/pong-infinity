@@ -3,31 +3,31 @@
 [ext_resource type="Script" uid="uid://bm3ojqdroiw4s" path="res://walls.gd" id="1_xxkwp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oelu8"]
-size = Vector2(1196.5, 5)
+size = Vector2(1247.75, 7.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xxkwp"]
-size = Vector2(9, 691)
+size = Vector2(9, 703)
 
 [node name="Walls" type="Area2D" groups=["walls"]]
 collision_mask = 2
 script = ExtResource("1_xxkwp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(579.25, -23)
+position = Vector2(574.875, -35)
 shape = SubResource("RectangleShape2D_oelu8")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(577.5, 670)
+position = Vector2(577.5, 681.25)
 shape = SubResource("RectangleShape2D_oelu8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
-position = Vector2(-25, 323.5)
+position = Vector2(-44, 323)
 shape = SubResource("RectangleShape2D_xxkwp")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
-position = Vector2(1180, 325.5)
+position = Vector2(1201, 323.5)
 shape = SubResource("RectangleShape2D_xxkwp")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

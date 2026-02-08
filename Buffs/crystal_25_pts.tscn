@@ -1708,12 +1708,14 @@ script = ExtResource("1_2gsb7")
 shape = SubResource("CapsuleShape2D_pv573")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1, 0.1882353, 1, 1)
 scale = Vector2(0.28, 0.28)
 sprite_frames = SubResource("SpriteFrames_mfkcd")
 autoplay = "default"
-frame_progress = 0.577073
+frame_progress = 0.96995264
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(0.946556, 0.946556, 0.946556, 1)
 position = Vector2(4, -118.00001)
 scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_e73xu")

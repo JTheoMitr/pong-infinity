@@ -257,8 +257,8 @@ func spawn_score_crystal_1() -> void:
 	get_parent().add_child(crystal1)
 	buff_ids.append(crystal1.get_instance_id())
 	var screen_size := get_viewport_rect().size
-	var rndX = randf_range(300, screen_size.x - 300)
-	var rndY = randf_range(300, screen_size.y - 300)
+	var rndX = randf_range(100, screen_size.x - 100)
+	var rndY = randf_range(100, screen_size.y - 100)
 	crystal1.global_position = Vector2(rndX, rndY)
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:

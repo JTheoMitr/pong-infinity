@@ -1,15 +1,25 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=7 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
 [ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="2_jix8l"]
 [ext_resource type="AudioStream" uid="uid://jwyqtpo8r4hp" path="res://Assets/Music/DEFLECT_Menu_1.mp3" id="3_fu7sn"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix8l"]
+bg_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
 bg_color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_7vrkn")
+
+[node name="Panel2" type="Panel" parent="."]
+offset_left = -176.0
+offset_top = -110.0
+offset_right = 1323.0
+offset_bottom = 752.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jix8l")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(576, 325)
@@ -68,7 +78,7 @@ stream = ExtResource("3_fu7sn")
 autoplay = true
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 3.5
+wait_time = 4.0
 one_shot = true
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

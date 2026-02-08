@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=17 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -16,6 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
 [ext_resource type="AudioStream" uid="uid://dcnu7dd53hb8t" path="res://Assets/Music/DEFLECT_Lvl1.mp3" id="13_0wljb"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fokku"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="MainTwo" type="Node2D"]
 script = ExtResource("1_cg087")
 impact_particles_scene = ExtResource("2_pclk0")
@@ -23,6 +26,14 @@ impact_particles_multiplier_1 = ExtResource("3_q6xn0")
 impact_particles_crystal_1 = ExtResource("4_fokku")
 multiplier_1 = ExtResource("11_wuyf0")
 score_crystal_1 = ExtResource("5_m0f0d")
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = -111.0
+offset_top = -74.0
+offset_right = 1296.0
+offset_bottom = 667.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fokku")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(576, 325.00003)

@@ -34,6 +34,7 @@ const crystal_hit_sfx = preload("res://Assets/SFX/sfx_crystal_hit_1.tscn")
 @export var impact_particles_crystal_1: PackedScene
 @export var multiplier_1: PackedScene
 @export var score_crystal_1: PackedScene
+@export var barriers: PackedScene
 
 
 
@@ -249,9 +250,13 @@ func spawn_multi_1() -> void:
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
 	get_parent().add_child(multi1)
 	buff_ids.append(multi1.get_instance_id())
+	var barrier := barriers.instantiate()
+	get_parent().add_child(barrier)
+	buff_ids.append(barrier.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	multi1.global_position = Vector2(screen_center)
+	barrier.global_position = Vector2(screen_center)
 	
 func spawn_score_crystal_1() -> void:
 	var crystal1 := score_crystal_1.instantiate()

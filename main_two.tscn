@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=18 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bjkjs1mv4op3x" path="res://mode_2_paddle_LR.tscn" id="5_xauyo"]
 [ext_resource type="PackedScene" uid="uid://bgwonp5ln5nay" path="res://ball.tscn" id="6_0wljb"]
 [ext_resource type="PackedScene" uid="uid://bxg7jeyx8lckr" path="res://mode_2_paddle_TB.tscn" id="6_pclk0"]
+[ext_resource type="PackedScene" uid="uid://dpb72xbb4ju5p" path="res://Buffs/barriers_1.tscn" id="7_33m0d"]
 [ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
 [ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
@@ -26,6 +27,7 @@ impact_particles_multiplier_1 = ExtResource("3_q6xn0")
 impact_particles_crystal_1 = ExtResource("4_fokku")
 multiplier_1 = ExtResource("11_wuyf0")
 score_crystal_1 = ExtResource("5_m0f0d")
+barriers = ExtResource("7_33m0d")
 
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color(0, 0, 0, 1)

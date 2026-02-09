@@ -5,7 +5,7 @@ const thunder_sfx = preload("res://Assets/SFX/sfx_thunder_2.tscn")
 @onready var lightning_anim: AnimatedSprite2D = $AnimatedSprite2D3
 @onready var spinning_pyramid_pink: AnimatedSprite2D = $AnimatedSprite2D
 @onready var spinning_pyramid_red: AnimatedSprite2D = $AnimatedSprite2D2
-@onready var barriers: Area2D = $Barriers
+#@onready var barriers: Area2D = $Barriers
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 signal ball_hit_multiplier_1(multiplier: Node)
 
@@ -19,7 +19,8 @@ func _ready() -> void:
 	collision_shape.disabled = true
 	
 func _process(_delta: float) -> void:
-	barriers.rotation_degrees += 3
+	pass
+	#barriers.rotation_degrees += 3
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):

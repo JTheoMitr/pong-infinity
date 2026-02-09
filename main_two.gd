@@ -26,6 +26,8 @@ const crystal_hit_sfx = preload("res://Assets/SFX/sfx_crystal_hit_1.tscn")
 @onready var bgnd_layer_2: Sprite2D = $Sprite2D2
 @onready var particles_root: Node2D = $Particles
 
+@onready var level_music: AudioStreamPlayer = $LevelMusic
+
 
 @export var impact_particles_scene: PackedScene
 @export var impact_particles_multiplier_1: PackedScene
@@ -304,3 +306,7 @@ func clear_all_buffs() -> void:
 
 func _on_crystal_timer_timeout() -> void:
 	spawn_score_crystal_1()
+
+
+func _on_level_music_finished() -> void:
+	level_music.play()

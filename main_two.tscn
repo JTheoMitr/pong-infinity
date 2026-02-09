@@ -99,4 +99,5 @@ autoplay = true
 wait_time = 5.0
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
+[connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]
 [connection signal="timeout" from="CrystalTimer" to="." method="_on_crystal_timer_timeout"]

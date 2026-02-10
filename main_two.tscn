@@ -90,7 +90,7 @@ rotation = -1.5707964
 process_mode = 3
 
 [node name="Multi1Timer" type="Timer" parent="."]
-wait_time = 15.0
+wait_time = 25.0
 
 [node name="LevelMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_0wljb")
@@ -98,7 +98,7 @@ volume_db = -11.0
 autoplay = true
 
 [node name="CrystalTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 3.0
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]

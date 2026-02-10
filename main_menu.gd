@@ -6,6 +6,9 @@ extends Node2D
 @onready var start_timer = $Timer
 @onready var button_1 = $CenterContainer/VBoxContainer/Button
 @onready var button_2 = $CenterContainer/VBoxContainer/Button2
+@onready var menu_music = $AudioStreamPlayer
+@onready var return_button = $ControlsPopup/ReturnButton
+@onready var controls_pop = $ControlsPopup
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 
@@ -28,7 +31,8 @@ func _on_button_pressed() -> void:
 	button_1.hide()
 	button_2.hide()
 	start_timer.start()
-
+	var tween := create_tween()
+	tween.tween_property(menu_music, "volume_db", -35.0, 5.0)
 
 func start_title_glow() -> void:
 	var tween := create_tween()
@@ -43,3 +47,16 @@ func start_title_glow() -> void:
 
 func _on_timer_timeout() -> void:
 	get_tree().change_scene_to_file("res://main_two.tscn")
+
+
+func _on_audio_stream_player_finished() -> void:
+	menu_music.play()
+
+
+func _on_button_2_pressed() -> void:
+	controls_pop.popup()
+	return_button.grab_focus()
+
+
+func _on_return_button_pressed() -> void:
+	controls_pop.hide()

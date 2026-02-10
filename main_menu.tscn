@@ -1,15 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=10 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
 [ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="2_jix8l"]
 [ext_resource type="AudioStream" uid="uid://jwyqtpo8r4hp" path="res://Assets/Music/DEFLECT_Menu_1.mp3" id="3_fu7sn"]
+[ext_resource type="Texture2D" uid="uid://c2v6pykkgv2al" path="res://Assets/Sprites/ps4_gamepad isolated.png" id="5_nlkkf"]
+[ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="6_qe12f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix8l"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qtwp"]
+bg_color = Color(0.42709383, 0.3164611, 0.7001076, 1)
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_7vrkn")
@@ -81,5 +86,97 @@ autoplay = true
 wait_time = 4.0
 one_shot = true
 
+[node name="ControlsPopup" type="Popup" parent="."]
+oversampling_override = 1.0
+mode = 3
+initial_position = 1
+size = Vector2i(800, 600)
+
+[node name="Panel" type="Panel" parent="ControlsPopup"]
+offset_left = -327.0
+offset_top = -51.0
+offset_right = 941.0
+offset_bottom = 678.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8qtwp")
+
+[node name="Sprite2D" type="Sprite2D" parent="ControlsPopup"]
+position = Vector2(396, 227)
+scale = Vector2(0.65, 0.65)
+texture = ExtResource("5_nlkkf")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 75.0
+offset_top = 177.0
+offset_right = 273.0
+offset_bottom = 214.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]Move Paddles ----"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 211.0
+offset_top = 256.0
+offset_right = 470.0
+offset_bottom = 394.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]|
+[center]|
+[center]Move Paddles"
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 4.0
+offset_top = 406.0
+offset_right = 793.0
+offset_bottom = 586.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "[center]Use the D-PAD or joysticks to move the paddles left, right, up, and down. 
+
+Use the shoulder buttons (R1 and L1) to rotate the paddles clockwise and clounter-clockwise."
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 376.0
+offset_top = 57.0
+offset_right = 635.0
+offset_bottom = 142.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]Rotate Paddles
+[center]|
+[center]|"
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 156.0
+offset_top = 57.0
+offset_right = 415.0
+offset_bottom = 142.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]Rotate Paddles
+[center]|
+[center]|"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 418.0
+offset_top = 235.0
+offset_right = 677.0
+offset_bottom = 373.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]---- Move Paddles"
+
+[node name="ReturnButton" type="Button" parent="ControlsPopup"]
+offset_left = 17.0
+offset_top = 11.0
+offset_right = 130.0
+offset_bottom = 49.0
+theme_override_fonts/font = ExtResource("6_qe12f")
+text = "Return"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="ControlsPopup/ReturnButton" to="." method="_on_return_button_pressed"]

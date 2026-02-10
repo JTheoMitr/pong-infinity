@@ -169,7 +169,7 @@ func game_over() -> void:
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
 	hud.show_score()
-	hud.show_start_message("Game Over - Click to Restart")
+	hud.show_start_message("Game Over")
 
 func _on_paddle_hit(paddle: Node) -> void:
 	var paddle_bonk = paddle_hit_sfx.instantiate()

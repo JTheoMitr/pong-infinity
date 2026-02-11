@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=19 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dpb72xbb4ju5p" path="res://Buffs/barriers_1.tscn" id="7_33m0d"]
 [ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
 [ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
+[ext_resource type="PackedScene" uid="uid://7a4ckkirany6" path="res://Buffs/fire_zone_1.tscn" id="8_l8clx"]
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
 [ext_resource type="AudioStream" uid="uid://dcnu7dd53hb8t" path="res://Assets/Music/DEFLECT_Lvl1.mp3" id="13_0wljb"]
 
@@ -28,6 +29,7 @@ impact_particles_crystal_1 = ExtResource("4_fokku")
 multiplier_1 = ExtResource("11_wuyf0")
 score_crystal_1 = ExtResource("5_m0f0d")
 barriers = ExtResource("7_33m0d")
+fire_zone = ExtResource("8_l8clx")
 
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color(0, 0, 0, 1)
@@ -100,6 +102,10 @@ autoplay = true
 [node name="CrystalTimer" type="Timer" parent="."]
 wait_time = 3.0
 
+[node name="FireTimer" type="Timer" parent="."]
+wait_time = 10.0
+
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]
 [connection signal="timeout" from="CrystalTimer" to="." method="_on_crystal_timer_timeout"]
+[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]

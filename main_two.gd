@@ -21,6 +21,7 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 
 @onready var multi1_timer: Timer = $Multi1Timer
 @onready var crystal1_timer: Timer = $CrystalTimer
+@onready var fire_timer: Timer = $FireTimer
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -36,6 +37,7 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @export var multiplier_1: PackedScene
 @export var score_crystal_1: PackedScene
 @export var barriers: PackedScene
+@export var fire_zone: PackedScene
 
 
 
@@ -135,8 +137,9 @@ func _on_start_button_pressed() -> void:
 		hud.hide_score()
 		ball.visible = true
 		reset_score()
-		multi1_timer.start()
+		#multi1_timer.start()
 		crystal1_timer.start()
+		fire_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
@@ -217,6 +220,9 @@ func _on_crystal_hit(_multi: Node) -> void:
 	# Spawn particles at impact
 	spawn_impact_particles_crystal1(ball.global_position)
 	
+func _on_fire_zone_entered() -> void:
+	pass #fire stuff
+	
 	
 func reset_score() -> void:
 	score = 0
@@ -271,6 +277,16 @@ func spawn_score_crystal_1() -> void:
 	var rndX = randf_range(50, screen_size.x - 50)
 	var rndY = randf_range(50, screen_size.y - 50)
 	crystal1.global_position = Vector2(rndX, rndY)
+	
+func spawn_fire_zone_1() -> void:
+	var fire_1 := fire_zone.instantiate()
+	fire_1.ball_on_fire.connect(_on_fire_zone_entered)
+	get_parent().add_child(fire_1)
+	buff_ids.append(fire_1.get_instance_id())
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	fire_1.global_position = Vector2(screen_center)
+
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
@@ -297,6 +313,7 @@ func _on_timer_timeout() -> void:
 func stop_all_timers() -> void:
 	multi1_timer.stop()
 	crystal1_timer.stop()
+	fire_timer.stop()
 	
 func clear_all_buffs() -> void:
 	for id in buff_ids:
@@ -319,3 +336,7 @@ func _on_crystal_timer_timeout() -> void:
 
 func _on_level_music_finished() -> void:
 	level_music.play()
+
+
+func _on_fire_timer_timeout() -> void:
+	spawn_fire_zone_1()

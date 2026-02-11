@@ -6,6 +6,7 @@ const paddle_hit_sfx = preload("res://Assets/SFX/sfx_paddle_hit_1.tscn")
 const multi_connect_sfx = preload("res://Assets/SFX/sfx_multi_1_connect.tscn")
 const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
 const crystal_hit_sfx = preload("res://Assets/SFX/sfx_crystal_hit_1.tscn")
+const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 
 
 @onready var ball: CharacterBody2D = $Ball
@@ -197,6 +198,9 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	score *= 2
 	var multi_1_bonk = multi_connect_sfx.instantiate()
 	get_parent().add_child(multi_1_bonk)
+	var score_pop = score_dbl_popup.instantiate()
+	
+	get_parent().add_child(score_pop)
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
 	print("multi hit")

@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://phswi0ch5tcn"]
+
+[ext_resource type="Script" uid="uid://cjfljal4i0rsk" path="res://Buffs/score_doubled_popup.gd" id="1_jcgr8"]
+[ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="1_w08h2"]
+
+[node name="ScoreDoubledPopup" type="CanvasLayer"]
+script = ExtResource("1_jcgr8")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -188.0
+offset_top = -30.0
+offset_right = 188.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("1_w08h2")
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "[center][rainbow][shake]Score Doubled"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -90,7 +90,7 @@ rotation = -1.5707964
 process_mode = 3
 
 [node name="Multi1Timer" type="Timer" parent="."]
-wait_time = 25.0
+wait_time = 10.0
 
 [node name="LevelMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_0wljb")

@@ -21,7 +21,8 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 
 @onready var multi1_timer: Timer = $Multi1Timer
 @onready var crystal1_timer: Timer = $CrystalTimer
-@onready var fire_timer: Timer = $FireTimer
+@onready var mine_timer: Timer = $MineTimer
+@onready var ball_fire_timer: Timer = $BallFireTimer
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -50,6 +51,7 @@ var fade_down: bool = true
 var score := 0
 var glow_time := 0.0
 var buff_ids: Array[int] = []
+var ball_is_on_fire: bool = false
 
 
 
@@ -140,7 +142,7 @@ func _on_start_button_pressed() -> void:
 		reset_score()
 		#multi1_timer.start()
 		crystal1_timer.start()
-		fire_timer.start()
+		mine_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
@@ -223,8 +225,11 @@ func _on_crystal_hit(_multi: Node) -> void:
 	spawn_impact_particles_crystal1(ball.global_position)
 	
 func _on_fire_zone_entered() -> void:
-	pass #fire stuff...boolean to trigger double points on hits, signal emitted to ball script for fireball anim, as well
-	
+	#fire stuff...boolean (ball_is_on_fire) to trigger double points on hits
+	ball_is_on_fire = true
+	ball_fire_timer.start()
+	#ball.method_that_shows_animation_until_a_timer_hides_it_again
+	#use ballfiretimer to give the fireball a limited window
 	
 func reset_score() -> void:
 	score = 0
@@ -324,7 +329,7 @@ func _on_timer_timeout() -> void:
 func stop_all_timers() -> void:
 	multi1_timer.stop()
 	crystal1_timer.stop()
-	fire_timer.stop()
+	mine_timer.stop()
 	
 func clear_all_buffs() -> void:
 	for id in buff_ids:
@@ -351,3 +356,7 @@ func _on_level_music_finished() -> void:
 
 func _on_fire_timer_timeout() -> void:
 	spawn_mine_1() #the mine needs to get spawned here, and then hitting the mine triggers the spawn_fire_zone method
+
+
+func _on_ball_fire_timer_timeout() -> void:
+	ball_is_on_fire = false

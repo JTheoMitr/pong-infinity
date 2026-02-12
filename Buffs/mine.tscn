@@ -2262,7 +2262,7 @@ script = ExtResource("1_pwmy7")
 scale = Vector2(0.15, 0.15)
 sprite_frames = SubResource("SpriteFrames_bgd4d")
 autoplay = "default"
-frame_progress = 0.69186574
+frame_progress = 0.76502436
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

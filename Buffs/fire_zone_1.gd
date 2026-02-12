@@ -8,6 +8,7 @@ func _process(_delta: float) -> void:
 func start_fade_out() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "self_modulate:a", 0.0, 2.5)
+	#this fade out does not seem to be working, try it on each anim individually
 	
 func _on_timer_timeout() -> void:
 	start_fade_out()

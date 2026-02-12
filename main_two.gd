@@ -228,6 +228,7 @@ func _on_fire_zone_entered() -> void:
 	#fire stuff...boolean (ball_is_on_fire) to trigger double points on hits
 	ball_is_on_fire = true
 	ball_fire_timer.start()
+	ball.enable_on_fire()
 	#ball.method_that_shows_animation_until_a_timer_hides_it_again
 	#use ballfiretimer to give the fireball a limited window
 	
@@ -360,3 +361,4 @@ func _on_fire_timer_timeout() -> void:
 
 func _on_ball_fire_timer_timeout() -> void:
 	ball_is_on_fire = false
+	#this times up with the ball timer to hide the fire animation

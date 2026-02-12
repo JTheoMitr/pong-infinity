@@ -2,11 +2,16 @@ extends CharacterBody2D
 
 @export var base_speed := 400.0
 
+@onready var fire_anim: AnimatedSprite2D = $FireAnimatedSprite2D
+@onready var fire_timer: Timer = $Timer
+
+
 var direction: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
 	reset()
+	fire_anim.hide()
 
 
 func launch() -> void:
@@ -27,6 +32,13 @@ func _physics_process(delta: float) -> void:
 	var collision := move_and_collide(velocity * delta)
 	if collision:
 		handle_collision(collision)
+		
+	#fire animation angle
+	fire_anim.rotation = lerp_angle(
+	fire_anim.rotation,
+	direction.angle(), #direction.angle() + PI,
+	20.0 * delta
+	)
 
 
 func handle_collision(collision: KinematicCollision2D) -> void:
@@ -51,3 +63,11 @@ func reset() -> void:
 	global_position = get_viewport_rect().size * 0.5
 	velocity = Vector2.ZERO
 	direction = Vector2.ZERO
+	
+func enable_on_fire() -> void:
+	fire_anim.show()
+	fire_timer.start()
+
+
+func _on_timer_timeout() -> void:
+	fire_anim.hide()

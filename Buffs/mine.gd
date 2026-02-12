@@ -1,5 +1,7 @@
 extends Area2D
 
+const mine_connect_sfx = preload("res://Assets/SFX/sfx_mine_1_connect.tscn")
+
 @onready var mine_anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var xplosion_anim: AnimatedSprite2D = $ExplosionAnim
 
@@ -18,6 +20,8 @@ func _on_body_entered(body: Node2D) -> void:
 		mine_anim.hide()
 		xplosion_anim.show()
 		xplosion_anim.play()
+		var explosion_sfx = mine_connect_sfx.instantiate()
+		get_parent().add_child(explosion_sfx)
 
 
 func _on_explosion_anim_animation_finished() -> void:

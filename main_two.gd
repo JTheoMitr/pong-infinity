@@ -211,6 +211,7 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	# Spawn particles at impact
 	spawn_impact_particles_multiplier1(ball.global_position)
 	
+	
 func _on_crystal_hit(_multi: Node) -> void:
 	score += 25
 	var crystal_1_bonk = crystal_hit_sfx.instantiate()
@@ -222,7 +223,7 @@ func _on_crystal_hit(_multi: Node) -> void:
 	spawn_impact_particles_crystal1(ball.global_position)
 	
 func _on_fire_zone_entered() -> void:
-	pass #fire stuff...does this need to be in the ball script?
+	pass #fire stuff...boolean to trigger double points on hits, signal emitted to ball script for fireball anim, as well
 	
 	
 func reset_score() -> void:

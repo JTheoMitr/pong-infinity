@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dksiau0ihnl3r"]
+
+[ext_resource type="AudioStream" uid="uid://bi7pwy4phci6e" path="res://Assets/SFX/EXPLDsgn_Explosions Debris Dirt Cement Gravel Scatter Medium 02_ESM_SG.wav" id="1_nwkbr"]
+[ext_resource type="Script" uid="uid://v8mh5g3aehrc" path="res://Assets/SFX/sfx_default.gd" id="2_40ane"]
+
+[node name="SFX_Mine_1_Connect" type="AudioStreamPlayer"]
+stream = ExtResource("1_nwkbr")
+volume_db = -3.0
+pitch_scale = 0.84
+autoplay = true
+script = ExtResource("2_40ane")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

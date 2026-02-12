@@ -38,6 +38,7 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @export var score_crystal_1: PackedScene
 @export var barriers: PackedScene
 @export var fire_zone: PackedScene
+@export var mine_1: PackedScene
 
 
 
@@ -221,7 +222,7 @@ func _on_crystal_hit(_multi: Node) -> void:
 	spawn_impact_particles_crystal1(ball.global_position)
 	
 func _on_fire_zone_entered() -> void:
-	pass #fire stuff
+	pass #fire stuff...does this need to be in the ball script?
 	
 	
 func reset_score() -> void:
@@ -281,11 +282,20 @@ func spawn_score_crystal_1() -> void:
 func spawn_fire_zone_1() -> void:
 	var fire_1 := fire_zone.instantiate()
 	fire_1.ball_on_fire.connect(_on_fire_zone_entered)
-	get_parent().add_child(fire_1)
+	get_parent().call_deferred("add_child", fire_1)
 	buff_ids.append(fire_1.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	fire_1.global_position = Vector2(screen_center)
+	
+func spawn_mine_1() -> void:
+	var mine_inst_1 := mine_1.instantiate()
+	mine_inst_1.mine_exploded.connect(spawn_fire_zone_1)
+	get_parent().add_child(mine_inst_1)
+	buff_ids.append(mine_inst_1.get_instance_id())
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	mine_inst_1.global_position = Vector2(screen_center)
 
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
@@ -339,4 +349,4 @@ func _on_level_music_finished() -> void:
 
 
 func _on_fire_timer_timeout() -> void:
-	spawn_fire_zone_1()
+	spawn_mine_1() #the mine needs to get spawned here, and then hitting the mine triggers the spawn_fire_zone method

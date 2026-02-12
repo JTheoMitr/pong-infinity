@@ -276,14 +276,14 @@ rotation = -3.1415925
 scale = Vector2(4.881634, 2.6460192)
 sprite_frames = SubResource("SpriteFrames_0mau0")
 autoplay = "default"
-frame_progress = 0.8989862
+frame_progress = 0.45105094
 
 [node name="FireAnim2" type="AnimatedSprite2D" parent="."]
 position = Vector2(115, 13)
 scale = Vector2(4.882, 2.646)
 sprite_frames = SubResource("SpriteFrames_0mau0")
 autoplay = "default"
-frame_progress = 0.46125
+frame_progress = 0.37843782
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 7.0
@@ -291,7 +291,7 @@ one_shot = true
 autostart = true
 
 [node name="Timer2" type="Timer" parent="."]
-wait_time = 8.5
+wait_time = 9.5
 one_shot = true
 autostart = true
 

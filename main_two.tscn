@@ -108,7 +108,7 @@ wait_time = 3.0
 wait_time = 10.0
 
 [node name="BallFireTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 7.0
 one_shot = true
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]

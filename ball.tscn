@@ -1873,11 +1873,12 @@ autoplay = "default"
 frame_progress = 0.6332278
 
 [node name="FireAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
 rotation = -6.2831855
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_nrgas")
 autoplay = "default"
-frame_progress = 0.08870837
+frame_progress = 0.8754597
 centered = false
 offset = Vector2(-720, -455)
 

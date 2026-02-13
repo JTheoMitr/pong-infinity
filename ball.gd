@@ -71,3 +71,4 @@ func enable_on_fire() -> void:
 
 func _on_timer_timeout() -> void:
 	fire_anim.hide()
+	print_debug("fire_disabled")

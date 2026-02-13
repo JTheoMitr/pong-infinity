@@ -202,25 +202,39 @@ func game_over() -> void:
 func _on_paddle_hit(paddle: Node) -> void:
 	var paddle_bonk = paddle_hit_sfx.instantiate()
 	get_parent().add_child(paddle_bonk)
-	score += 15
-	hud.update_score(score)
+	#score += 15
+	#hud.update_score(score)
 	ball.base_speed *= 1.01 #was 1.03
 	print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles(ball.global_position, hit_dir)
-
+	
+	if ball_is_on_fire:
+		score += 30
+	else:
+		score += 15
+	
+	hud.update_score(score)
+		
 func _on_corner_hit(paddle: Node) -> void:
 	var corner_bonk = corner_hit_sfx.instantiate()
 	get_parent().add_child(corner_bonk)
-	score += 5
-	hud.update_score(score)
+	
+	
 	ball.base_speed *= 1.01 #was 1.03
 	print("corner hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles(ball.global_position, hit_dir)
-
+	
+	if ball_is_on_fire:
+		score += 10
+	else:
+		score += 5
+	
+	hud.update_score(score)
+	
 func _on_multiplier_hit(_multi: Node) -> void:
 	trigger_zoom_punch(1.55, 0.75)
 	score *= 2

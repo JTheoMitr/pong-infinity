@@ -53,7 +53,10 @@ var glow_time := 0.0
 var buff_ids: Array[int] = []
 var ball_is_on_fire: bool = false
 
-
+# --- Camera Effects ---
+var shake_strength := 0.0
+var shake_decay := 5.0
+var original_cam_position := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -68,6 +71,8 @@ func _ready() -> void:
 	cam.position = screen_center
 	reset_positions(screen_center)
 	ball.visible = false
+	original_cam_position = cam.position
+
 	
 	await get_tree().create_timer(1.0).timeout
 	spawn_impact_particles(get_viewport_rect().size * 2.5, Vector2.RIGHT)
@@ -82,7 +87,21 @@ func _ready() -> void:
 	corner_bl.ball_hit_paddle.connect(_on_corner_hit)
 
 	
-	
+func _process(delta: float) -> void:
+	if shake_strength > 0.0:
+		var offset := Vector2(
+			randf_range(-1.0, 1.0),
+			randf_range(-1.0, 1.0)
+		) * shake_strength
+
+		cam.position = original_cam_position + offset
+
+		shake_strength = lerp(shake_strength, 0.0, shake_decay * delta)
+
+		if shake_strength < 0.5:
+			shake_strength = 0.0
+			cam.position = original_cam_position
+
 
 func reset_positions(screen_center: Vector2) -> void:
 	# Reset ball (CharacterBody2D)
@@ -175,6 +194,8 @@ func game_over() -> void:
 	#create method to clear all buffs as well
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
+	ball.disable_on_fire()
+	ball_is_on_fire = false
 	hud.show_score()
 	hud.show_start_message("Game Over")
 
@@ -291,6 +312,7 @@ func spawn_fire_zone_1() -> void:
 	fire_1.ball_on_fire.connect(_on_fire_zone_entered)
 	get_parent().call_deferred("add_child", fire_1)
 	buff_ids.append(fire_1.get_instance_id())
+	trigger_shake(12.0)
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	fire_1.global_position = Vector2(screen_center)
@@ -327,6 +349,9 @@ func spawn_impact_particles_crystal1(pos: Vector2) -> void:
 func _on_timer_timeout() -> void:
 	spawn_multi_1()
 	
+func trigger_shake(amount: float) -> void:
+	shake_strength = amount
+
 func stop_all_timers() -> void:
 	multi1_timer.stop()
 	crystal1_timer.stop()

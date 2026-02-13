@@ -9,6 +9,8 @@ extends CharacterBody2D
 var direction: Vector2 = Vector2.ZERO
 
 
+
+
 func _ready() -> void:
 	reset()
 	fire_anim.hide()
@@ -67,8 +69,10 @@ func reset() -> void:
 func enable_on_fire() -> void:
 	fire_anim.show()
 	fire_timer.start()
-
-
-func _on_timer_timeout() -> void:
+	
+func disable_on_fire() -> void:
 	fire_anim.hide()
 	print_debug("fire_disabled")
+
+func _on_timer_timeout() -> void:
+	disable_on_fire()

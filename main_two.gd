@@ -222,7 +222,7 @@ func _on_corner_hit(paddle: Node) -> void:
 	spawn_impact_particles(ball.global_position, hit_dir)
 
 func _on_multiplier_hit(_multi: Node) -> void:
-	trigger_zoom_punch(0.85, 0.3)
+	trigger_zoom_punch(1.55, 0.75)
 	score *= 2
 	var multi_1_bonk = multi_connect_sfx.instantiate()
 	get_parent().add_child(multi_1_bonk)

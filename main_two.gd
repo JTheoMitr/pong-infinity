@@ -159,9 +159,9 @@ func _on_start_button_pressed() -> void:
 		hud.hide_score()
 		ball.visible = true
 		reset_score()
-		#multi1_timer.start()
+		multi1_timer.start()
 		crystal1_timer.start()
-		mine_timer.start()
+		#mine_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
@@ -222,6 +222,7 @@ func _on_corner_hit(paddle: Node) -> void:
 	spawn_impact_particles(ball.global_position, hit_dir)
 
 func _on_multiplier_hit(_multi: Node) -> void:
+	trigger_zoom_punch(0.85, 0.3)
 	score *= 2
 	var multi_1_bonk = multi_connect_sfx.instantiate()
 	get_parent().add_child(multi_1_bonk)
@@ -259,6 +260,16 @@ func reset_score() -> void:
 	
 func is_game_active() -> bool:
 	return game_started
+
+func trigger_zoom_punch(scale_amount: float, duration: float) -> void:
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+
+	var target_zoom := Vector2.ONE * scale_amount
+
+	tween.tween_property(cam, "zoom", target_zoom, duration * 0.5)
+	tween.tween_property(cam, "zoom", Vector2.ONE, duration * 0.5)
 
 
 		
@@ -313,6 +324,7 @@ func spawn_fire_zone_1() -> void:
 	get_parent().call_deferred("add_child", fire_1)
 	buff_ids.append(fire_1.get_instance_id())
 	trigger_shake(12.0)
+	#trigger a zoom punch here too?
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	fire_1.global_position = Vector2(screen_center)

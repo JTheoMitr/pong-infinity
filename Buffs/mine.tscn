@@ -1,4 +1,4 @@
-[gd_scene load_steps=504 format=3 uid="uid://b0bgxwyonsha3"]
+[gd_scene load_steps=505 format=3 uid="uid://b0bgxwyonsha3"]
 
 [ext_resource type="Script" uid="uid://bssbbx083kxi5" path="res://Buffs/mine.gd" id="1_pwmy7"]
 [ext_resource type="Texture2D" uid="uid://wyy5rxkarba" path="res://Assets/Anims/mine_anim/frame_000_delay-0.02s.png" id="1_vbgq0"]
@@ -420,6 +420,7 @@
 [ext_resource type="Texture2D" uid="uid://j1kknjnq6vhi" path="res://Assets/Anims/mine_anim/frame_416_delay-0.02s.png" id="417_06oa7"]
 [ext_resource type="Texture2D" uid="uid://cbakskbwbp2qr" path="res://Assets/Anims/mine_anim/frame_417_delay-0.02s.png" id="418_li8g0"]
 [ext_resource type="Texture2D" uid="uid://bwc7ctorfgrvl" path="res://Assets/Anims/xplosion_spritesheet.png" id="420_546fd"]
+[ext_resource type="Texture2D" uid="uid://dtoi45ahteosc" path="res://Assets/Sprites/mine_light.png" id="421_r478k"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_bgd4d"]
 animations = [{
@@ -2276,5 +2277,15 @@ sprite_frames = SubResource("SpriteFrames_ho5fh")
 frame = 79
 frame_progress = 1.0
 
+[node name="Light" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.59607846)
+position = Vector2(0, -11)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("421_r478k")
+
+[node name="LightTimer" type="Timer" parent="."]
+autostart = true
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="ExplosionAnim" to="." method="_on_explosion_anim_animation_finished"]
+[connection signal="timeout" from="LightTimer" to="." method="_on_light_timer_timeout"]

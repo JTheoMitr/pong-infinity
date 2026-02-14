@@ -160,9 +160,9 @@ func _on_start_button_pressed() -> void:
 		hud.hide_score()
 		ball.visible = true
 		reset_score()
-		multi1_timer.start()
+		#multi1_timer.start()
 		crystal1_timer.start()
-		#mine_timer.start()
+		mine_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
@@ -351,6 +351,7 @@ func spawn_fire_zone_1() -> void:
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	fire_1.global_position = Vector2(screen_center)
+	mine_timer.start()
 	
 func spawn_mine_1() -> void:
 	var mine_inst_1 := mine_1.instantiate()
@@ -360,6 +361,7 @@ func spawn_mine_1() -> void:
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	mine_inst_1.global_position = Vector2(screen_center)
+	multi1_timer.start()
 
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:

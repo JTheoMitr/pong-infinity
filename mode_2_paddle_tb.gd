@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 	var screen := get_viewport_rect().size
 
 	# Clamp to ceiling/floor (cannot reach walls)
-	new_x = clamp(new_x, edge_offset, screen.x - edge_offset)
+	new_x = clamp(new_x, 170, screen.x - 170) #was: clamp(new_x, edge_offset, screen.x - edge_offset)
 	position.x = new_x
 
 	# Lock Y to ceiling/floor

@@ -51,6 +51,7 @@ var fade_down: bool = true
 var score := 0
 var glow_time := 0.0
 var buff_ids: Array[int] = []
+var barrier_id: int = 0
 var ball_is_on_fire: bool = false
 
 # --- Camera Effects ---
@@ -236,7 +237,7 @@ func _on_corner_hit(paddle: Node) -> void:
 	hud.update_score(score)
 	
 func _on_multiplier_hit(_multi: Node) -> void:
-	trigger_zoom_punch(1.55, 0.75)
+	trigger_zoom_punch(1.15, 1.05)
 	score *= 2
 	var multi_1_bonk = multi_connect_sfx.instantiate()
 	get_parent().add_child(multi_1_bonk)
@@ -248,6 +249,12 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	print("multi hit")
 	# Spawn particles at impact
 	spawn_impact_particles_multiplier1(ball.global_position)
+	for id in buff_ids:
+		if id == barrier_id:
+			var node := instance_from_id(id)
+			if node:
+				node.queue_free()
+			
 	
 	
 func _on_crystal_hit(_multi: Node) -> void:
@@ -317,6 +324,8 @@ func spawn_multi_1() -> void:
 	var barrier := barriers.instantiate()
 	get_parent().add_child(barrier)
 	buff_ids.append(barrier.get_instance_id())
+	barrier_id = barrier.get_instance_id()
+	print_debug(barrier.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	multi1.global_position = Vector2(screen_center)

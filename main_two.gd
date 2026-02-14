@@ -181,12 +181,11 @@ func countdown_and_start() -> void:
 	start_game()
 	
 func start_game() -> void:
-	ball.base_speed = 400.0
+	ball.base_speed = 300.0
 	game_started = true
 	start_pressed = false
 	ball.launch()
-	await get_tree().create_timer(20.0).timeout
-	spawn_mine_1()
+	mine_timer.start()
 
 
 func game_over() -> void:
@@ -208,7 +207,7 @@ func _on_paddle_hit(paddle: Node) -> void:
 	get_parent().add_child(paddle_bonk)
 	#score += 15
 	#hud.update_score(score)
-	ball.base_speed *= 1.01 #was 1.03
+	ball.base_speed *= 1.005 #was 1.03
 	print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
@@ -424,3 +423,7 @@ func _on_level_music_finished() -> void:
 func _on_ball_fire_timer_timeout() -> void:
 	ball_is_on_fire = false
 	#this times up with the ball timer to hide the fire animation
+
+
+func _on_mine_timer_timeout() -> void:
+	spawn_mine_1()

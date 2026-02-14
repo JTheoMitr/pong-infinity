@@ -106,7 +106,7 @@ autoplay = true
 wait_time = 3.0
 
 [node name="MineTimer" type="Timer" parent="."]
-wait_time = 35.0
+wait_time = 15.0
 one_shot = true
 
 [node name="BallFireTimer" type="Timer" parent="."]
@@ -116,5 +116,5 @@ one_shot = true
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]
 [connection signal="timeout" from="CrystalTimer" to="." method="_on_crystal_timer_timeout"]
-[connection signal="timeout" from="MineTimer" to="." method="_on_fire_timer_timeout"]
+[connection signal="timeout" from="MineTimer" to="." method="_on_mine_timer_timeout"]
 [connection signal="timeout" from="BallFireTimer" to="." method="_on_ball_fire_timer_timeout"]

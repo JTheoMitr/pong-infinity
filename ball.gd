@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var base_speed := 400.0
+@export var base_speed := 300.0
 
 @onready var fire_anim: AnimatedSprite2D = $FireAnimatedSprite2D
 @onready var fire_timer: Timer = $Timer

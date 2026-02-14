@@ -1,5 +1,8 @@
 extends Area2D
 
+@onready var fire_anim_1: AnimatedSprite2D = $FireAnim
+@onready var fire_anim_2: AnimatedSprite2D = $FireAnim2
+
 signal ball_on_fire
 
 func _process(_delta: float) -> void:
@@ -7,7 +10,9 @@ func _process(_delta: float) -> void:
 	
 func start_fade_out() -> void:
 	var tween := create_tween()
+	var tween2 := create_tween()
 	tween.tween_property(self, "self_modulate:a", 0.0, 2.5)
+	tween2.tween_property(self, "self_modulate:a", 0.0, 2.5)
 	#this fade out does not seem to be working, try it on each anim individually
 	
 func _on_timer_timeout() -> void:

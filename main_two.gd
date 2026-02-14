@@ -77,7 +77,8 @@ func _ready() -> void:
 	
 	await get_tree().create_timer(1.0).timeout
 	spawn_impact_particles(get_viewport_rect().size * 2.5, Vector2.RIGHT)
-	
+	spawn_impact_particles_crystal1(get_viewport_rect().size * 2.5)
+	spawn_impact_particles_multiplier1(get_viewport_rect().size * 2.5)
 	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
@@ -162,7 +163,7 @@ func _on_start_button_pressed() -> void:
 		reset_score()
 		#multi1_timer.start()
 		crystal1_timer.start()
-		mine_timer.start()
+		#mine_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
@@ -184,6 +185,8 @@ func start_game() -> void:
 	game_started = true
 	start_pressed = false
 	ball.launch()
+	await get_tree().create_timer(20.0).timeout
+	spawn_mine_1()
 
 
 func game_over() -> void:
@@ -330,6 +333,7 @@ func spawn_multi_1() -> void:
 	var screen_center := screen_size * 0.5
 	multi1.global_position = Vector2(screen_center)
 	barrier.global_position = Vector2(screen_center)
+	mine_timer.start()
 	
 func spawn_score_crystal_1() -> void:
 	var crystal1 := score_crystal_1.instantiate()
@@ -351,7 +355,7 @@ func spawn_fire_zone_1() -> void:
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	fire_1.global_position = Vector2(screen_center)
-	mine_timer.start()
+	
 	
 func spawn_mine_1() -> void:
 	var mine_inst_1 := mine_1.instantiate()
@@ -415,10 +419,6 @@ func _on_crystal_timer_timeout() -> void:
 
 func _on_level_music_finished() -> void:
 	level_music.play()
-
-
-func _on_fire_timer_timeout() -> void:
-	spawn_mine_1() #the mine needs to get spawned here, and then hitting the mine triggers the spawn_fire_zone method
 
 
 func _on_ball_fire_timer_timeout() -> void:

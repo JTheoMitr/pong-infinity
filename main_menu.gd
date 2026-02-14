@@ -32,7 +32,7 @@ func _on_button_pressed() -> void:
 	button_2.hide()
 	start_timer.start()
 	var tween := create_tween()
-	tween.tween_property(menu_music, "volume_db", -35.0, 5.0)
+	tween.tween_property(menu_music, "volume_db", -50.0, 5.0)
 
 func start_title_glow() -> void:
 	var tween := create_tween()

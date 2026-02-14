@@ -94,7 +94,7 @@ rotation = -1.5707964
 process_mode = 3
 
 [node name="Multi1Timer" type="Timer" parent="."]
-wait_time = 20.0
+wait_time = 35.0
 one_shot = true
 
 [node name="LevelMusic" type="AudioStreamPlayer" parent="."]
@@ -106,7 +106,7 @@ autoplay = true
 wait_time = 3.0
 
 [node name="MineTimer" type="Timer" parent="."]
-wait_time = 20.0
+wait_time = 35.0
 one_shot = true
 
 [node name="BallFireTimer" type="Timer" parent="."]

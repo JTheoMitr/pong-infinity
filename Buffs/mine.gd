@@ -40,3 +40,15 @@ func _on_light_timer_timeout() -> void:
 		light.visible = true
 	else:
 		light.visible = false
+		
+func start_fade_out() -> void:
+	var tween := create_tween()
+	tween.tween_property(mine_anim, "self_modulate:a", 0.0, 1.5)
+
+
+func _on_fade_timer_timeout() -> void:
+	start_fade_out()
+
+
+func _on_end_timer_timeout() -> void:
+	self.queue_free()

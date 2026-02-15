@@ -2935,10 +2935,9 @@ autostart = true
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -200)
-scale = Vector2(0.19, 0.19)
+scale = Vector2(0.185, 0.185)
 sprite_frames = SubResource("SpriteFrames_4vik4")
 autoplay = "default"
-frame_progress = 0.31129184
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="ExplosionAnim" to="." method="_on_explosion_anim_animation_finished"]

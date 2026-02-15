@@ -26,7 +26,7 @@ func _ready() -> void:
 	
 func _process(_delta: float) -> void:
 	if dropping:
-		if drop_anim.position.y < 0:
+		if drop_anim.position.y < -8:
 			drop_anim.position.y += 3
 		else:
 			drop_anim.queue_free()

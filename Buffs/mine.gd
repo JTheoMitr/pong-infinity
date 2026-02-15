@@ -7,14 +7,35 @@ const mine_connect_sfx = preload("res://Assets/SFX/sfx_mine_1_connect.tscn")
 @onready var mine_field: CollisionShape2D = $CollisionShape2D
 @onready var light: Sprite2D = $Light
 @onready var light_timer: Timer = $LightTimer
+@onready var drop_anim: AnimatedSprite2D = $AnimatedSprite2D2
 
 signal mine_exploded
+
+var dropping: bool = true
 
 func _ready() -> void:
 	xplosion_anim.frame = 0
 	xplosion_anim.stop()
 	xplosion_anim.hide()
-	mine_field.disabled = false
+	mine_anim.hide()
+	light.hide()
+	mine_field.disabled = true
+	drop_anim.frame = 80
+	drop_anim.position.y = -300
+
+	
+func _process(_delta: float) -> void:
+	if dropping:
+		if drop_anim.position.y < 0:
+			drop_anim.position.y += 3
+		else:
+			drop_anim.queue_free()
+			print_debug("drop_stop")
+			dropping = false
+			mine_anim.show()
+			light_timer.start()
+			mine_field.disabled = false
+			
 
 
 func _on_body_entered(body: Node2D) -> void:

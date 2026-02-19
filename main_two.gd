@@ -22,7 +22,9 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @onready var multi1_timer: Timer = $Multi1Timer
 @onready var crystal1_timer: Timer = $CrystalTimer
 @onready var mine_timer: Timer = $MineTimer
+@onready var ice_mine_timer: Timer = $IceMineTimer
 @onready var ball_fire_timer: Timer = $BallFireTimer
+@onready var ball_ice_timer: Timer = $BallIceTimer
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -40,7 +42,8 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @export var barriers: PackedScene
 @export var fire_zone: PackedScene
 @export var mine_1: PackedScene
-
+@export var ice_zone: PackedScene
+@export var ice_mine_1: PackedScene
 
 
 var game_started: bool = false
@@ -53,6 +56,7 @@ var glow_time := 0.0
 var buff_ids: Array[int] = []
 var barrier_id: int = 0
 var ball_is_on_fire: bool = false
+var ball_is_frozen: bool = false
 
 # --- Camera Effects ---
 var shake_strength := 0.0
@@ -188,6 +192,7 @@ func start_game() -> void:
 	mine_timer.start()
 
 
+
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
@@ -277,6 +282,11 @@ func _on_fire_zone_entered() -> void:
 	#ball.method_that_shows_animation_until_a_timer_hides_it_again
 	#use ballfiretimer to give the fireball a limited window
 	
+func _on_ice_zone_entered() -> void:
+	ball_is_frozen = true
+	ball_ice_timer.start()
+	ball.enable_ice_cube()
+	
 func reset_score() -> void:
 	score = 0
 	hud.update_score(score)
@@ -333,6 +343,7 @@ func spawn_multi_1() -> void:
 	multi1.global_position = Vector2(screen_center)
 	barrier.global_position = Vector2(screen_center)
 	mine_timer.start()
+	#work out ice_mine_timer and where it fits in with multi1 and minetimer
 	
 func spawn_score_crystal_1() -> void:
 	var crystal1 := score_crystal_1.instantiate()
@@ -355,6 +366,17 @@ func spawn_fire_zone_1() -> void:
 	var screen_center := screen_size * 0.5
 	fire_1.global_position = Vector2(screen_center)
 	
+func spawn_ice_zone_1() -> void:
+	var ice_1 := ice_zone.instantiate()
+	ice_1.ball_on_ice.connect(_on_ice_zone_entered)
+	get_parent().call_deferred("add_child", ice_1)
+	buff_ids.append(ice_1.get_instance_id())
+	trigger_shake(12.0)
+	#trigger a zoom punch here too?
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	ice_1.global_position = Vector2(screen_center)
+	
 	
 func spawn_mine_1() -> void:
 	var mine_inst_1 := mine_1.instantiate()
@@ -364,6 +386,16 @@ func spawn_mine_1() -> void:
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	mine_inst_1.global_position = Vector2(screen_center)
+	multi1_timer.start()
+	
+func spawn_ice_mine_1() -> void:
+	var ice_mine_inst_1 := ice_mine_1.instantiate()
+	ice_mine_inst_1.mine_exploded.connect(spawn_ice_zone_1)
+	get_parent().add_child(ice_mine_inst_1)
+	buff_ids.append(ice_mine_inst_1.get_instance_id())
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	ice_mine_inst_1.global_position = Vector2(screen_center)
 	multi1_timer.start()
 
 
@@ -396,6 +428,8 @@ func stop_all_timers() -> void:
 	multi1_timer.stop()
 	crystal1_timer.stop()
 	mine_timer.stop()
+	ice_mine_timer.stop()
+	
 	
 func clear_all_buffs() -> void:
 	for id in buff_ids:

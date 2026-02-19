@@ -22,6 +22,7 @@ func _ready() -> void:
 	mine_field.disabled = true
 	drop_anim.frame = 80
 	drop_anim.position.y = -300
+	mine_anim.frame = 209
 
 	
 func _process(_delta: float) -> void:

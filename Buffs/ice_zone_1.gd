@@ -1,0 +1,27 @@
+extends Area2D
+
+@onready var ice_anim_1: AnimatedSprite2D = $IceAnim
+@onready var ice_anim_2: AnimatedSprite2D = $IceAnim2
+
+signal ball_on_ice
+
+func _process(_delta: float) -> void:
+	self.rotation_degrees += 2
+	
+func start_fade_out() -> void:
+	var tween := create_tween()
+	var tween2 := create_tween()
+	tween.tween_property(ice_anim_1, "self_modulate:a", 0.0, 2.5)
+	tween2.tween_property(ice_anim_2, "self_modulate:a", 0.0, 2.5)
+	#this fade out does not seem to be working, try it on each anim individually
+	
+func _on_timer_timeout() -> void:
+	start_fade_out()
+	
+func _on_timer_2_timeout() -> void:
+	self.queue_free()
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group("ball"):
+		emit_signal("ball_on_ice")
+		print_debug("ONICE")

@@ -3,7 +3,9 @@ extends CharacterBody2D
 @export var base_speed := 300.0
 
 @onready var fire_anim: AnimatedSprite2D = $FireAnimatedSprite2D
+@onready var ice_anim: AnimatedSprite2D = $IceAnimatedSprite2D2
 @onready var fire_timer: Timer = $Timer
+@onready var ice_timer: Timer = $Timer2
 
 
 var direction: Vector2 = Vector2.ZERO
@@ -14,6 +16,7 @@ var direction: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	reset()
 	fire_anim.hide()
+	ice_anim.hide()
 
 
 func launch() -> void:
@@ -76,3 +79,14 @@ func disable_on_fire() -> void:
 
 func _on_timer_timeout() -> void:
 	disable_on_fire()
+	
+func enable_ice_cube() -> void:
+	ice_anim.show()
+	ice_timer.start()
+	
+func disable_ice_cube() -> void:
+	ice_anim.hide()
+	print_debug("ice_cube_disabled")
+
+func _on_timer_2_timeout() -> void:
+	disable_ice_cube()

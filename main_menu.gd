@@ -9,6 +9,12 @@ extends Node2D
 @onready var menu_music = $AudioStreamPlayer
 @onready var return_button = $ControlsPopup/ReturnButton
 @onready var controls_pop = $ControlsPopup
+@onready var cyborg_head = $AnimatedSprite2D
+@onready var difficulty_select = $CenterContainer/DifficultySelect
+@onready var v_box_1 = $CenterContainer/VBoxContainer
+@onready var easy_button = $CenterContainer/DifficultySelect/HBoxContainer/Button
+@onready var normal_button = $CenterContainer/DifficultySelect/HBoxContainer/Button2
+@onready var hard_button = $CenterContainer/DifficultySelect/HBoxContainer/Button3
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 
@@ -23,16 +29,15 @@ func _process(_delta: float) -> void:
 func _ready() -> void:
 	start_button.grab_focus()
 	start_title_glow()
+	cyborg_head.play("normal")
+	v_box_1.show()
+	difficulty_select.hide()
+	
 
 func _on_button_pressed() -> void:
-	var clicked = ButtonClick.instantiate()
-	get_parent().add_child(clicked)
-	panel_sliding = true
-	button_1.hide()
-	button_2.hide()
-	start_timer.start()
-	var tween := create_tween()
-	tween.tween_property(menu_music, "volume_db", -50.0, 5.0)
+	v_box_1.hide()
+	difficulty_select.show()
+	normal_button.grab_focus()
 
 func start_title_glow() -> void:
 	var tween := create_tween()
@@ -60,3 +65,38 @@ func _on_button_2_pressed() -> void:
 
 func _on_return_button_pressed() -> void:
 	controls_pop.hide()
+	
+func _initiate_visor() -> void:
+	var clicked = ButtonClick.instantiate()
+	get_parent().add_child(clicked)
+	panel_sliding = true
+	button_1.hide()
+	button_2.hide()
+	start_timer.start()
+	var tween := create_tween()
+	tween.tween_property(menu_music, "volume_db", -50.0, 5.0)
+
+
+func _on_button_focus_entered() -> void:
+	cyborg_head.play("easy")
+	#these buttons will emit the signal that sets base diffulty serttings (ball base speed, enemy spawn times, etc)
+
+
+func _on_button_2_focus_entered() -> void:
+	cyborg_head.play("normal")
+
+
+func _on_button_3_focus_entered() -> void:
+	cyborg_head.play("hard")
+
+
+func _on_easybutton_pressed() -> void:
+	_initiate_visor()
+
+
+func _on_normalbutton_pressed() -> void:
+	_initiate_visor()
+
+
+func _on_hardbutton_pressed() -> void:
+	_initiate_visor()

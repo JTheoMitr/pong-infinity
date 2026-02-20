@@ -110,7 +110,7 @@ autoplay = true
 wait_time = 3.0
 
 [node name="MineTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 25.0
 one_shot = true
 
 [node name="BallFireTimer" type="Timer" parent="."]
@@ -130,3 +130,4 @@ one_shot = true
 [connection signal="timeout" from="CrystalTimer" to="." method="_on_crystal_timer_timeout"]
 [connection signal="timeout" from="MineTimer" to="." method="_on_mine_timer_timeout"]
 [connection signal="timeout" from="BallFireTimer" to="." method="_on_ball_fire_timer_timeout"]
+[connection signal="timeout" from="IceMineTimer" to="." method="_on_ice_mine_timer_timeout"]

@@ -417,9 +417,9 @@
 [ext_resource type="Texture2D" uid="uid://crtflxbq36obd" path="res://Assets/Anims/icemine-anim-spin/frame_413_delay-0.02s.png" id="415_u3wmq"]
 [ext_resource type="Texture2D" uid="uid://bsx2f64ik4ifh" path="res://Assets/Anims/icemine-anim-spin/frame_414_delay-0.02s.png" id="416_jcmx2"]
 [ext_resource type="Texture2D" uid="uid://1twfwrhcsgnw" path="res://Assets/Anims/icemine-anim-spin/frame_415_delay-0.02s.png" id="417_c50qe"]
+[ext_resource type="Texture2D" uid="uid://da8xcw8sercae" path="res://Assets/Sprites/ice_mine_light.png" id="419_ggpv4"]
 [ext_resource type="Texture2D" uid="uid://bwc7ctorfgrvl" path="res://Assets/Anims/xplosion_spritesheet.png" id="420_uu2i2"]
 [ext_resource type="Texture2D" uid="uid://cxw64fhfeibpu" path="res://Assets/Anims/icemine-anim-flip/frame_000_delay-0.02s.png" id="420_vacjw"]
-[ext_resource type="Texture2D" uid="uid://dtoi45ahteosc" path="res://Assets/Sprites/mine_light.png" id="421_dlywa"]
 [ext_resource type="Texture2D" uid="uid://dkh7vftvc7fx6" path="res://Assets/Anims/icemine-anim-flip/frame_001_delay-0.02s.png" id="421_u6le7"]
 [ext_resource type="Texture2D" uid="uid://cjdnq51is0tb3" path="res://Assets/Anims/icemine-anim-flip/frame_002_delay-0.02s.png" id="422_0herd"]
 [ext_resource type="Texture2D" uid="uid://17rpj2bxh3sq" path="res://Assets/Anims/icemine-anim-flip/frame_003_delay-0.02s.png" id="423_dnpyk"]
@@ -2960,10 +2960,10 @@ frame_progress = 1.0
 
 [node name="Light" type="Sprite2D" parent="."]
 visible = false
-self_modulate = Color(0.09411765, 0, 1, 0.59607846)
+self_modulate = Color(1, 1, 1, 0.59607846)
 position = Vector2(0, -11)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("421_dlywa")
+texture = ExtResource("419_ggpv4")
 
 [node name="LightTimer" type="Timer" parent="."]
 wait_time = 0.5

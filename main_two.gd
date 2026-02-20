@@ -166,7 +166,7 @@ func _on_start_button_pressed() -> void:
 		ball.visible = true
 		reset_score()
 		#multi1_timer.start()
-		crystal1_timer.start()
+		#crystal1_timer.start()
 		#mine_timer.start()
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
@@ -185,11 +185,13 @@ func countdown_and_start() -> void:
 	start_game()
 	
 func start_game() -> void:
-	ball.base_speed = 300.0
+	ball.base_speed = 390.0
 	game_started = true
 	start_pressed = false
 	ball.launch()
 	mine_timer.start()
+	crystal1_timer.start()
+	#ice_mine_timer.start()
 
 
 
@@ -286,6 +288,7 @@ func _on_ice_zone_entered() -> void:
 	ball_is_frozen = true
 	ball_ice_timer.start()
 	ball.enable_ice_cube()
+	ball.base_speed *= .90
 	
 func reset_score() -> void:
 	score = 0
@@ -342,7 +345,7 @@ func spawn_multi_1() -> void:
 	var screen_center := screen_size * 0.5
 	multi1.global_position = Vector2(screen_center)
 	barrier.global_position = Vector2(screen_center)
-	mine_timer.start()
+	ice_mine_timer.start()
 	#work out ice_mine_timer and where it fits in with multi1 and minetimer
 	
 func spawn_score_crystal_1() -> void:
@@ -396,7 +399,7 @@ func spawn_ice_mine_1() -> void:
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	ice_mine_inst_1.global_position = Vector2(screen_center)
-	multi1_timer.start()
+	mine_timer.start()
 
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
@@ -461,3 +464,7 @@ func _on_ball_fire_timer_timeout() -> void:
 
 func _on_mine_timer_timeout() -> void:
 	spawn_mine_1()
+
+
+func _on_ice_mine_timer_timeout() -> void:
+	spawn_ice_mine_1()

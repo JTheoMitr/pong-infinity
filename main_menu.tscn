@@ -1,14 +1,19 @@
-[gd_scene load_steps=30 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=33 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
 [ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="2_jix8l"]
+[ext_resource type="Texture2D" uid="uid://bidghjagw4l5b" path="res://Assets/Sprites/retro_geo_bgnd_cyberpunk.jpg" id="3_dy7ct"]
 [ext_resource type="AudioStream" uid="uid://jwyqtpo8r4hp" path="res://Assets/Music/DEFLECT_Menu_1.mp3" id="3_fu7sn"]
 [ext_resource type="Texture2D" uid="uid://c2v6pykkgv2al" path="res://Assets/Sprites/ps4_gamepad isolated.png" id="5_nlkkf"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="6_qe12f"]
+[ext_resource type="Texture2D" uid="uid://d050wumnjgq1t" path="res://Assets/Sprites/pixel_wires_hanging_1.png" id="7_8qtwp"]
 [ext_resource type="Texture2D" uid="uid://hjm4k5372ddo" path="res://Assets/Sprites/difficulty_face_set_actions_male_all.png" id="7_qe12f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix8l"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dy7ct"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
@@ -213,19 +218,34 @@ rotation = 1.5707964
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_jix8l")
 
+[node name="Panel3" type="Panel" parent="."]
+offset_left = -148.0
+offset_top = -43.0
+offset_right = 1282.0
+offset_bottom = 781.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dy7ct")
+
+[node name="CityBgnd" type="Sprite2D" parent="."]
+self_modulate = Color(0.34407586, 0.3440757, 0.34407565, 1)
+position = Vector2(528, 617)
+scale = Vector2(0.994873, 1.1946614)
+texture = ExtResource("3_dy7ct")
+
 [node name="Panel" type="Panel" parent="."]
-offset_right = 1152.0
-offset_bottom = 668.0
+offset_left = 487.0
+offset_top = 225.0
+offset_right = 660.0
+offset_bottom = 267.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7vrkn")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 custom_minimum_size = Vector2(300, 200)
 offset_left = 226.0
-offset_top = 400.0
+offset_top = 440.0
 offset_right = 926.0
-offset_bottom = 600.0
+offset_bottom = 640.0
 theme_override_fonts/normal_font = ExtResource("2_7vrkn")
-theme_override_font_sizes/normal_font_size = 151
+theme_override_font_sizes/normal_font_size = 119
 bbcode_enabled = true
 text = "[center]PAHNGTU"
 
@@ -237,9 +257,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 1.0
-offset_top = 453.0
+offset_top = 480.0
 offset_right = 1152.0
-offset_bottom = 636.0
+offset_bottom = 664.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -391,8 +411,13 @@ offset_bottom = 49.0
 theme_override_fonts/font = ExtResource("6_qe12f")
 text = "Return"
 
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(580, 127)
+scale = Vector2(3, 3)
+texture = ExtResource("7_8qtwp")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(575, 169)
+position = Vector2(575, 200)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_w44g7")
 animation = &"hard"

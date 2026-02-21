@@ -3,6 +3,7 @@ extends Node2D
 @onready var start_button = $CenterContainer/VBoxContainer/Button
 @onready var title = $RichTextLabel
 @onready var panel = $Panel
+@onready var slide_panel = $Panel3
 @onready var start_timer = $Timer
 @onready var button_1 = $CenterContainer/VBoxContainer/Button
 @onready var button_2 = $CenterContainer/VBoxContainer/Button2
@@ -15,15 +16,36 @@ extends Node2D
 @onready var easy_button = $CenterContainer/DifficultySelect/HBoxContainer/Button
 @onready var normal_button = $CenterContainer/DifficultySelect/HBoxContainer/Button2
 @onready var hard_button = $CenterContainer/DifficultySelect/HBoxContainer/Button3
+@onready var bgnd = $CityBgnd
+@onready var wires = $Sprite2D2
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 
 var panel_sliding: bool = false
+var cyborg_head_zoom: bool = false
+var cyborg_head_fade: bool = false
 
 func _process(_delta: float) -> void:
 	if panel_sliding:
-		panel.global_position.y += 3
+		slide_panel.global_position.y += 3
 		title.self_modulate.a -= .005
+		if cyborg_head.frame > 8:
+			cyborg_head.stop()
+			print_debug("frame 8")
+	if cyborg_head_zoom:
+		cyborg_head.scale.x += 0.2
+		cyborg_head.scale.y += 0.2
+		panel.scale.x += 0.07
+		panel.scale.y += 0.1
+		panel.global_position.x -= 6
+		panel.global_position.y -= 2
+		bgnd.self_modulate.r -= .005
+		bgnd.self_modulate.g -= .005
+		bgnd.self_modulate.b -= .005
+		cyborg_head.global_position.y -= 2.8
+	if cyborg_head_fade:
+		cyborg_head.self_modulate.a -= .01
+	
 		
 
 func _ready() -> void:
@@ -32,6 +54,9 @@ func _ready() -> void:
 	cyborg_head.play("normal")
 	v_box_1.show()
 	difficulty_select.hide()
+	cyborg_head.scale.x = 3.0
+	cyborg_head.scale.y = 3.0
+	
 	
 
 func _on_button_pressed() -> void:
@@ -75,6 +100,7 @@ func _initiate_visor() -> void:
 	start_timer.start()
 	var tween := create_tween()
 	tween.tween_property(menu_music, "volume_db", -50.0, 5.0)
+	
 
 
 func _on_button_focus_entered() -> void:
@@ -91,7 +117,19 @@ func _on_button_3_focus_entered() -> void:
 
 
 func _on_easybutton_pressed() -> void:
-	_initiate_visor()
+	#_initiate_visor()
+	cyborg_head_zoom = true
+	await get_tree().create_timer(2.0).timeout
+	wires.hide()
+	panel_sliding = true
+	bgnd.hide()
+	panel.hide()
+	difficulty_select.hide()
+	title.hide()
+	
+	await get_tree().create_timer(1.5).timeout
+	cyborg_head_fade = true
+	
 
 
 func _on_normalbutton_pressed() -> void:

@@ -18,6 +18,11 @@ extends Node2D
 @onready var hard_button = $CenterContainer/DifficultySelect/HBoxContainer/Button3
 @onready var bgnd = $CityBgnd
 @onready var wires = $Sprite2D2
+@onready var lightning_1 = $Lightning1
+@onready var lightning_2 = $Lightning2
+@onready var lightning_3 = $Lightning3
+@onready var lightning_4 = $Lightning4
+@onready var lightning_5 = $Lightning5
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 
@@ -39,10 +44,14 @@ func _process(_delta: float) -> void:
 		panel.scale.y += 0.1
 		panel.global_position.x -= 6
 		panel.global_position.y -= 2
-		bgnd.self_modulate.r -= .005
-		bgnd.self_modulate.g -= .005
-		bgnd.self_modulate.b -= .005
+		#bgnd.self_modulate.r -= .005
+		#bgnd.self_modulate.g -= .005
+		#bgnd.self_modulate.b -= .005
+		wires.self_modulate.a -= .05
+		#bgnd.scale.x += .3
+		#bgnd.scale.y += .8
 		cyborg_head.global_position.y -= 2.8
+		#bgnd.global_position.y += 10
 	if cyborg_head_fade:
 		cyborg_head.self_modulate.a -= .01
 	
@@ -56,6 +65,10 @@ func _ready() -> void:
 	difficulty_select.hide()
 	cyborg_head.scale.x = 3.0
 	cyborg_head.scale.y = 3.0
+	await get_tree().create_timer(1.0).timeout
+	lightning_3.play()
+	await get_tree().create_timer(1.0).timeout
+	lightning_5.play()
 	
 	
 
@@ -76,6 +89,7 @@ func start_title_glow() -> void:
 
 
 func _on_timer_timeout() -> void:
+	print_debug("timed")
 	get_tree().change_scene_to_file("res://main_two.tscn")
 
 
@@ -94,12 +108,26 @@ func _on_return_button_pressed() -> void:
 func _initiate_visor() -> void:
 	var clicked = ButtonClick.instantiate()
 	get_parent().add_child(clicked)
+	#_initiate_visor()
+	cyborg_head_zoom = true
+	
+	lightning_1.hide()
+	lightning_2.hide()
+	lightning_3.hide()
+	lightning_4.hide()
+	lightning_5.hide()
+	await get_tree().create_timer(1.0).timeout
 	panel_sliding = true
-	button_1.hide()
-	button_2.hide()
 	start_timer.start()
 	var tween := create_tween()
 	tween.tween_property(menu_music, "volume_db", -50.0, 5.0)
+	bgnd.hide()
+	panel.hide()
+	difficulty_select.hide()
+	title.hide()
+	
+	await get_tree().create_timer(2.5).timeout
+	cyborg_head_fade = true
 	
 
 
@@ -117,18 +145,7 @@ func _on_button_3_focus_entered() -> void:
 
 
 func _on_easybutton_pressed() -> void:
-	#_initiate_visor()
-	cyborg_head_zoom = true
-	await get_tree().create_timer(2.0).timeout
-	wires.hide()
-	panel_sliding = true
-	bgnd.hide()
-	panel.hide()
-	difficulty_select.hide()
-	title.hide()
-	
-	await get_tree().create_timer(1.5).timeout
-	cyborg_head_fade = true
+	pass
 	
 
 
@@ -137,4 +154,24 @@ func _on_normalbutton_pressed() -> void:
 
 
 func _on_hardbutton_pressed() -> void:
-	_initiate_visor()
+	pass
+
+
+func _on_lightning_timer_timeout() -> void:
+	lightning_1.play()
+
+
+func _on_lightning_timer_2_timeout() -> void:
+	lightning_2.play()
+
+
+func _on_lightning_timer_3_timeout() -> void:
+	lightning_3.play()
+
+
+func _on_lightning_timer_4_timeout() -> void:
+	lightning_4.play()
+
+
+func _on_lightning_timer_5_timeout() -> void:
+	lightning_5.play()

@@ -1,23 +1,25 @@
 extends Node2D
 
-@onready var start_button = $CenterContainer/VBoxContainer/Button
-@onready var title = $RichTextLabel
-@onready var panel = $Panel
-@onready var slide_panel = $Panel3
+@onready var start_button = $CanvasLayer/CenterContainer/VBoxContainer/Button
+@onready var title = $CanvasLayer/RichTextLabel
+@onready var panel = $CanvasLayer/Panel
+@onready var slide_panel = $CanvasLayer/Panel3
 @onready var start_timer = $Timer
-@onready var button_1 = $CenterContainer/VBoxContainer/Button
-@onready var button_2 = $CenterContainer/VBoxContainer/Button2
+@onready var color_rect = $CanvasLayer/ColorRect
+@onready var shader_mat = color_rect.material
+@onready var button_1 = $CanvasLayer/CenterContainer/VBoxContainer/Button
+@onready var button_2 = $CanvasLayer/CenterContainer/VBoxContainer/Button2
 @onready var menu_music = $AudioStreamPlayer
 @onready var return_button = $ControlsPopup/ReturnButton
 @onready var controls_pop = $ControlsPopup
-@onready var cyborg_head = $AnimatedSprite2D
-@onready var difficulty_select = $CenterContainer/DifficultySelect
-@onready var v_box_1 = $CenterContainer/VBoxContainer
-@onready var easy_button = $CenterContainer/DifficultySelect/HBoxContainer/Button
-@onready var normal_button = $CenterContainer/DifficultySelect/HBoxContainer/Button2
-@onready var hard_button = $CenterContainer/DifficultySelect/HBoxContainer/Button3
+@onready var cyborg_head = $CanvasLayer/AnimatedSprite2D
+@onready var difficulty_select = $CanvasLayer/CenterContainer/DifficultySelect
+@onready var v_box_1 = $CanvasLayer/CenterContainer/VBoxContainer
+@onready var easy_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button
+@onready var normal_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button2
+@onready var hard_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3
 @onready var bgnd = $CityBgnd
-@onready var wires = $Sprite2D2
+@onready var wires = $CanvasLayer/Sprite2D2
 @onready var lightning_1 = $Lightning1
 @onready var lightning_2 = $Lightning2
 @onready var lightning_3 = $Lightning3
@@ -44,9 +46,6 @@ func _process(_delta: float) -> void:
 		panel.scale.y += 0.1
 		panel.global_position.x -= 6
 		panel.global_position.y -= 2
-		#bgnd.self_modulate.r -= .005
-		#bgnd.self_modulate.g -= .005
-		#bgnd.self_modulate.b -= .005
 		wires.self_modulate.a -= .05
 		#bgnd.scale.x += .3
 		#bgnd.scale.y += .8
@@ -54,6 +53,7 @@ func _process(_delta: float) -> void:
 		#bgnd.global_position.y += 10
 	if cyborg_head_fade:
 		cyborg_head.self_modulate.a -= .01
+		
 	
 		
 
@@ -110,7 +110,7 @@ func _initiate_visor() -> void:
 	get_parent().add_child(clicked)
 	#_initiate_visor()
 	cyborg_head_zoom = true
-	
+	fade_out_static()
 	lightning_1.hide()
 	lightning_2.hide()
 	lightning_3.hide()
@@ -175,3 +175,18 @@ func _on_lightning_timer_4_timeout() -> void:
 
 func _on_lightning_timer_5_timeout() -> void:
 	lightning_5.play()
+	
+func fade_out_static():
+	var mat := color_rect.material as ShaderMaterial
+	if mat == null:
+		print("No shader material!")
+		return
+
+	var tween := create_tween()
+	tween.tween_method(
+		func(value):
+			mat.set_shader_parameter("opacity", value),
+		1.0,
+		0.0,
+		1.0
+	)

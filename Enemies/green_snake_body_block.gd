@@ -2,7 +2,7 @@ extends StaticBody2D
 
 var moving_up: bool = false
 var moving_down: bool = false
-var moving_right: bool = false
+var moving_right: bool = true
 var moving_left: bool = false
 
 
@@ -21,9 +21,11 @@ func _process(_delta: float) -> void:
 		self.global_position.y -= 2
 	#need to check self.global_position for x and y and set new direction, screen size totalis (1152.0, 648.0). for testing no default is fine but will need to set for implementation
 	if self.global_position.x > 1050:
+		self.rotation_degrees += 180
 		moving_left = true
 		moving_right = false
 	if self.global_position.x < 50:
+		self.rotation_degrees += 180
 		moving_left = false
 		moving_right = true
 		

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=23 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://jl2y75glv4hl" path="res://Buffs/ice_mine.tscn" id="11_81bu4"]
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
 [ext_resource type="AudioStream" uid="uid://dcnu7dd53hb8t" path="res://Assets/Music/DEFLECT_Lvl1.mp3" id="13_0wljb"]
+[ext_resource type="PackedScene" uid="uid://b50sc0w5crw06" path="res://Enemies/green_snake_body_block.tscn" id="21_81bu4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fokku"]
 bg_color = Color(0, 0, 0, 1)
@@ -124,6 +125,9 @@ one_shot = true
 [node name="IceMineTimer" type="Timer" parent="."]
 wait_time = 25.0
 one_shot = true
+
+[node name="GreenSnakeBodyBlock" parent="." instance=ExtResource("21_81bu4")]
+position = Vector2(36, 92)
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]

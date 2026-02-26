@@ -72,6 +72,7 @@ func _ready() -> void:
 	start_background_glow()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
+	print_debug(screen_size)
 	cam.enabled = true
 	cam.position = screen_center
 	reset_positions(screen_center)

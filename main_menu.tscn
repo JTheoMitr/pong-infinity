@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=56 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -42,6 +42,30 @@ shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ka3nr"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5803922)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.34901962, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48knj"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5803922)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.34901962, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ql5ya"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5803922)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.34901962, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ka3nr"]
 shader = ExtResource("8_ql5ya")
@@ -374,18 +398,22 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+visible = false
 custom_minimum_size = Vector2(700, 35)
 layout_mode = 2
 
 [node name="Button" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(20, 25)
+custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 6.78
 theme_override_fonts/font = ExtResource("2_7vrkn")
 text = "Start"
 
 [node name="Button2" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(20, 25)
+custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_7vrkn")
 text = "Controls"
 
@@ -409,18 +437,27 @@ theme_override_constants/separation = 45
 alignment = 1
 
 [node name="Button" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ka3nr")
 text = "Easy"
 
 [node name="Button2" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_styles/focus = SubResource("StyleBoxFlat_48knj")
 text = "Normal"
 
 [node name="Button3" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ql5ya")
 text = "Hard
 "
 

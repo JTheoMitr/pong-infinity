@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://b50sc0w5crw06"]
+
+[ext_resource type="Script" uid="uid://d1fp5au1ce7wh" path="res://Enemies/green_snake_body_block.gd" id="1_j5y6m"]
+[ext_resource type="Texture2D" uid="uid://bwc7ctorfgrvl" path="res://Assets/Anims/xplosion_spritesheet.png" id="2_h4suv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70xl3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgpgs"]
+atlas = ExtResource("2_h4suv")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7pag1"]
+atlas = ExtResource("2_h4suv")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o1br2"]
+atlas = ExtResource("2_h4suv")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mr3m"]
+atlas = ExtResource("2_h4suv")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5lbth"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgpgs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pag1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o1br2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mr3m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="GreenSnakeBodyBlock" type="StaticBody2D"]
+script = ExtResource("1_j5y6m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_70xl3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5lbth")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

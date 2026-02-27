@@ -8,6 +8,8 @@ var moving_down: bool = false
 var moving_right: bool = true
 var moving_left: bool = false
 
+signal ball_hit_silver_panel
+
 
 func _ready() -> void:
 	await get_tree().create_timer(0.25).timeout
@@ -56,3 +58,12 @@ func _on_timer_2_timeout() -> void:
 	else:
 		moving_up = false
 		moving_down = true
+
+
+
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.is_in_group("ball"):
+		emit_signal("ball_hit_silver_panel", self)
+		#print_debug("silver panel")

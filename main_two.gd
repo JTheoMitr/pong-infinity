@@ -227,6 +227,27 @@ func _on_paddle_hit(paddle: Node) -> void:
 		score += 15
 	
 	hud.update_score(score)
+	
+func _on_silver_panel_hit(paddle: Node) -> void:
+	var paddle_bonk = paddle_hit_sfx.instantiate() #change sfx
+	get_parent().add_child(paddle_bonk)
+	#score += 15
+	#hud.update_score(score)
+	#ball.base_speed *= 1.005 #was 1.03
+	print("silver panel hit")
+	# Spawn particles at impact
+	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
+	spawn_impact_particles(ball.global_position, hit_dir)
+	# change the particle color, first 2 hits, destroyed on third
+	# if panel_counter > 2:
+		#destroy and explode anim
+	# else: particle effect, sfx, and glitch effect (or just glitch effect randomized for its lifespan entirety)
+	if ball_is_on_fire:
+		score += 30
+	else:
+		score += 15
+	
+	hud.update_score(score)
 		
 func _on_corner_hit(paddle: Node) -> void:
 	var corner_bonk = corner_hit_sfx.instantiate()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=423 format=3 uid="uid://di0u62bn36n5x"]
+[gd_scene load_steps=424 format=3 uid="uid://di0u62bn36n5x"]
 
 [ext_resource type="Script" uid="uid://d1fp5au1ce7wh" path="res://Enemies/green_snake_body_block.gd" id="1_eavsj"]
 [ext_resource type="Texture2D" uid="uid://qur8fvll5y64" path="res://Assets/Anims/blue-snake-body-anim/frame_000_delay-0.02s.png" id="2_3xcvu"]
@@ -421,7 +421,12 @@
 [ext_resource type="Texture2D" uid="uid://dro8djhj83t5o" path="res://Assets/Anims/blue-snake-body-anim/frame_417_delay-0.02s.png" id="419_vw3lp"]
 [ext_resource type="Texture2D" uid="uid://lls6567l5ssj" path="res://Assets/Anims/blue-snake-body-anim/frame_418_delay-0.02s.png" id="420_qkfte"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3xcvu"]
+friction = 0.0
+bounce = 1.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70xl3"]
+size = Vector2(61, 59)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5lbth"]
 animations = [{
@@ -1688,26 +1693,27 @@ animations = [{
 "speed": 35.0
 }]
 
-[node name="BlueSnakeBodyBlock" type="StaticBody2D"]
+[node name="BlueSnakeBodyBlock" type="StaticBody2D" groups=["paddle"]]
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_3xcvu")
 script = ExtResource("1_eavsj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, 0.5)
 shape = SubResource("RectangleShape2D_70xl3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 rotation = 1.5707964
-scale = Vector2(0.15, 0.15)
+scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_5lbth")
 autoplay = "default"
 frame_progress = 0.61617273
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
-autostart = true
 
 [node name="Timer2" type="Timer" parent="."]
 wait_time = 5.0
-autostart = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

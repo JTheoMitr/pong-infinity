@@ -1,5 +1,8 @@
 extends StaticBody2D
 
+@onready var timer = $Timer
+@onready var timer2 = $Timer2
+
 var moving_up: bool = false
 var moving_down: bool = false
 var moving_right: bool = true
@@ -7,7 +10,9 @@ var moving_left: bool = false
 
 
 func _ready() -> void:
-	pass
+	await get_tree().create_timer(0.25).timeout
+	timer.start()
+	timer2.start()
 	
 func _process(_delta: float) -> void:
 	

@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b53rleh278ga"]
+[gd_scene load_steps=5 format=3 uid="uid://dfbm1kj63wyvl"]
 
-[ext_resource type="Script" uid="uid://bvpu3xh7gv8r6" path="res://impact_particles.gd" id="1_me6vb"]
+[ext_resource type="Script" uid="uid://bvpu3xh7gv8r6" path="res://impact_particles.gd" id="1_t4wkb"]
 
 [sub_resource type="Gradient" id="Gradient_me6vb"]
 offsets = PackedFloat32Array(0, 0.3018868, 0.5990566, 1)
-colors = PackedColorArray(0.99999994, 0.2069037, 0.50085604, 1, 0.9951789, 0.41295484, 0.5395798, 1, 0.9764706, 0.16078432, 0.4392157, 1, 0, 0, 0, 0)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_qy20h"]
 gradient = SubResource("Gradient_me6vb")
@@ -34,4 +34,4 @@ speed_scale = 0.35
 explosiveness = 0.81
 randomness = 0.8
 process_material = SubResource("ParticleProcessMaterial_ycagn")
-script = ExtResource("1_me6vb")
+script = ExtResource("1_t4wkb")

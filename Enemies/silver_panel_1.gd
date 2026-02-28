@@ -2,13 +2,18 @@ extends StaticBody2D
 
 @onready var timer = $Timer
 @onready var timer2 = $Timer2
+@onready var anim = $AnimatedSprite2D
 
 var moving_up: bool = false
 var moving_down: bool = false
 var moving_right: bool = true
 var moving_left: bool = false
 
+var hit_counter: int = 0
+
 signal ball_hit_silver_panel
+signal panel_pop
+signal restarting
 
 
 func _ready() -> void:
@@ -60,10 +65,27 @@ func _on_timer_2_timeout() -> void:
 		moving_down = true
 
 
+func start_fade_out() -> void:
+	var tween := create_tween()
+	tween.tween_property(anim, "self_modulate:a", 0.0, 1.5)
+
 
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
 		emit_signal("ball_hit_silver_panel", self)
+		hit_counter += 1
+		if hit_counter > 2:
+			self.queue_free()
+			emit_signal("panel_pop")
 		#print_debug("silver panel")
+
+
+func _on_timer_3_timeout() -> void:
+	start_fade_out()
+
+
+func _on_timer_4_timeout() -> void:
+	self.queue_free()
+	emit_signal("restarting")

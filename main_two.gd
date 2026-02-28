@@ -25,6 +25,7 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @onready var ice_mine_timer: Timer = $IceMineTimer
 @onready var ball_fire_timer: Timer = $BallFireTimer
 @onready var ball_ice_timer: Timer = $BallIceTimer
+@onready var panel_timer_1: Timer = $PanelTimer1
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
@@ -36,7 +37,9 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 
 @export var impact_particles_scene: PackedScene
 @export var impact_particles_multiplier_1: PackedScene
+@export var impact_particles_panel_pop: PackedScene
 @export var impact_particles_crystal_1: PackedScene
+@export var impact_particles_white: PackedScene
 @export var multiplier_1: PackedScene
 @export var score_crystal_1: PackedScene
 @export var barriers: PackedScene
@@ -44,6 +47,7 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @export var mine_1: PackedScene
 @export var ice_zone: PackedScene
 @export var ice_mine_1: PackedScene
+@export var silver_panel_1: PackedScene
 
 
 var game_started: bool = false
@@ -92,6 +96,7 @@ func _ready() -> void:
 	corner_tr.ball_hit_paddle.connect(_on_corner_hit)
 	corner_br.ball_hit_paddle.connect(_on_corner_hit)
 	corner_bl.ball_hit_paddle.connect(_on_corner_hit)
+	
 
 	
 func _process(delta: float) -> void:
@@ -192,6 +197,7 @@ func start_game() -> void:
 	ball.launch()
 	mine_timer.start()
 	crystal1_timer.start()
+	panel_timer_1.start()
 	#ice_mine_timer.start()
 
 
@@ -231,14 +237,11 @@ func _on_paddle_hit(paddle: Node) -> void:
 func _on_silver_panel_hit(paddle: Node) -> void:
 	var paddle_bonk = paddle_hit_sfx.instantiate() #change sfx
 	get_parent().add_child(paddle_bonk)
-	#score += 15
-	#hud.update_score(score)
-	#ball.base_speed *= 1.005 #was 1.03
+
 	print("silver panel hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
-	spawn_impact_particles(ball.global_position, hit_dir)
-	# change the particle color, first 2 hits, destroyed on third
+	spawn_impact_particles_white(ball.global_position, hit_dir)
 	# if panel_counter > 2:
 		#destroy and explode anim
 	# else: particle effect, sfx, and glitch effect (or just glitch effect randomized for its lifespan entirety)
@@ -248,6 +251,14 @@ func _on_silver_panel_hit(paddle: Node) -> void:
 		score += 15
 	
 	hud.update_score(score)
+	
+func _silver_panel_destroyed() -> void:
+	spawn_impact_particles_panel_pop(ball.global_position) #change to new color
+	trigger_shake(12.0)
+	score += 150
+	panel_timer_1.start()
+	
+	
 		
 func _on_corner_hit(paddle: Node) -> void:
 	var corner_bonk = corner_hit_sfx.instantiate()
@@ -353,6 +364,22 @@ func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
 	p.emitting = false
 	p.emitting = true
 	
+func spawn_impact_particles_white(pos: Vector2, _dir_unused: Vector2) -> void:
+	var p := impact_particles_white.instantiate() as GPUParticles2D
+	particles_root.add_child(p)
+
+	var screen_center := get_viewport_rect().size * 0.5
+	var to_center: Vector2 = (screen_center - pos).normalized()
+
+	p.global_position = pos
+
+	# 🔑 Godot 4 particles emit along -Y, so rotate by +90°
+	p.global_rotation = to_center.angle() + PI / 2.0
+
+	p.z_index = 100
+	p.emitting = false
+	p.emitting = true
+	
 func spawn_multi_1() -> void:
 	var multi1 := multiplier_1.instantiate()
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
@@ -385,7 +412,7 @@ func spawn_fire_zone_1() -> void:
 	fire_1.ball_on_fire.connect(_on_fire_zone_entered)
 	get_parent().call_deferred("add_child", fire_1)
 	buff_ids.append(fire_1.get_instance_id())
-	trigger_shake(12.0)
+	trigger_shake(16.0)
 	#trigger a zoom punch here too?
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -396,7 +423,7 @@ func spawn_ice_zone_1() -> void:
 	ice_1.ball_on_ice.connect(_on_ice_zone_entered)
 	get_parent().call_deferred("add_child", ice_1)
 	buff_ids.append(ice_1.get_instance_id())
-	trigger_shake(12.0)
+	trigger_shake(16.0)
 	#trigger a zoom punch here too?
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -422,10 +449,31 @@ func spawn_ice_mine_1() -> void:
 	var screen_center := screen_size * 0.5
 	ice_mine_inst_1.global_position = Vector2(screen_center)
 	mine_timer.start()
+	
+func spawn_silver_panel() -> void:
+	var panel_1 := silver_panel_1.instantiate()
+	get_parent().add_child(panel_1)
+	panel_1.ball_hit_silver_panel.connect(_on_silver_panel_hit)
+	panel_1.panel_pop.connect(_silver_panel_destroyed)
+	panel_1.restarting.connect(_start_panel_1)
+	buff_ids.append(panel_1.get_instance_id())
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+	panel_1.global_position = Vector2(screen_center)
+	
 
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
 	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
+	particles_root.add_child(p)
+	p.global_position = pos
+
+	p.z_index = 100
+	p.emitting = false
+	p.emitting = true
+	
+func spawn_impact_particles_panel_pop(pos: Vector2) -> void:
+	var p := impact_particles_panel_pop.instantiate() as GPUParticles2D
 	particles_root.add_child(p)
 	p.global_position = pos
 
@@ -454,6 +502,7 @@ func stop_all_timers() -> void:
 	crystal1_timer.stop()
 	mine_timer.stop()
 	ice_mine_timer.stop()
+	panel_timer_1.stop()
 	
 	
 func clear_all_buffs() -> void:
@@ -469,7 +518,8 @@ func clear_all_buffs() -> void:
 #each buff: needs a spinning anim, an entry anim, and a shatter/break/disintegrate anim
 #follow multi1 template on incorporating
 	
-
+func _start_panel_1() -> void:
+	panel_timer_1.start()
 
 func _on_crystal_timer_timeout() -> void:
 	spawn_score_crystal_1()
@@ -490,3 +540,7 @@ func _on_mine_timer_timeout() -> void:
 
 func _on_ice_mine_timer_timeout() -> void:
 	spawn_ice_mine_1()
+
+
+func _on_panel_timer_1_timeout() -> void:
+	spawn_silver_panel()

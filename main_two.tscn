@@ -1,12 +1,14 @@
-[gd_scene load_steps=23 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=25 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
 [ext_resource type="Texture2D" uid="uid://c3en4el6vagxt" path="res://Assets/Bgnd/green_grid_background.png" id="2_xauyo"]
 [ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="3_pclk0"]
 [ext_resource type="PackedScene" uid="uid://b53rleh278ga" path="res://impact_particles_fullspread.tscn" id="3_q6xn0"]
+[ext_resource type="PackedScene" uid="uid://dfbm1kj63wyvl" path="res://impact_particles_fullspread_white.tscn" id="4_2dp27"]
 [ext_resource type="PackedScene" uid="uid://d1hxpjggmvo7j" path="res://impact_particles_fullspread_blue.tscn" id="4_fokku"]
 [ext_resource type="PackedScene" uid="uid://q0kry56wwfql" path="res://walls.tscn" id="4_wuyf0"]
+[ext_resource type="PackedScene" uid="uid://35t4uflwq1m6" path="res://impact_particles_white.tscn" id="5_5mu1p"]
 [ext_resource type="PackedScene" uid="uid://i87ncs1cnkcx" path="res://Buffs/crystal_25_pts.tscn" id="5_m0f0d"]
 [ext_resource type="PackedScene" uid="uid://bjkjs1mv4op3x" path="res://mode_2_paddle_LR.tscn" id="5_xauyo"]
 [ext_resource type="PackedScene" uid="uid://bgwonp5ln5nay" path="res://ball.tscn" id="6_0wljb"]
@@ -29,7 +31,9 @@ bg_color = Color(0, 0, 0, 1)
 script = ExtResource("1_cg087")
 impact_particles_scene = ExtResource("2_pclk0")
 impact_particles_multiplier_1 = ExtResource("3_q6xn0")
+impact_particles_panel_pop = ExtResource("4_2dp27")
 impact_particles_crystal_1 = ExtResource("4_fokku")
+impact_particles_white = ExtResource("5_5mu1p")
 multiplier_1 = ExtResource("11_wuyf0")
 score_crystal_1 = ExtResource("5_m0f0d")
 barriers = ExtResource("7_33m0d")
@@ -37,6 +41,7 @@ fire_zone = ExtResource("8_l8clx")
 mine_1 = ExtResource("9_b4p4h")
 ice_zone = ExtResource("10_51rue")
 ice_mine_1 = ExtResource("11_81bu4")
+silver_panel_1 = ExtResource("21_81bu4")
 
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color(0, 0, 0, 1)
@@ -126,8 +131,9 @@ one_shot = true
 wait_time = 25.0
 one_shot = true
 
-[node name="SilverPanel1" parent="." instance=ExtResource("21_81bu4")]
-position = Vector2(80, 86)
+[node name="PanelTimer1" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]
@@ -135,3 +141,4 @@ position = Vector2(80, 86)
 [connection signal="timeout" from="MineTimer" to="." method="_on_mine_timer_timeout"]
 [connection signal="timeout" from="BallFireTimer" to="." method="_on_ball_fire_timer_timeout"]
 [connection signal="timeout" from="IceMineTimer" to="." method="_on_ice_mine_timer_timeout"]
+[connection signal="timeout" from="PanelTimer1" to="." method="_on_panel_timer_1_timeout"]

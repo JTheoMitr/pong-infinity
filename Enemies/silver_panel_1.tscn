@@ -1,7 +1,8 @@
-[gd_scene load_steps=85 format=3 uid="uid://r2ymvdg7nfjj"]
+[gd_scene load_steps=87 format=3 uid="uid://r2ymvdg7nfjj"]
 
 [ext_resource type="Script" uid="uid://bay0g25p5nado" path="res://Enemies/silver_panel_1.gd" id="1_dnbbf"]
 [ext_resource type="Texture2D" uid="uid://cwq5d3bvydrnq" path="res://Assets/Anims/silver-panel-anim/frame_00_delay-0.04s.png" id="2_dksxv"]
+[ext_resource type="Shader" uid="uid://ci7lmxbww5n5q" path="res://Enemies/silver_panel_1.gdshader" id="2_ff0un"]
 [ext_resource type="Texture2D" uid="uid://ddru7ayc2g7ew" path="res://Assets/Anims/silver-panel-anim/frame_01_delay-0.04s.png" id="3_ff0un"]
 [ext_resource type="Texture2D" uid="uid://dnvflfufv47qv" path="res://Assets/Anims/silver-panel-anim/frame_02_delay-0.04s.png" id="4_sc6uw"]
 [ext_resource type="Texture2D" uid="uid://d24gnljmt8d7o" path="res://Assets/Anims/silver-panel-anim/frame_03_delay-0.04s.png" id="5_lldhm"]
@@ -87,6 +88,12 @@ bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70xl3"]
 size = Vector2(78, 33)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sc6uw"]
+shader = ExtResource("2_ff0un")
+shader_parameter/glitch_intensity = 1.12
+shader_parameter/glitch_speed = 8.0
+shader_parameter/rgb_shift = 6.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5lbth"]
 animations = [{
@@ -580,10 +587,11 @@ position = Vector2(2, 1.5)
 shape = SubResource("RectangleShape2D_70xl3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_sc6uw")
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_5lbth")
 autoplay = "default"
-frame_progress = 0.03270209
+frame_progress = 0.063975595
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
@@ -599,6 +607,16 @@ collision_mask = 2
 position = Vector2(2, 1.5)
 shape = SubResource("RectangleShape2D_dnbbf")
 
+[node name="Timer3" type="Timer" parent="."]
+wait_time = 16.0
+autostart = true
+
+[node name="Timer4" type="Timer" parent="."]
+wait_time = 18.0
+autostart = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer3" to="." method="_on_timer_3_timeout"]
+[connection signal="timeout" from="Timer4" to="." method="_on_timer_4_timeout"]

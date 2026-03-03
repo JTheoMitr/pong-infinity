@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=41 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -10,20 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://d050wumnjgq1t" path="res://Assets/Sprites/pixel_wires_hanging_1.png" id="7_8qtwp"]
 [ext_resource type="Texture2D" uid="uid://hjm4k5372ddo" path="res://Assets/Sprites/difficulty_face_set_actions_male_all.png" id="7_qe12f"]
 [ext_resource type="Shader" uid="uid://ccqnlmjyp04r" path="res://cyborg_head.gdshader" id="8_ql5ya"]
-[ext_resource type="Texture2D" uid="uid://byqum3j1gn5ta" path="res://Assets/Anims/lightning1/lightning_v2_1.png" id="10_7bbuq"]
-[ext_resource type="Texture2D" uid="uid://dnwbcpq4r3bym" path="res://Assets/Anims/lightning1/lightning_v2_2.png" id="11_saq78"]
-[ext_resource type="Texture2D" uid="uid://deqwydwgjori1" path="res://Assets/Anims/lightning1/lightning_v2_3.png" id="12_8uw0o"]
-[ext_resource type="Texture2D" uid="uid://s54sgnlmlym2" path="res://Assets/Anims/lightning1/lightning_v2_4.png" id="13_ql5ya"]
-[ext_resource type="Texture2D" uid="uid://2wjae3xho3qp" path="res://Assets/Anims/lightning1/lightning_v2_5.png" id="14_ka3nr"]
-[ext_resource type="Texture2D" uid="uid://dkkcq26nttoer" path="res://Assets/Anims/lightning1/lightning_v2_6.png" id="15_48knj"]
-[ext_resource type="Texture2D" uid="uid://btmuchoyu70ns" path="res://Assets/Anims/lightning1/lightning_v2_7.png" id="16_m2y5l"]
-[ext_resource type="Texture2D" uid="uid://dnq67onaqywph" path="res://Assets/Anims/lightning1/lightning_v2_8.png" id="17_imjy1"]
-[ext_resource type="Texture2D" uid="uid://rak6jgm7blyd" path="res://Assets/Anims/lightning1/lightning_v2_9.png" id="18_u5051"]
-[ext_resource type="Texture2D" uid="uid://cbfiur73o11rs" path="res://Assets/Anims/lightning1/lightning_v2_10.png" id="19_v2sba"]
-[ext_resource type="Texture2D" uid="uid://cbx2wp8ihv6dt" path="res://Assets/Anims/lightning1/lightning_v2_11.png" id="20_ai24q"]
-[ext_resource type="Texture2D" uid="uid://btd5uxi0jn1bu" path="res://Assets/Anims/lightning1/lightning_v2_12.png" id="21_qby1g"]
-[ext_resource type="Texture2D" uid="uid://dy2dyf8lkp6jy" path="res://Assets/Anims/lightning1/lightning_v2_13.png" id="22_04soa"]
-[ext_resource type="Texture2D" uid="uid://bwc7ctorfgrvl" path="res://Assets/Anims/xplosion_spritesheet.png" id="23_saq78"]
+[ext_resource type="AudioStream" uid="uid://dgdwssm4byiqs" path="res://Assets/SFX/neuroball_intro_spoken.wav" id="12_j5v2v"]
 [ext_resource type="Shader" uid="uid://cmpyi6km0bfri" path="res://main_menu.gdshader" id="24_8uw0o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix8l"]
@@ -255,63 +242,6 @@ animations = [{
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qtwp"]
 bg_color = Color(0.42709383, 0.3164611, 0.7001076, 1)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ka3nr"]
-atlas = ExtResource("23_saq78")
-region = Rect2(700, 700, 100, 100)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_u6vjd"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ka3nr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_7bbuq")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_saq78")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_8uw0o")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_ql5ya")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_ka3nr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_48knj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_m2y5l")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_imjy1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_u5051")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_v2sba")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_ai24q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_qby1g")
-}, {
-"duration": 1.0,
-"texture": ExtResource("22_04soa")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ka3nr")
-}],
-"loop": false,
-"name": &"default",
-"speed": 5.0
-}]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_7vrkn")
@@ -566,53 +496,10 @@ offset_bottom = 49.0
 theme_override_fonts/font = ExtResource("6_qe12f")
 text = "Return"
 
-[node name="Lightning1" type="AnimatedSprite2D" parent="."]
-position = Vector2(171, 58)
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_u6vjd")
-
-[node name="Lightning2" type="AnimatedSprite2D" parent="."]
-position = Vector2(1065, 189)
-rotation = 1.5707964
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_u6vjd")
-
-[node name="Lightning3" type="AnimatedSprite2D" parent="."]
-position = Vector2(191, 375)
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_u6vjd")
-
-[node name="Lightning4" type="AnimatedSprite2D" parent="."]
-position = Vector2(909.00006, 372)
-rotation = 1.5707964
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_u6vjd")
-
-[node name="Lightning5" type="AnimatedSprite2D" parent="."]
-position = Vector2(782.00006, 234.99997)
-rotation = 1.5707964
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_u6vjd")
-
-[node name="LightningTimer" type="Timer" parent="."]
-wait_time = 6.0
-autostart = true
-
-[node name="LightningTimer2" type="Timer" parent="."]
-wait_time = 9.0
-autostart = true
-
-[node name="LightningTimer3" type="Timer" parent="."]
-wait_time = 11.0
-autostart = true
-
-[node name="LightningTimer4" type="Timer" parent="."]
-wait_time = 7.0
-autostart = true
-
-[node name="LightningTimer5" type="Timer" parent="."]
-wait_time = 12.0
-autostart = true
+[node name="NeuroballSpoken" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_j5v2v")
+volume_db = 8.5
+pitch_scale = 0.9
 
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
@@ -625,8 +512,3 @@ autostart = true
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="ControlsPopup/ReturnButton" to="." method="_on_return_button_pressed"]
-[connection signal="timeout" from="LightningTimer" to="." method="_on_lightning_timer_timeout"]
-[connection signal="timeout" from="LightningTimer2" to="." method="_on_lightning_timer_2_timeout"]
-[connection signal="timeout" from="LightningTimer3" to="." method="_on_lightning_timer_3_timeout"]
-[connection signal="timeout" from="LightningTimer4" to="." method="_on_lightning_timer_4_timeout"]
-[connection signal="timeout" from="LightningTimer5" to="." method="_on_lightning_timer_5_timeout"]

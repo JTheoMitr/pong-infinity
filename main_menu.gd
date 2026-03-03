@@ -20,11 +20,7 @@ extends Node2D
 @onready var hard_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3
 @onready var bgnd = $CityBgnd
 @onready var wires = $CanvasLayer/Sprite2D2
-@onready var lightning_1 = $Lightning1
-@onready var lightning_2 = $Lightning2
-@onready var lightning_3 = $Lightning3
-@onready var lightning_4 = $Lightning4
-@onready var lightning_5 = $Lightning5
+@onready var speak = $NeuroballSpoken
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 
@@ -66,9 +62,7 @@ func _ready() -> void:
 	cyborg_head.scale.x = 3.0
 	cyborg_head.scale.y = 3.0
 	await get_tree().create_timer(1.0).timeout
-	lightning_3.play()
-	await get_tree().create_timer(1.0).timeout
-	lightning_5.play()
+	speak.play()
 	
 	
 
@@ -111,11 +105,6 @@ func _initiate_visor() -> void:
 	#_initiate_visor()
 	cyborg_head_zoom = true
 	fade_out_static()
-	lightning_1.hide()
-	lightning_2.hide()
-	lightning_3.hide()
-	lightning_4.hide()
-	lightning_5.hide()
 	await get_tree().create_timer(1.0).timeout
 	panel_sliding = true
 	start_timer.start()
@@ -157,24 +146,6 @@ func _on_hardbutton_pressed() -> void:
 	pass
 
 
-func _on_lightning_timer_timeout() -> void:
-	lightning_1.play()
-
-
-func _on_lightning_timer_2_timeout() -> void:
-	lightning_2.play()
-
-
-func _on_lightning_timer_3_timeout() -> void:
-	lightning_3.play()
-
-
-func _on_lightning_timer_4_timeout() -> void:
-	lightning_4.play()
-
-
-func _on_lightning_timer_5_timeout() -> void:
-	lightning_5.play()
 	
 func fade_out_static():
 	var mat := color_rect.material as ShaderMaterial

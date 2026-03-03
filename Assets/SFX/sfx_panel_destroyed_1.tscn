@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://daykqeotpkmx1"]
+
+[ext_resource type="AudioStream" uid="uid://c4f7qiq5eoou2" path="res://Assets/SFX/sfx_panel_destroy.wav" id="1_uop4n"]
+[ext_resource type="Script" uid="uid://v8mh5g3aehrc" path="res://Assets/SFX/sfx_default.gd" id="2_fs5kl"]
+
+[node name="SFX_Panel_Destroyed_1" type="AudioStreamPlayer"]
+stream = ExtResource("1_uop4n")
+volume_db = -2.0
+pitch_scale = 1.3
+autoplay = true
+script = ExtResource("2_fs5kl")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

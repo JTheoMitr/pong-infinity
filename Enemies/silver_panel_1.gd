@@ -76,7 +76,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
 		emit_signal("ball_hit_silver_panel", self)
 		hit_counter += 1
-		if hit_counter > 2:
+		if hit_counter > 1:
 			self.queue_free()
 			emit_signal("panel_pop")
 		#print_debug("silver panel")

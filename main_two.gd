@@ -3,6 +3,8 @@ extends Node2D
 
 const game_over_sfx = preload("res://Assets/SFX/sfx_game_over.tscn")
 const paddle_hit_sfx = preload("res://Assets/SFX/sfx_paddle_hit_1.tscn")
+const panel_hit_sfx = preload("res://Assets/SFX/sfx_panel_hit_1.tscn")
+const panel_destroyed_sfx = preload("res://Assets/SFX/sfx_panel_destroyed_1.tscn")
 const multi_connect_sfx = preload("res://Assets/SFX/sfx_multi_1_connect.tscn")
 const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
 const crystal_hit_sfx = preload("res://Assets/SFX/sfx_crystal_hit_1.tscn")
@@ -235,9 +237,9 @@ func _on_paddle_hit(paddle: Node) -> void:
 	hud.update_score(score)
 	
 func _on_silver_panel_hit(paddle: Node) -> void:
-	var paddle_bonk = paddle_hit_sfx.instantiate() #change sfx
-	get_parent().add_child(paddle_bonk)
-
+	var panel_bonk = panel_hit_sfx.instantiate() 
+	get_parent().add_child(panel_bonk)
+	trigger_shake(12.0)
 	print("silver panel hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
@@ -253,8 +255,10 @@ func _on_silver_panel_hit(paddle: Node) -> void:
 	hud.update_score(score)
 	
 func _silver_panel_destroyed() -> void:
+	var panel_pop = panel_destroyed_sfx.instantiate() 
+	get_parent().add_child(panel_pop)
 	spawn_impact_particles_panel_pop(ball.global_position) #change to new color
-	trigger_shake(12.0)
+	trigger_shake(15.0)
 	score += 150
 	panel_timer_1.start()
 	
@@ -520,6 +524,7 @@ func clear_all_buffs() -> void:
 	
 func _start_panel_1() -> void:
 	panel_timer_1.start()
+	print_debug("restarting now panel 1")
 
 func _on_crystal_timer_timeout() -> void:
 	spawn_score_crystal_1()

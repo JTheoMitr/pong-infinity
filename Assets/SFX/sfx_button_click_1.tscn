@@ -5,6 +5,7 @@
 
 [node name="SFX_Button_Click_1" type="AudioStreamPlayer"]
 stream = ExtResource("1_n8at2")
+volume_db = -3.0
 autoplay = true
 script = ExtResource("2_v8ysy")
 

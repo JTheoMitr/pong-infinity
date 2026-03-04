@@ -15,6 +15,10 @@ run/main_scene="uid://bvsrkd2lk0v1l"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
+
 [display]
 
 window/stretch/mode="canvas_items"

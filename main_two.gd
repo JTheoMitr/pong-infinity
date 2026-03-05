@@ -84,6 +84,17 @@ func _ready() -> void:
 	reset_positions(screen_center)
 	ball.visible = false
 	original_cam_position = cam.position
+	
+	# local test for leaderboard:
+	
+	LeaderboardService.set_display_name_best_effort("John")
+	LeaderboardService.submit_score_best_effort(randi_range(0, 999))
+
+	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
+		print("ok:", ok, "err:", err, "count:", records.size())
+		for rec in records:
+			print(rec.rank, rec.username, rec.score)
+	)
 
 	
 	await get_tree().create_timer(1.0).timeout

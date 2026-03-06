@@ -1,25 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=6 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bytes"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bytes"]
+bg_color = Color(0.03137255, 0.03137255, 0.03137255, 0.84313726)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0.95615023, 0.46149242, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2o5uh"]
+bg_color = Color(0.29402778, 0.2940278, 0.29402766, 1)
+
 [node name="hud" type="CanvasLayer"]
 script = ExtResource("1_37p78")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 offset_left = -576.0
-offset_top = -29.0
+offset_top = -128.0
 offset_right = 576.0
-offset_bottom = 29.0
+offset_bottom = -53.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2
@@ -83,3 +94,46 @@ theme_override_fonts/font = ExtResource("2_bytes")
 theme_override_font_sizes/font_size = 31
 text = "Score: 0"
 horizontal_alignment = 1
+
+[node name="LeaderboardPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -116.0
+offset_top = -177.0
+offset_right = 116.0
+offset_bottom = 177.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bytes")
+
+[node name="VBox" type="VBoxContainer" parent="LeaderboardPanel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="LeaderboardPanel/VBox"]
+layout_mode = 2
+
+[node name="Rows" type="VBoxContainer" parent="LeaderboardPanel/VBox"]
+layout_mode = 2
+
+[node name="Status" type="Label" parent="LeaderboardPanel/VBox"]
+layout_mode = 2
+
+[node name="NameEntry" type="LineEdit" parent="LeaderboardPanel"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_2o5uh")
+placeholder_text = "Enter Name"
+alignment = 1
+
+[node name="SubmitButton" type="Button" parent="LeaderboardPanel"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 8
+text = "SUBMIT SCORE"
+
+[connection signal="pressed" from="LeaderboardPanel/SubmitButton" to="." method="_on_submit_button_pressed"]

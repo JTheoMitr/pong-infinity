@@ -58,6 +58,7 @@ var game_over_state: bool = false
 var fade_up: bool = false
 var fade_down: bool = true
 var score := 0
+var final_score_to_submit := 0
 var glow_time := 0.0
 var buff_ids: Array[int] = []
 var barrier_id: int = 0
@@ -75,6 +76,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
 	hud.show_start_message("Get Ready")
 	hud.start_button_pressed.connect(_on_start_button_pressed)
+	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
 	start_background_glow()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -87,14 +89,14 @@ func _ready() -> void:
 	
 	# local test for leaderboard:
 	
-	LeaderboardService.set_display_name_best_effort("John")
-	LeaderboardService.submit_score_best_effort(randi_range(0, 999))
-
-	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
-		print("ok:", ok, "err:", err, "count:", records.size())
-		for rec in records:
-			print(rec.rank, rec.username, rec.score)
-	)
+	#LeaderboardService.set_display_name_best_effort("John")
+	#LeaderboardService.submit_score_best_effort(randi_range(0, 999))
+#
+	#LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
+		#print("ok:", ok, "err:", err, "count:", records.size())
+		#for rec in records:
+			#print(rec.rank, rec.username, rec.score)
+	#)
 
 	
 	await get_tree().create_timer(1.0).timeout
@@ -211,6 +213,7 @@ func start_game() -> void:
 	mine_timer.start()
 	crystal1_timer.start()
 	panel_timer_1.start()
+	hud.hide_leaderboard()
 	#ice_mine_timer.start()
 
 
@@ -218,6 +221,7 @@ func start_game() -> void:
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
+	final_score_to_submit = score
 	var game_over_chime = game_over_sfx.instantiate()
 	get_parent().add_child(game_over_chime)
 	stop_all_timers()
@@ -227,7 +231,11 @@ func game_over() -> void:
 	ball.disable_on_fire()
 	ball_is_on_fire = false
 	hud.show_score()
-	hud.show_start_message("Game Over")
+	
+	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
+		hud.show_leaderboard(records, ok, err)
+	);
+	hud.show_score_submit()
 
 func _on_paddle_hit(paddle: Node) -> void:
 	var paddle_bonk = paddle_hit_sfx.instantiate()
@@ -560,3 +568,13 @@ func _on_ice_mine_timer_timeout() -> void:
 
 func _on_panel_timer_1_timeout() -> void:
 	spawn_silver_panel()
+	
+func _on_score_button_pressed(player_name: String) -> void:
+	print("Submitting final score:", final_score_to_submit, "as", player_name)
+	LeaderboardService.submit_score_with_name_best_effort(player_name, final_score_to_submit)
+	hud.hide_score_submit()
+	hud.show_start_message("Game Over")
+
+	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
+		hud.show_leaderboard(records, ok, err)
+	)

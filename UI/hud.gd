@@ -77,13 +77,17 @@ func _clear_children(node: Node) -> void:
 		
 func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 	leaderboard_panel.visible = true
-	leaderboard_title.text = "TOP 10"
+	leaderboard_title.text = "\n TOP 10"
 
 	_clear_children(leaderboard_rows)
 
 	if not ok:
 		leaderboard_status.visible = true
-		leaderboard_status.text = "Leaderboard unavailable (offline)"
+		leaderboard_status.text = "\n Leaderboard unavailable (offline)"
+		score_submit_button.hide()
+		name_entry.hide()
+		show_start_message("Play Again")
+		
 	else:
 		leaderboard_status.visible = false
 		leaderboard_status.text = ""

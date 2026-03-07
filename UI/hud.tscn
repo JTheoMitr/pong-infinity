@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=8 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
+[ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="3_2o5uh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bytes"]
 
@@ -14,7 +15,15 @@ border_width_bottom = 4
 border_color = Color(0, 0.95615023, 0.46149242, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2o5uh"]
-bg_color = Color(0.29402778, 0.2940278, 0.29402766, 1)
+bg_color = Color(0.12408299, 0.12408296, 0.12408296, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b1lf8"]
+bg_color = Color(0.31534028, 0.02749604, 0.5487479, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
 
 [node name="hud" type="CanvasLayer"]
 script = ExtResource("1_37p78")
@@ -86,9 +95,9 @@ text = "PAUSED"
 horizontal_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="."]
-offset_top = 375.0
+offset_top = 50.0
 offset_right = 1152.0
-offset_bottom = 416.0
+offset_bottom = 91.0
 theme_override_colors/font_color = Color(0.4627451, 1, 0, 1)
 theme_override_fonts/font = ExtResource("2_bytes")
 theme_override_font_sizes/font_size = 31
@@ -114,7 +123,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_bytes")
 layout_mode = 2
 
 [node name="Title" type="Label" parent="LeaderboardPanel/VBox"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_constants/line_spacing = 3
+theme_override_fonts/font = ExtResource("3_2o5uh")
+theme_override_font_sizes/font_size = 20
+text = "asdasdasdasdasd"
+horizontal_alignment = 1
 
 [node name="Rows" type="VBoxContainer" parent="LeaderboardPanel/VBox"]
 layout_mode = 2
@@ -123,9 +138,11 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="NameEntry" type="LineEdit" parent="LeaderboardPanel"]
-custom_minimum_size = Vector2(50, 30)
+custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("3_2o5uh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_2o5uh")
 placeholder_text = "Enter Name"
 alignment = 1
@@ -134,6 +151,9 @@ alignment = 1
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_vertical = 8
+size_flags_stretch_ratio = 0.0
+theme_override_fonts/font = ExtResource("3_2o5uh")
+theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
 text = "SUBMIT SCORE"
 
 [connection signal="pressed" from="LeaderboardPanel/SubmitButton" to="." method="_on_submit_button_pressed"]

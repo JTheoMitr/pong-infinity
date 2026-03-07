@@ -193,6 +193,7 @@ func _on_start_button_pressed() -> void:
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
 		start_pressed = true
+		hud.hide_leaderboard()
 		await countdown_and_start()
 
 
@@ -213,7 +214,7 @@ func start_game() -> void:
 	mine_timer.start()
 	crystal1_timer.start()
 	panel_timer_1.start()
-	hud.hide_leaderboard()
+	#hud.hide_leaderboard()
 	#ice_mine_timer.start()
 
 
@@ -573,8 +574,9 @@ func _on_score_button_pressed(player_name: String) -> void:
 	print("Submitting final score:", final_score_to_submit, "as", player_name)
 	LeaderboardService.submit_score_with_name_best_effort(player_name, final_score_to_submit)
 	hud.hide_score_submit()
-	hud.show_start_message("Game Over")
-
+	await get_tree().create_timer(1.0).timeout
 	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
 		hud.show_leaderboard(records, ok, err)
 	)
+	await get_tree().create_timer(3.0).timeout
+	hud.show_start_message("Play Again?") #test this!

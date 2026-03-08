@@ -97,12 +97,13 @@ horizontal_alignment = 1
 [node name="ScoreLabel" type="Label" parent="."]
 offset_top = 50.0
 offset_right = 1152.0
-offset_bottom = 91.0
+offset_bottom = 593.0
 theme_override_colors/font_color = Color(0.4627451, 1, 0, 1)
 theme_override_fonts/font = ExtResource("2_bytes")
-theme_override_font_sizes/font_size = 31
+theme_override_font_sizes/font_size = 50
 text = "Score: 0"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LeaderboardPanel" type="PanelContainer" parent="."]
 visible = false

@@ -86,7 +86,7 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 		leaderboard_status.text = "\n Leaderboard unavailable (offline)"
 		score_submit_button.hide()
 		name_entry.hide()
-		show_start_message("Play Again")
+		#show_start_message("Play Again?")
 		
 	else:
 		leaderboard_status.visible = false

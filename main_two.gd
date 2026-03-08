@@ -64,6 +64,7 @@ var buff_ids: Array[int] = []
 var barrier_id: int = 0
 var ball_is_on_fire: bool = false
 var ball_is_frozen: bool = false
+var awaiting_score_submit: bool = false
 
 # --- Camera Effects ---
 var shake_strength := 0.0
@@ -146,7 +147,7 @@ func reset_positions(screen_center: Vector2) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	# --- Start game with Space / Start button ---
-	if not game_started and event.is_action_pressed("ui_accept"):
+	if not game_started and not awaiting_score_submit and event.is_action_pressed("ui_accept"):
 		_on_start_button_pressed()
 
 	# --- Pause / Unpause ---
@@ -222,6 +223,7 @@ func start_game() -> void:
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
+	awaiting_score_submit = true
 	final_score_to_submit = score
 	var game_over_chime = game_over_sfx.instantiate()
 	get_parent().add_child(game_over_chime)
@@ -233,6 +235,7 @@ func game_over() -> void:
 	ball_is_on_fire = false
 	hud.show_score()
 	
+	await get_tree().create_timer(3.0).timeout
 	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
 		hud.show_leaderboard(records, ok, err)
 	);
@@ -572,11 +575,18 @@ func _on_panel_timer_1_timeout() -> void:
 	
 func _on_score_button_pressed(player_name: String) -> void:
 	print("Submitting final score:", final_score_to_submit, "as", player_name)
-	LeaderboardService.submit_score_with_name_best_effort(player_name, final_score_to_submit)
 	hud.hide_score_submit()
-	await get_tree().create_timer(1.0).timeout
-	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
-		hud.show_leaderboard(records, ok, err)
+
+	var ok = await LeaderboardService.submit_score_with_name_best_effort(player_name, final_score_to_submit)
+	print("Submit finished:", ok)
+
+	LeaderboardService.fetch_top_best_effort(func(records: Array, ok_fetch: bool, err: String) -> void:
+		hud.show_leaderboard(records, ok_fetch, err)
 	)
+
+	_play_again()
+	
+func _play_again() -> void:
 	await get_tree().create_timer(3.0).timeout
-	hud.show_start_message("Play Again?") #test this!
+	awaiting_score_submit = false
+	hud.show_start_message("Play Again?")

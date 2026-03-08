@@ -132,10 +132,11 @@ func _sanitize_name(raw_name: String) -> String:
 	return cleaned
 
 
-func submit_score_with_name_best_effort(player_name: String, score: int) -> void:
-	_submit_score_with_name_async(player_name.strip_edges(), score)
+func submit_score_with_name_best_effort(player_name: String, score: int) -> bool:
+	return await _submit_score_with_name_async(player_name.strip_edges(), score)
 
-func _submit_score_with_name_async(player_name: String, score: int) -> void:
+
+func _submit_score_with_name_async(player_name: String, score: int) -> bool:
 	var clean_name := _sanitize_name(player_name)
 	if clean_name == "":
 		clean_name = "player"
@@ -150,7 +151,7 @@ func _submit_score_with_name_async(player_name: String, score: int) -> void:
 	var auth_res: Variant = await _client.authenticate_device_async(guest_id, null, true)
 	if auth_res == null or auth_res.is_exception():
 		last_error = "Auth failed"
-		return
+		return false
 
 	_session = auth_res
 
@@ -168,13 +169,13 @@ func _submit_score_with_name_async(player_name: String, score: int) -> void:
 
 	if not updated:
 		last_error = "Name update failed"
-		return
+		return false
 
 	# 3) RE-AUTHENTICATE so session token has the updated username
 	var refreshed: Variant = await _client.authenticate_device_async(guest_id, null, true)
 	if refreshed == null or refreshed.is_exception():
 		last_error = "Re-auth failed"
-		return
+		return false
 
 	_session = refreshed
 
@@ -182,3 +183,6 @@ func _submit_score_with_name_async(player_name: String, score: int) -> void:
 	var w: Variant = await _client.write_leaderboard_record_async(_session, LEADERBOARD_ID, score, 0, {})
 	if w == null or w.is_exception():
 		last_error = "Submit failed"
+		return false
+
+	return true

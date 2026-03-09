@@ -16,6 +16,8 @@ extends CanvasLayer
 @onready var name_entry = $LeaderboardPanel/NameEntry
 @onready var score_submit_button = $LeaderboardPanel/SubmitButton
 
+var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
+
 signal start_button_pressed
 signal submit_score_button_pressed(player_name: String)
 
@@ -86,7 +88,9 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 		leaderboard_status.text = "\n Leaderboard unavailable (offline)"
 		score_submit_button.hide()
 		name_entry.hide()
-		#show_start_message("Play Again?")
+		await get_tree().create_timer(3.0).timeout
+		show_start_message("Play Again?")
+		start_button.grab_focus()
 		
 	else:
 		leaderboard_status.visible = false
@@ -103,6 +107,7 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 		var score: int = int(rec.get("score", 0))
 
 		var row := Label.new()
+		row.add_theme_font_override("font", custom_font)
 		row.text = "%d. %s  —  %d" % [rank, name, score]
 		row.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		leaderboard_rows.add_child(row)

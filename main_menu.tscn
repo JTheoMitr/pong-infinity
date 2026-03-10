@@ -257,7 +257,7 @@ animations = [{
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qtwp"]
-bg_color = Color(0.42709383, 0.3164611, 0.7001076, 1)
+bg_color = Color(0.63529414, 0.16470589, 0.7019608, 1)
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_7vrkn")
@@ -507,6 +507,16 @@ offset_bottom = 373.0
 theme_override_fonts/normal_font = ExtResource("6_qe12f")
 bbcode_enabled = true
 text = "[center]---- Move Paddles"
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="ControlsPopup"]
+offset_left = 475.0
+offset_top = 157.0
+offset_right = 734.0
+offset_bottom = 295.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]---- Reset Paddle 
+     Positions"
 
 [node name="ReturnButton" type="Button" parent="ControlsPopup"]
 offset_left = 17.0

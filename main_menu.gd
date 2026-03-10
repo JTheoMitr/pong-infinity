@@ -23,6 +23,8 @@ extends Node2D
 @onready var speak = $NeuroballSpoken
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
+const MAIN_TWO_PATH := "res://main_two.tscn"
+var texture = load("res://Assets/Sprites/gdb-playstation-2 triangle flat.png")
 
 var panel_sliding: bool = false
 var cyborg_head_zoom: bool = false
@@ -54,6 +56,8 @@ func _process(_delta: float) -> void:
 		
 
 func _ready() -> void:
+	get_tree().paused = false
+	
 	start_button.grab_focus()
 	start_title_glow()
 	cyborg_head.play("normal")
@@ -61,6 +65,9 @@ func _ready() -> void:
 	difficulty_select.hide()
 	cyborg_head.scale.x = 3.0
 	cyborg_head.scale.y = 3.0
+	
+	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
+	
 	await get_tree().create_timer(1.0).timeout
 	speak.play()
 	
@@ -84,7 +91,16 @@ func start_title_glow() -> void:
 
 func _on_timer_timeout() -> void:
 	print_debug("timed")
-	get_tree().change_scene_to_file("res://main_two.tscn")
+
+	var status := ResourceLoader.load_threaded_get_status(MAIN_TWO_PATH)
+
+	if status == ResourceLoader.THREAD_LOAD_LOADED:
+		var packed_scene := ResourceLoader.load_threaded_get(MAIN_TWO_PATH) as PackedScene
+		if packed_scene:
+			get_tree().change_scene_to_packed(packed_scene)
+	else:
+		# Fallback if somehow not ready yet
+		get_tree().change_scene_to_file(MAIN_TWO_PATH)
 
 
 func _on_audio_stream_player_finished() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=43 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -29,6 +29,22 @@ shader_parameter/opacity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j5v2v"]
+bg_color = Color(0.6, 0.6, 0.6, 0.627451)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.078431375, 0.99215686, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iotk1"]
+bg_color = Color(0.6, 0.6, 0.6, 0.627451)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.078431375, 0.99215686, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ka3nr"]
 bg_color = Color(0.6, 0.6, 0.6, 0.5803922)
@@ -328,7 +344,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
-visible = false
 custom_minimum_size = Vector2(700, 35)
 layout_mode = 2
 
@@ -337,17 +352,22 @@ custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 6.78
+theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_styles/focus = SubResource("StyleBoxFlat_j5v2v")
 text = "Start"
 
 [node name="Button2" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Controls"
 
 [node name="DifficultySelect" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = -16
 alignment = 1

@@ -77,6 +77,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
 	hud.show_start_message("Get Ready")
 	hud.start_button_pressed.connect(_on_start_button_pressed)
+	hud.resume_button_pressed.connect(toggle_pause)
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
 	start_background_glow()
 	var screen_size := get_viewport_rect().size

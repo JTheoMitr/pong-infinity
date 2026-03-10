@@ -94,6 +94,7 @@ func _on_audio_stream_player_finished() -> void:
 func _on_button_2_pressed() -> void:
 	controls_pop.popup()
 	return_button.grab_focus()
+	print_debug("controls")
 
 
 func _on_return_button_pressed() -> void:

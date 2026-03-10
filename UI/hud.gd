@@ -15,11 +15,13 @@ extends CanvasLayer
 
 @onready var name_entry = $LeaderboardPanel/NameEntry
 @onready var score_submit_button = $LeaderboardPanel/SubmitButton
+@onready var resume_button = $PauseLabel/ResumeButton
 
 var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
 
 signal start_button_pressed
 signal submit_score_button_pressed(player_name: String)
+signal resume_button_pressed
 
 
 func _ready() -> void:
@@ -42,6 +44,8 @@ func _on_start_button_pressed() -> void:
 func show_pause_overlay(paused: bool) -> void:
 	pause_label.visible = paused
 	score_label.visible = paused
+	if pause_label.visible:
+		resume_button.grab_focus()
 
 func show_start_message(text: String) -> void: #gives the start button back to player
 	label.text = text #customize for each call
@@ -128,3 +132,11 @@ func hide_score_submit() -> void:
 func _on_submit_button_pressed() -> void:
 	if name_entry.text != "":
 		emit_signal("submit_score_button_pressed", name_entry.text.strip_edges())
+
+
+func _on_resume_button_pressed() -> void:
+	emit_signal("resume_button_pressed")
+
+
+func _on_quit_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://main_menu.tscn")

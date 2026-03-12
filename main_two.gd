@@ -35,6 +35,8 @@ const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 @onready var particles_root: Node2D = $Particles
 
 @onready var level_music: AudioStreamPlayer = $LevelMusic
+@onready var level_music_2: AudioStreamPlayer = $LevelMusic2
+@onready var level_music_3: AudioStreamPlayer = $LevelMusic3
 
 
 @export var impact_particles_scene: PackedScene
@@ -555,7 +557,7 @@ func _on_crystal_timer_timeout() -> void:
 
 
 func _on_level_music_finished() -> void:
-	level_music.play()
+	level_music_2.play()
 
 
 func _on_ball_fire_timer_timeout() -> void:
@@ -591,3 +593,11 @@ func _play_again() -> void:
 	await get_tree().create_timer(3.0).timeout
 	awaiting_score_submit = false
 	hud.show_start_message("Play Again?")
+
+
+func _on_level_music_2_finished() -> void:
+	level_music_3.play()
+
+
+func _on_level_music_3_finished() -> void:
+	level_music.play()

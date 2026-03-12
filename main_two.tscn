@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=27 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -23,6 +23,8 @@
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
 [ext_resource type="AudioStream" uid="uid://dcnu7dd53hb8t" path="res://Assets/Music/DEFLECT_Lvl1.mp3" id="13_0wljb"]
 [ext_resource type="PackedScene" uid="uid://r2ymvdg7nfjj" path="res://Enemies/silver_panel_1.tscn" id="21_81bu4"]
+[ext_resource type="AudioStream" uid="uid://buotnoh3wnjj7" path="res://Assets/Music/BristolBummerNew101louderkick.mp3" id="24_ltw2n"]
+[ext_resource type="AudioStream" uid="uid://cc6v07yvoa4op" path="res://Assets/Music/arLow113.mp3" id="25_ggdio"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fokku"]
 bg_color = Color(0, 0, 0, 1)
@@ -112,6 +114,14 @@ stream = ExtResource("13_0wljb")
 volume_db = -11.0
 autoplay = true
 
+[node name="LevelMusic2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("24_ltw2n")
+volume_db = -11.0
+
+[node name="LevelMusic3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("25_ggdio")
+volume_db = -11.0
+
 [node name="CrystalTimer" type="Timer" parent="."]
 wait_time = 3.0
 
@@ -137,6 +147,8 @@ one_shot = true
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]
+[connection signal="finished" from="LevelMusic2" to="." method="_on_level_music_2_finished"]
+[connection signal="finished" from="LevelMusic3" to="." method="_on_level_music_3_finished"]
 [connection signal="timeout" from="CrystalTimer" to="." method="_on_crystal_timer_timeout"]
 [connection signal="timeout" from="MineTimer" to="." method="_on_mine_timer_timeout"]
 [connection signal="timeout" from="BallFireTimer" to="." method="_on_ball_fire_timer_timeout"]

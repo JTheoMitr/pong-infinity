@@ -3,11 +3,11 @@ extends Node
 @onready var _http: HTTPRequest = HTTPRequest.new()
 # ===== Local dev settings (change HOST later to Hetzner IP) =====
 const SERVER_KEY: String = "defaultkey"
-const HOST: String = "127.0.0.1"
+const HOST: String = "89.167.86.254"
 const PORT: int = 7350
 const SCHEME: String = "http" # use "https" when you put it behind TLS later
 
-const LEADERBOARD_ID: String = "global_scores"
+const LEADERBOARD_ID: String = "neuroball_scores"
 const TOP_N: int = 10
 
 var _client: NakamaClient
@@ -85,8 +85,10 @@ func _fetch_top_async(callback: Callable) -> void:
 		"Authorization: Bearer %s" % _session.token,
 		"Accept: application/json"
 	])
+	
 
 	var err := _http.request(url, headers, HTTPClient.METHOD_GET)
+	print("Leaderboard fetch request err:", err)
 	if err != OK:
 		last_error = "Fetch request failed"
 		if callback.is_valid():
@@ -96,6 +98,10 @@ func _fetch_top_async(callback: Callable) -> void:
 	var result: Array = await _http.request_completed
 	var response_code: int = int(result[1])
 	var body: PackedByteArray = result[3] as PackedByteArray
+	var json_text := body.get_string_from_utf8()
+
+	print("Leaderboard fetch response_code:", response_code)
+	print("Leaderboard fetch body:", json_text)
 
 	if response_code != 200:
 		last_error = "Fetch failed (%d)" % response_code
@@ -103,18 +109,27 @@ func _fetch_top_async(callback: Callable) -> void:
 			callback.call(cached_top, false, last_error)
 		return
 
-	var json_text := body.get_string_from_utf8()
 	var parsed: Variant = JSON.parse_string(json_text)
 
-	if typeof(parsed) != TYPE_DICTIONARY or not parsed.has("records"):
+	if typeof(parsed) != TYPE_DICTIONARY:
 		last_error = "Invalid leaderboard response"
 		if callback.is_valid():
 			callback.call(cached_top, false, last_error)
 		return
 
-	cached_top = parsed["records"]
+	var parsed_dict: Dictionary = parsed
+
+	if not parsed_dict.has("records"):
+		cached_top = []
+		if callback.is_valid():
+			callback.call(cached_top, true, "")
+		return
+
+	cached_top = parsed_dict["records"]
 	if callback.is_valid():
 		callback.call(cached_top, true, "")
+		
+
 		
 		
 func _sanitize_name(raw_name: String) -> String:

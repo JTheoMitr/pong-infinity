@@ -10,7 +10,8 @@ extends Node2D
 @onready var button_1 = $CanvasLayer/CenterContainer/VBoxContainer/Button
 @onready var button_2 = $CanvasLayer/CenterContainer/VBoxContainer/Button2
 @onready var menu_music = $AudioStreamPlayer
-@onready var return_button = $ControlsPopup/ReturnButton
+@onready var return_button = $ControlsPopup/VBoxContainer/ReturnButton
+@onready var keyboard_button = $ControlsPopup/VBoxContainer/KeyboardButton
 @onready var controls_pop = $ControlsPopup
 @onready var cyborg_head = $CanvasLayer/AnimatedSprite2D
 @onready var difficulty_select = $CanvasLayer/CenterContainer/DifficultySelect
@@ -21,6 +22,25 @@ extends Node2D
 @onready var bgnd = $CityBgnd
 @onready var wires = $CanvasLayer/Sprite2D2
 @onready var speak = $NeuroballSpoken
+
+#controls panel sub-items
+
+@onready var controller_pic = $ControlsPopup/Sprite2D
+@onready var controller_text1 = $ControlsPopup/RichTextLabel
+@onready var controller_text2 = $ControlsPopup/RichTextLabel2
+@onready var controller_text3 = $ControlsPopup/RichTextLabel3
+@onready var controller_text4 = $ControlsPopup/RichTextLabel4
+@onready var controller_text5 = $ControlsPopup/RichTextLabel5
+@onready var controller_text6 = $ControlsPopup/RichTextLabel6
+@onready var controller_text7 = $ControlsPopup/RichTextLabel7
+
+@onready var keyboard_pic = $ControlsPopup/Sprite2D2
+@onready var keyboard_text1 = $ControlsPopup/RichTextLabel8
+@onready var keyboard_text2 = $ControlsPopup/RichTextLabel9
+@onready var keyboard_text3 = $ControlsPopup/RichTextLabel10
+@onready var keyboard_text4 = $ControlsPopup/RichTextLabel11
+@onready var keyboard_text5 = $ControlsPopup/RichTextLabel12
+
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 const MAIN_TWO_PATH := "res://main_two.tscn"
@@ -178,3 +198,42 @@ func fade_out_static():
 		0.0,
 		1.0
 	)
+
+
+func _on_keyboard_button_pressed() -> void:
+	if controller_pic.visible:
+		controller_pic.hide()
+		controller_text1.hide()
+		controller_text2.hide()
+		controller_text3.hide()
+		controller_text4.hide()
+		controller_text5.hide()
+		controller_text6.hide()
+		controller_text7.hide()
+		
+		keyboard_pic.show()
+		keyboard_text1.show()
+		keyboard_text2.show()
+		keyboard_text3.show()
+		keyboard_text4.show()
+		keyboard_text5.show()
+		
+		keyboard_button.text = "Keyboard"
+	else:
+		controller_pic.show()
+		controller_text1.show()
+		controller_text2.show()
+		controller_text3.show()
+		controller_text4.show()
+		controller_text5.show()
+		controller_text6.show()
+		controller_text7.show()
+		
+		keyboard_pic.hide()
+		keyboard_text1.hide()
+		keyboard_text2.hide()
+		keyboard_text3.hide()
+		keyboard_text4.hide()
+		keyboard_text5.hide()
+		keyboard_button.text = "Controller"
+		

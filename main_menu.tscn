@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=44 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://d050wumnjgq1t" path="res://Assets/Sprites/pixel_wires_hanging_1.png" id="7_8qtwp"]
 [ext_resource type="Texture2D" uid="uid://hjm4k5372ddo" path="res://Assets/Sprites/difficulty_face_set_actions_male_all.png" id="7_qe12f"]
 [ext_resource type="Shader" uid="uid://ccqnlmjyp04r" path="res://cyborg_head.gdshader" id="8_ql5ya"]
+[ext_resource type="Texture2D" uid="uid://7tmio0l45ijq" path="res://Assets/Sprites/Single keyboard (dark).png" id="12_iotk1"]
 [ext_resource type="AudioStream" uid="uid://dgdwssm4byiqs" path="res://Assets/SFX/neuroball_intro_spoken.wav" id="12_j5v2v"]
 [ext_resource type="Shader" uid="uid://cmpyi6km0bfri" path="res://main_menu.gdshader" id="24_8uw0o"]
 
@@ -445,6 +446,11 @@ position = Vector2(396, 227)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("5_nlkkf")
 
+[node name="Sprite2D2" type="Sprite2D" parent="ControlsPopup"]
+visible = false
+position = Vector2(392, 213)
+texture = ExtResource("12_iotk1")
+
 [node name="RichTextLabel" type="RichTextLabel" parent="ControlsPopup"]
 offset_left = 75.0
 offset_top = 177.0
@@ -508,6 +514,67 @@ theme_override_fonts/normal_font = ExtResource("6_qe12f")
 bbcode_enabled = true
 text = "[center]---- Move Paddles"
 
+[node name="RichTextLabel8" type="RichTextLabel" parent="ControlsPopup"]
+visible = false
+offset_left = 458.0
+offset_top = 299.0
+offset_right = 717.0
+offset_bottom = 437.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]|
+ Move Paddles
+with arrows"
+
+[node name="RichTextLabel12" type="RichTextLabel" parent="ControlsPopup"]
+visible = false
+offset_left = 7.0
+offset_top = 428.0
+offset_right = 792.0
+offset_bottom = 594.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+theme_override_font_sizes/normal_font_size = 23
+bbcode_enabled = true
+text = "[center]Move paddles up/left/right/down with the arrow keys. Rotate the paddles clockwise or counter-Clockwise with the C and Z buttons. The X button will Reset the paddles to their default positions (for quicker screen coverage, when needed)."
+
+[node name="RichTextLabel11" type="RichTextLabel" parent="ControlsPopup"]
+visible = false
+offset_left = 378.0
+offset_top = 86.0
+offset_right = 637.0
+offset_bottom = 224.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]Pause (P)
+|
+|
+|
+|"
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="ControlsPopup"]
+visible = false
+offset_left = 573.0
+offset_top = 219.0
+offset_right = 832.0
+offset_bottom = 246.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center] -- Accept (UI/Menu)"
+
+[node name="RichTextLabel9" type="RichTextLabel" parent="ControlsPopup"]
+visible = false
+offset_left = 135.0
+offset_top = 256.0
+offset_right = 394.0
+offset_bottom = 394.0
+theme_override_fonts/normal_font = ExtResource("6_qe12f")
+bbcode_enabled = true
+text = "[center]|		|
+|		|
+|		|
+ Rotate Paddles
+(Z and C)"
+
 [node name="RichTextLabel7" type="RichTextLabel" parent="ControlsPopup"]
 offset_left = 475.0
 offset_top = 157.0
@@ -518,13 +585,23 @@ bbcode_enabled = true
 text = "[center]---- Reset Paddle 
      Positions"
 
-[node name="ReturnButton" type="Button" parent="ControlsPopup"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlsPopup"]
 offset_left = 17.0
-offset_top = 11.0
-offset_right = 130.0
-offset_bottom = 49.0
+offset_top = 15.0
+offset_right = 100.0
+offset_bottom = 79.0
+
+[node name="ReturnButton" type="Button" parent="ControlsPopup/VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
 theme_override_fonts/font = ExtResource("6_qe12f")
 text = "Return"
+
+[node name="KeyboardButton" type="Button" parent="ControlsPopup/VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_qe12f")
+text = "Keyboard"
 
 [node name="NeuroballSpoken" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_j5v2v")
@@ -541,4 +618,5 @@ pitch_scale = 0.9
 [connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3" to="." method="_on_hardbutton_pressed"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="pressed" from="ControlsPopup/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="ControlsPopup/VBoxContainer/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="ControlsPopup/VBoxContainer/KeyboardButton" to="." method="_on_keyboard_button_pressed"]

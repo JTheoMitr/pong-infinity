@@ -77,7 +77,7 @@ var original_cam_position := Vector2.ZERO
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
-	hud.show_start_message("Get Ready")
+	hud.show_start_message("Get Ready") # controller anim will show here
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 	hud.resume_button_pressed.connect(toggle_pause)
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)

@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var pause_label: Label = $PauseLabel
 @onready var center_container = $CenterContainer
 @onready var score_label: Label = $ScoreLabel
+@onready var controller_sprite = $ControllerSprite
 
 @onready var leaderboard_panel: Control = $LeaderboardPanel
 @onready var leaderboard_rows: VBoxContainer = $LeaderboardPanel/VBox/Rows
@@ -47,6 +48,7 @@ func _on_start_button_pressed() -> void:
 	label.visible = false
 	countdown_label.visible = true
 	emit_signal("start_button_pressed")
+	
 
 func show_pause_overlay(paused: bool) -> void:
 	pause_label.visible = paused
@@ -59,12 +61,22 @@ func show_start_message(text: String) -> void: #gives the start button back to p
 	label.visible = true
 	start_button.visible = true
 	countdown_label.visible = false
+	
+func show_first_start_message(text: String) -> void: #gives the start button back to player
+	label.text = text #customize for each call
+	label.visible = true
+	start_button.visible = true
+	countdown_label.visible = false
+	controller_sprite.show()
 
 
 func hide_start_message() -> void:
 	label.visible = false
 	start_button.visible = false
 	countdown_label.visible = false
+	if controller_sprite.visible == true:
+		controller_sprite.hide()
+		print("hide controller")
 
 
 func show_countdown(number: int) -> void:

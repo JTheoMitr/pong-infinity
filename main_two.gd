@@ -81,6 +81,7 @@ func _ready() -> void:
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 	hud.resume_button_pressed.connect(toggle_pause)
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
+	hud.no_submit_play_again_pressed.connect(_no_submit_play_again)
 	start_background_glow()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -184,7 +185,7 @@ func _on_start_button_pressed() -> void:
 	if game_over_state:
 		print("game over")
 		game_over_state = false
-		clear_all_buffs()
+		#clear_all_buffs() #need to switch this to game over?
 	if start_pressed == false:
 		hud.hide_start_message()
 		hud.hide_score()
@@ -228,6 +229,7 @@ func game_over() -> void:
 	game_over_state = true
 	awaiting_score_submit = true
 	final_score_to_submit = score
+	clear_all_buffs()
 	var game_over_chime = game_over_sfx.instantiate()
 	get_parent().add_child(game_over_chime)
 	stop_all_timers()
@@ -590,7 +592,7 @@ func _on_score_button_pressed(player_name: String) -> void:
 	_play_again()
 	
 func _play_again() -> void:
-	await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(1.0).timeout
 	awaiting_score_submit = false
 	hud.show_start_message("Play Again?")
 
@@ -601,3 +603,10 @@ func _on_level_music_2_finished() -> void:
 
 func _on_level_music_3_finished() -> void:
 	level_music.play()
+
+func _no_submit_play_again() -> void:
+	hud.hide_score_submit()
+	print("no_submit")
+	_on_start_button_pressed()
+	
+	

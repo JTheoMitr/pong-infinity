@@ -13,15 +13,20 @@ extends CanvasLayer
 @onready var leaderboard_status: Label = $LeaderboardPanel/VBox/Status
 @onready var leaderboard_title: Label = $LeaderboardPanel/VBox/Title
 
-@onready var name_entry = $LeaderboardPanel/NameEntry
-@onready var score_submit_button = $LeaderboardPanel/SubmitButton
+@onready var name_entry = $LeaderboardPanel/VBoxContainer/NameEntry
+@onready var score_submit_button = $LeaderboardPanel/VBoxContainer/SubmitButton
+@onready var no_submit_button = $LeaderboardPanel/VBoxContainer/SubmitButton2
 @onready var resume_button = $PauseLabel/ResumeButton
+@onready var submit_message = $LeaderboardPanel/SubmitMessage
+@onready var submit_panel = $LeaderboardPanel/SubmitPanel
+@onready var quit_button = $LeaderboardPanel/VBoxContainer/QuitButton
 
 var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
 
 signal start_button_pressed
 signal submit_score_button_pressed(player_name: String)
 signal resume_button_pressed
+signal no_submit_play_again_pressed
 
 
 func _ready() -> void:
@@ -32,6 +37,8 @@ func _ready() -> void:
 	pause_label.visible = false
 	score_label.visible = false
 	start_button.pressed.connect(_on_start_button_pressed)
+	submit_message.visible = false
+	submit_panel.visible = false
 	
 
 
@@ -91,6 +98,7 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 		leaderboard_status.visible = true
 		leaderboard_status.text = "\n Leaderboard unavailable (offline)"
 		score_submit_button.hide()
+		quit_button.hide()
 		name_entry.hide()
 		await get_tree().create_timer(3.0).timeout
 		show_start_message("Play Again?")
@@ -120,18 +128,26 @@ func hide_leaderboard() -> void:
 	leaderboard_panel.visible = false
 	
 func show_score_submit() -> void:
+	submit_panel.show()
 	name_entry.show()
 	name_entry.grab_focus()
 	score_submit_button.show()
+	no_submit_button.show()
+	quit_button.show()
 	
 func hide_score_submit() -> void:
 	name_entry.hide()
 	score_submit_button.hide() #make sure to call this properly and check flow, start button never shows offline
-
+	no_submit_button.hide()
+	quit_button.hide()
 
 func _on_submit_button_pressed() -> void:
 	if name_entry.text != "":
 		emit_signal("submit_score_button_pressed", name_entry.text.strip_edges())
+	submit_message.show()
+	await get_tree().create_timer(2.0).timeout
+	submit_message.hide()
+	submit_panel.hide()
 
 
 func _on_resume_button_pressed() -> void:
@@ -140,3 +156,7 @@ func _on_resume_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://main_menu.tscn")
+
+
+func _on_submit_button_2_pressed() -> void:
+	emit_signal("no_submit_play_again_pressed")

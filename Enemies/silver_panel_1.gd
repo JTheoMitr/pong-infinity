@@ -13,7 +13,7 @@ var hit_counter: int = 0
 
 signal ball_hit_silver_panel
 signal panel_pop
-signal restarting
+#signal restarting
 
 
 func _ready() -> void:
@@ -79,7 +79,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		if hit_counter > 1:
 			self.queue_free()
 			emit_signal("panel_pop")
-		#print_debug("silver panel")
+		print_debug("silver panel")
 
 
 func _on_timer_3_timeout() -> void:
@@ -88,4 +88,4 @@ func _on_timer_3_timeout() -> void:
 
 func _on_timer_4_timeout() -> void:
 	self.queue_free()
-	emit_signal("restarting")
+	#emit_signal("restarting")

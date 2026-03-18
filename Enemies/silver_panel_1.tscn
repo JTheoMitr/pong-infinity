@@ -575,7 +575,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dnbbf"]
-size = Vector2(82, 37)
+size = Vector2(84, 39)
 
 [node name="SilverPanel1" type="StaticBody2D" groups=["paddle"]]
 collision_mask = 2

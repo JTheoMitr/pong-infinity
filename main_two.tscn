@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=29 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://bxg7jeyx8lckr" path="res://mode_2_paddle_TB.tscn" id="6_pclk0"]
 [ext_resource type="PackedScene" uid="uid://dpb72xbb4ju5p" path="res://Buffs/barriers_1.tscn" id="7_33m0d"]
 [ext_resource type="PackedScene" uid="uid://bcfu1lpreepam" path="res://UI/hud.tscn" id="7_m0f0d"]
+[ext_resource type="PackedScene" uid="uid://t6w2vdwhm4v0" path="res://impact_particles_red.tscn" id="7_r2v4v"]
 [ext_resource type="PackedScene" uid="uid://beheaght5w878" path="res://corner_paddle.tscn" id="8_fokku"]
 [ext_resource type="PackedScene" uid="uid://7a4ckkirany6" path="res://Buffs/fire_zone_1.tscn" id="8_l8clx"]
 [ext_resource type="PackedScene" uid="uid://b0bgxwyonsha3" path="res://Buffs/mine.tscn" id="9_b4p4h"]
@@ -22,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://jl2y75glv4hl" path="res://Buffs/ice_mine.tscn" id="11_81bu4"]
 [ext_resource type="PackedScene" uid="uid://bb3f52h6hdcqj" path="res://Buffs/multiplier_1.tscn" id="11_wuyf0"]
 [ext_resource type="AudioStream" uid="uid://dcnu7dd53hb8t" path="res://Assets/Music/DEFLECT_Lvl1.mp3" id="13_0wljb"]
+[ext_resource type="PackedScene" uid="uid://bb5t5h53rkp4l" path="res://Enemies/spinning_head_1.tscn" id="15_ggdio"]
 [ext_resource type="PackedScene" uid="uid://r2ymvdg7nfjj" path="res://Enemies/silver_panel_1.tscn" id="21_81bu4"]
 [ext_resource type="AudioStream" uid="uid://buotnoh3wnjj7" path="res://Assets/Music/BristolBummerNew101louderkick.mp3" id="24_ltw2n"]
 [ext_resource type="AudioStream" uid="uid://cc6v07yvoa4op" path="res://Assets/Music/arLow113.mp3" id="25_ggdio"]
@@ -36,6 +38,7 @@ impact_particles_multiplier_1 = ExtResource("3_q6xn0")
 impact_particles_panel_pop = ExtResource("4_2dp27")
 impact_particles_crystal_1 = ExtResource("4_fokku")
 impact_particles_white = ExtResource("5_5mu1p")
+impact_particles_red = ExtResource("7_r2v4v")
 multiplier_1 = ExtResource("11_wuyf0")
 score_crystal_1 = ExtResource("5_m0f0d")
 barriers = ExtResource("7_33m0d")
@@ -44,6 +47,7 @@ mine_1 = ExtResource("9_b4p4h")
 ice_zone = ExtResource("10_51rue")
 ice_mine_1 = ExtResource("11_81bu4")
 silver_panel_1 = ExtResource("21_81bu4")
+spinning_head_1 = ExtResource("15_ggdio")
 
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color(0, 0, 0, 1)
@@ -142,7 +146,11 @@ wait_time = 25.0
 one_shot = true
 
 [node name="PanelTimer1" type="Timer" parent="."]
-wait_time = 15.0
+wait_time = 20.0
+one_shot = true
+
+[node name="SpinHeadTimer" type="Timer" parent="."]
+wait_time = 20.0
 one_shot = true
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
@@ -154,3 +162,4 @@ one_shot = true
 [connection signal="timeout" from="BallFireTimer" to="." method="_on_ball_fire_timer_timeout"]
 [connection signal="timeout" from="IceMineTimer" to="." method="_on_ice_mine_timer_timeout"]
 [connection signal="timeout" from="PanelTimer1" to="." method="_on_panel_timer_1_timeout"]
+[connection signal="timeout" from="SpinHeadTimer" to="." method="_on_spin_head_timer_timeout"]

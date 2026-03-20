@@ -70,6 +70,7 @@ var barrier_id: int = 0
 var ball_is_on_fire: bool = false
 var ball_is_frozen: bool = false
 var awaiting_score_submit: bool = false
+var musicOn = true
 
 # --- Camera Effects ---
 var shake_strength := 0.0
@@ -83,6 +84,7 @@ func _ready() -> void:
 	hud.show_start_message("Get Ready") # controller anim will show here
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 	hud.resume_button_pressed.connect(toggle_pause)
+	hud.music_button_pressed.connect(_on_music_button_pressed)
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
 	hud.no_submit_play_again_pressed.connect(_no_submit_play_again)
 	start_background_glow()
@@ -94,6 +96,10 @@ func _ready() -> void:
 	reset_positions(screen_center)
 	ball.visible = false
 	original_cam_position = cam.position
+	
+	level_music.volume_db = -11
+	level_music_2.volume_db = -3
+	level_music_3.volume_db = -3
 	
 	# local test for leaderboard:
 	
@@ -665,3 +671,18 @@ func _no_submit_play_again() -> void:
 
 func _on_spin_head_timer_timeout() -> void:
 	spawn_spinning_head()
+
+func _on_music_button_pressed() -> void:
+	if musicOn:
+		musicOn = false
+		level_music.volume_db = -100
+		level_music_2.volume_db = -100
+		level_music_3.volume_db = -100
+		hud.music_button_text("Music: Off")
+	else:
+		musicOn = true
+		level_music.volume_db = -11
+		level_music_2.volume_db = -3
+		level_music_3.volume_db = -3
+		hud.music_button_text("Music: On")
+		

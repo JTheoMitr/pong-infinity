@@ -21,13 +21,17 @@ extends CanvasLayer
 @onready var submit_message = $LeaderboardPanel/SubmitMessage
 @onready var submit_panel = $LeaderboardPanel/SubmitPanel
 @onready var quit_button = $LeaderboardPanel/VBoxContainer/QuitButton
+@onready var music_button = $PauseLabel/MusicButton
 
 var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
+var musicOn = true
+
 
 signal start_button_pressed
 signal submit_score_button_pressed(player_name: String)
 signal resume_button_pressed
 signal no_submit_play_again_pressed
+signal music_button_pressed
 
 
 func _ready() -> void:
@@ -172,3 +176,10 @@ func _on_quit_button_pressed() -> void:
 
 func _on_submit_button_2_pressed() -> void:
 	emit_signal("no_submit_play_again_pressed")
+
+
+func _on_music_button_pressed() -> void:
+	emit_signal("music_button_pressed")
+
+func music_button_text(text: String) -> void:
+	music_button.text = text

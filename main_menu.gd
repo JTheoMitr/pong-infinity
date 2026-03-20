@@ -22,6 +22,8 @@ extends Node2D
 @onready var bgnd = $CityBgnd
 @onready var wires = $CanvasLayer/Sprite2D2
 @onready var speak = $NeuroballSpoken
+@onready var codex_popup = $CodexPopup
+@onready var back_button = $CodexPopup/BackButton
 
 #controls panel sub-items
 
@@ -237,3 +239,12 @@ func _on_keyboard_button_pressed() -> void:
 		keyboard_text5.hide()
 		keyboard_button.text = "Controller"
 		
+
+
+func _on_codex_button_pressed() -> void:
+	codex_popup.show()
+	back_button.grab_focus()
+
+
+func _on_back_button_pressed() -> void:
+	codex_popup.hide()

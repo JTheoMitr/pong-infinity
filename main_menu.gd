@@ -58,7 +58,7 @@ func _process(_delta: float) -> void:
 		title.self_modulate.a -= .005
 		if cyborg_head.frame > 8:
 			cyborg_head.stop()
-			print_debug("frame 8")
+			#print_debug("frame 8")
 	if cyborg_head_zoom:
 		cyborg_head.scale.x += 0.2
 		cyborg_head.scale.y += 0.2
@@ -112,7 +112,7 @@ func start_title_glow() -> void:
 
 
 func _on_timer_timeout() -> void:
-	print_debug("timed")
+	#print_debug("timed")
 
 	var status := ResourceLoader.load_threaded_get_status(MAIN_TWO_PATH)
 
@@ -132,7 +132,7 @@ func _on_audio_stream_player_finished() -> void:
 func _on_button_2_pressed() -> void:
 	controls_pop.popup()
 	return_button.grab_focus()
-	print_debug("controls")
+	#print_debug("controls")
 
 
 func _on_return_button_pressed() -> void:

@@ -81,7 +81,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		if hit_counter > 1:
 			self.queue_free()
 			emit_signal("panel_pop")
-		print_debug("spinning head")
+		#print_debug("spinning head")
 
 
 func _on_timer_3_timeout() -> void:

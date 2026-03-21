@@ -120,11 +120,11 @@ autoplay = true
 
 [node name="LevelMusic2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("24_ltw2n")
-volume_db = -11.0
+volume_db = 0.818
 
 [node name="LevelMusic3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("25_ggdio")
-volume_db = -11.0
+volume_db = -2.137
 
 [node name="CrystalTimer" type="Timer" parent="."]
 wait_time = 3.0

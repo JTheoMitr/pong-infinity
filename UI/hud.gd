@@ -80,7 +80,7 @@ func hide_start_message() -> void:
 	countdown_label.visible = false
 	if controller_sprite.visible == true:
 		controller_sprite.hide()
-		print("hide controller")
+		#print("hide controller")
 
 
 func show_countdown(number: int) -> void:

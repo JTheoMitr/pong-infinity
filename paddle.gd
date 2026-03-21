@@ -103,7 +103,7 @@ func perimeter_to_screen(t: float) -> Vector2:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
-		print("paddlehit")
+		#print("paddlehit")
 		emit_signal("ball_hit_paddle", self)
 		
 		

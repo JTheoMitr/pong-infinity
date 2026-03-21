@@ -67,7 +67,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var third_x := screen_size.x / 3.0
 		if event.position.x > third_x and event.position.x < third_x * 2:
 			toggle_pause()
-			print("pause by touch")
+			#print("pause by touch")
 			
 	elif event.is_action_pressed("ui_reset_paddles"):
 		# Reset paddles
@@ -78,12 +78,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func toggle_pause() -> void:
 	get_tree().paused = !get_tree().paused
 	hud.show_pause_overlay(get_tree().paused)
-	print(ball.base_speed)
+	#print(ball.base_speed)
 
 
 func _on_start_button_pressed() -> void:
 	if game_over_state:
-		print("game over")
+		#print("game over")
 		game_over_state = false
 	hud.hide_start_message()
 	hud.hide_score()

@@ -90,7 +90,7 @@ func _ready() -> void:
 	start_background_glow()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
-	print_debug(screen_size)
+	#print_debug(screen_size)
 	cam.enabled = true
 	cam.position = screen_center
 	reset_positions(screen_center)
@@ -98,8 +98,8 @@ func _ready() -> void:
 	original_cam_position = cam.position
 	
 	level_music.volume_db = -11
-	level_music_2.volume_db = -3
-	level_music_3.volume_db = -3
+	level_music_2.volume_db = 1
+	level_music_3.volume_db = -2.5
 	
 	# local test for leaderboard:
 	
@@ -173,7 +173,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var third_x := screen_size.x / 3.0
 		if event.position.x > third_x and event.position.x < third_x * 2:
 			toggle_pause()
-			print("pause by touch")
+			#print("pause by touch")
 			
 	elif event.is_action_pressed("ui_reset_paddles"):
 		# Reset paddles
@@ -187,12 +187,18 @@ func _unhandled_input(event: InputEvent) -> void:
 func toggle_pause() -> void:
 	get_tree().paused = !get_tree().paused
 	hud.show_pause_overlay(get_tree().paused)
-	print(ball.base_speed)
+	#print(ball.base_speed)
+	if get_tree().paused:
+		_pause_all_timers()
+		#print("paused")
+	else:
+		_resume_all_timers()
+		#print("resumed")
 
 
 func _on_start_button_pressed() -> void:
 	if game_over_state:
-		print("game over")
+		#print("game over")
 		game_over_state = false
 		#clear_all_buffs() #need to switch this to game over?
 	if start_pressed == false:
@@ -246,7 +252,9 @@ func game_over() -> void:
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
 	ball.disable_on_fire()
+	ball.disable_on_ice()
 	ball_is_on_fire = false
+	ball_is_frozen = false
 	hud.show_score()
 	
 	await get_tree().create_timer(3.0).timeout
@@ -261,7 +269,7 @@ func _on_paddle_hit(paddle: Node) -> void:
 	#score += 15
 	#hud.update_score(score)
 	ball.base_speed *= 1.005 #was 1.03
-	print("paddle hit")
+	#print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles(ball.global_position, hit_dir)
@@ -277,7 +285,7 @@ func _on_silver_panel_hit(paddle: Node) -> void:
 	var panel_bonk = panel_hit_sfx.instantiate() 
 	get_parent().add_child(panel_bonk)
 	trigger_shake(12.0)
-	print("silver panel hit")
+	#print("silver panel hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles_white(ball.global_position, hit_dir)
@@ -303,7 +311,7 @@ func _on_spinning_head_hit(paddle: Node) -> void:
 	var panel_bonk = panel_hit_sfx.instantiate() 
 	get_parent().add_child(panel_bonk)
 	trigger_shake(12.0)
-	print("spinning head hit")
+	#print("spinning head hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles_red(ball.global_position, hit_dir)
@@ -333,7 +341,7 @@ func _on_corner_hit(paddle: Node) -> void:
 	
 	
 	ball.base_speed *= 1.01 #was 1.03
-	print("corner hit")
+	#print("corner hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles(ball.global_position, hit_dir)
@@ -355,7 +363,7 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	get_parent().add_child(score_pop)
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
-	print("multi hit")
+	#print("multi hit")
 	# Spawn particles at impact
 	spawn_impact_particles_multiplier1(ball.global_position)
 	for id in buff_ids:
@@ -372,7 +380,7 @@ func _on_crystal_hit(_multi: Node) -> void:
 	get_parent().add_child(crystal_1_bonk)
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
-	print("crystal hit")
+	#print("crystal hit")
 	# Spawn particles at impact
 	spawn_impact_particles_crystal1(ball.global_position)
 	
@@ -472,7 +480,7 @@ func spawn_multi_1() -> void:
 	get_parent().add_child(barrier)
 	buff_ids.append(barrier.get_instance_id())
 	barrier_id = barrier.get_instance_id()
-	print_debug(barrier.get_instance_id())
+	#print_debug(barrier.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	multi1.global_position = Vector2(screen_center)
@@ -686,3 +694,19 @@ func _on_music_button_pressed() -> void:
 		level_music_3.volume_db = -3
 		hud.music_button_text("Music: On")
 		
+func _pause_all_timers() -> void:
+	multi1_timer.paused = true
+	crystal1_timer.paused = true
+	mine_timer.paused = true
+	ice_mine_timer.paused = true
+	panel_timer_1.paused = true
+	spin_head_timer.paused = true
+	
+func _resume_all_timers() -> void:
+	multi1_timer.paused = false
+	crystal1_timer.paused = false
+	mine_timer.paused = false
+	ice_mine_timer.paused = false
+	panel_timer_1.paused = false
+	spin_head_timer.paused = false
+	

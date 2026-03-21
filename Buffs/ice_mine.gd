@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 			drop_anim.position.y += 3
 		else:
 			drop_anim.queue_free()
-			print_debug("drop_stop")
+			#print_debug("drop_stop")
 			dropping = false
 			mine_anim.show()
 			light_timer.start()
@@ -42,7 +42,7 @@ func _process(_delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
 		emit_signal("mine_exploded")
-		print_debug("MINE_TRIGGERED")
+		#print_debug("MINE_TRIGGERED")
 		mine_anim.hide()
 		light_timer.stop()
 		light.hide()

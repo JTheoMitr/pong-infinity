@@ -75,7 +75,7 @@ func enable_on_fire() -> void:
 	
 func disable_on_fire() -> void:
 	fire_anim.hide()
-	print_debug("fire_disabled")
+	#print_debug("fire_disabled")
 
 func _on_timer_timeout() -> void:
 	disable_on_fire()
@@ -86,7 +86,7 @@ func enable_ice_cube() -> void:
 	
 func disable_ice_cube() -> void:
 	ice_anim.hide()
-	print_debug("ice_cube_disabled")
+	#print_debug("ice_cube_disabled")
 
 func _on_timer_2_timeout() -> void:
 	disable_ice_cube()

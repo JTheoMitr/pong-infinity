@@ -24,4 +24,4 @@ func _on_timer_2_timeout() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
 		emit_signal("ball_on_ice")
-		print_debug("ONICE")
+		#print_debug("ONICE")

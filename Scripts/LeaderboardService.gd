@@ -36,11 +36,11 @@ func _ensure_session() -> bool:
 	return true
 
 # Optional: set name (best effort, never blocks gameplay)
-func set_display_name_best_effort(name: String) -> bool:
-	return await _set_display_name_async(name.strip_edges())
+func set_display_name_best_effort(player_name: String) -> bool:
+	return await _set_display_name_async(player_name.strip_edges())
 
-func _set_display_name_async(name: String) -> bool:
-	if name == "":
+func _set_display_name_async(player_name: String) -> bool:
+	if player_name == "":
 		return false
 	if not await _ensure_session():
 		return false

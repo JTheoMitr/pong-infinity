@@ -131,12 +131,12 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 
 	for rec in records:
 		var rank: int = int(rec.get("rank", 0))
-		var name: String = str(rec.get("username", "unknown"))
+		var player_name: String = str(rec.get("username", "unknown"))
 		var score: int = int(rec.get("score", 0))
 
 		var row := Label.new()
 		row.add_theme_font_override("font", custom_font)
-		row.text = "%d. %s  —  %d" % [rank, name, score]
+		row.text = "%d. %s  —  %d" % [rank, player_name, score]
 		row.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		leaderboard_rows.add_child(row)
 

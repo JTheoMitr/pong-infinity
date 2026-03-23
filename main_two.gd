@@ -10,6 +10,17 @@ const corner_hit_sfx = preload("res://Assets/SFX/sfx_corner_hit_1.tscn")
 const crystal_hit_sfx = preload("res://Assets/SFX/sfx_crystal_hit_1.tscn")
 const score_dbl_popup = preload("res://Buffs/score_doubled_popup.tscn")
 
+# point popups
+const points_5 = preload("res://Buffs/point_pop_up_5.tscn")
+const points_10 = preload("res://Buffs/point_pop_up_10.tscn")
+const points_15 = preload("res://Buffs/point_pop_up_15.tscn")
+const points_25 = preload("res://Buffs/point_pop_up_25.tscn")
+const points_30 = preload("res://Buffs/point_pop_up_30.tscn")
+const points_50 = preload("res://Buffs/point_pop_up_50.tscn")
+const points_250 = preload("res://Buffs/point_pop_up_250.tscn")
+const points_500 = preload("res://Buffs/point_pop_up_500.tscn")
+
+
 
 @onready var ball: CharacterBody2D = $Ball
 @onready var paddle_left: StaticBody2D = $PaddleLeft
@@ -97,9 +108,9 @@ func _ready() -> void:
 	ball.visible = false
 	original_cam_position = cam.position
 	
-	level_music.volume_db = -11
-	level_music_2.volume_db = 1
-	level_music_3.volume_db = -2.5
+	level_music.volume_db = -13
+	level_music_2.volume_db = 5
+	level_music_3.volume_db = 0
 	
 	# local test for leaderboard:
 	
@@ -252,7 +263,7 @@ func game_over() -> void:
 	ball.velocity = Vector2.ZERO
 	ball.direction = Vector2.ZERO
 	ball.disable_on_fire()
-	ball.disable_on_ice()
+	ball.disable_ice_cube()
 	ball_is_on_fire = false
 	ball_is_frozen = false
 	hud.show_score()
@@ -276,8 +287,14 @@ func _on_paddle_hit(paddle: Node) -> void:
 	
 	if ball_is_on_fire:
 		score += 30
+		var popup_30 = points_30.instantiate()
+		get_parent().add_child(popup_30)
+		popup_30.global_position = ball.global_position
 	else:
 		score += 15
+		var popup_15 = points_15.instantiate()
+		get_parent().add_child(popup_15)
+		popup_15.global_position = ball.global_position
 	
 	hud.update_score(score)
 	
@@ -292,19 +309,25 @@ func _on_silver_panel_hit(paddle: Node) -> void:
 	# if panel_counter > 2:
 		#destroy and explode anim
 	# else: particle effect, sfx, and glitch effect (or just glitch effect randomized for its lifespan entirety)
-	if ball_is_on_fire:
-		score += 60
-	else:
-		score += 30
-	
-	hud.update_score(score)
+
 	
 func _silver_panel_destroyed() -> void:
 	var panel_pop = panel_destroyed_sfx.instantiate() 
 	get_parent().add_child(panel_pop)
 	spawn_impact_particles_panel_pop(ball.global_position) #change to new color
 	trigger_shake(15.0)
-	score += 250
+	if ball_is_on_fire:
+		score += 500
+		var popup_500 = points_500.instantiate()
+		get_parent().add_child(popup_500)
+		popup_500.global_position = ball.global_position
+	else:
+		score += 250
+		var popup_250 = points_250.instantiate()
+		get_parent().add_child(popup_250)
+		popup_250.global_position = ball.global_position
+	
+	hud.update_score(score)
 	
 	
 func _on_spinning_head_hit(paddle: Node) -> void:
@@ -318,19 +341,25 @@ func _on_spinning_head_hit(paddle: Node) -> void:
 	# if panel_counter > 2:
 		#destroy and explode anim
 	# else: particle effect, sfx, and glitch effect (or just glitch effect randomized for its lifespan entirety)
-	if ball_is_on_fire:
-		score += 60
-	else:
-		score += 30
-	
-	hud.update_score(score)
+
 	
 func _spinning_head_destroyed() -> void:
 	var panel_pop = panel_destroyed_sfx.instantiate() 
 	get_parent().add_child(panel_pop)
 	spawn_impact_particles_multiplier1(ball.global_position) #change to new color
 	trigger_shake(15.0)
-	score += 250
+	if ball_is_on_fire:
+		score += 500
+		var popup_500 = points_500.instantiate()
+		get_parent().add_child(popup_500)
+		popup_500.global_position = ball.global_position
+	else:
+		score += 250
+		var popup_250 = points_250.instantiate()
+		get_parent().add_child(popup_250)
+		popup_250.global_position = ball.global_position
+	
+	hud.update_score(score)
 	
 	
 	
@@ -348,8 +377,14 @@ func _on_corner_hit(paddle: Node) -> void:
 	
 	if ball_is_on_fire:
 		score += 10
+		var popup_10 = points_10.instantiate()
+		get_parent().add_child(popup_10)
+		popup_10.global_position = ball.global_position
 	else:
 		score += 5
+		var popup_5 = points_5.instantiate()
+		get_parent().add_child(popup_5)
+		popup_5.global_position = ball.global_position
 	
 	hud.update_score(score)
 	
@@ -375,9 +410,21 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	
 	
 func _on_crystal_hit(_multi: Node) -> void:
-	score += 25
+	
+	if ball_is_on_fire:
+		score += 50
+		var popup_50 = points_50.instantiate()
+		get_parent().add_child(popup_50)
+		popup_50.global_position = ball.global_position
+	else:
+		score += 25
+		var popup_25 = points_25.instantiate()
+		get_parent().add_child(popup_25)
+		popup_25.global_position = ball.global_position
+	
 	var crystal_1_bonk = crystal_hit_sfx.instantiate()
 	get_parent().add_child(crystal_1_bonk)
+	
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
 	#print("crystal hit")

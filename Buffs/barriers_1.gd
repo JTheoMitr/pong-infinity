@@ -4,7 +4,7 @@ extends StaticBody2D
 @onready var anim2: AnimatedSprite2D = $AnimBarrier2
 
 func _process(_delta: float) -> void:
-	self.rotation_degrees += 3
+	self.rotation_degrees += 2
 	
 func start_fade_out() -> void:
 	var tween := create_tween()

@@ -8,7 +8,7 @@ const PORT: int = 7350
 const SCHEME: String = "http" # use "https" when you put it behind TLS later
 
 const LEADERBOARD_ID: String = "neuroball_scores"
-const TOP_N: int = 10
+const TOP_N: int = 20
 
 var _client: NakamaClient
 var _session: NakamaSession

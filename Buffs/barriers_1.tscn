@@ -1,4 +1,4 @@
-[gd_scene load_steps=424 format=3 uid="uid://dpb72xbb4ju5p"]
+[gd_scene load_steps=425 format=3 uid="uid://dpb72xbb4ju5p"]
 
 [ext_resource type="Script" uid="uid://dwkh8ac88yhad" path="res://Buffs/barriers_1.gd" id="1_h5s6p"]
 [ext_resource type="Texture2D" uid="uid://b7yf4dg6tsi67" path="res://Assets/Anims/paddle_1_anim/frame_000_delay-0.02s.png" id="318_1kfnp"]
@@ -1691,6 +1691,9 @@ animations = [{
 "speed": 60.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h5s6p"]
+size = Vector2(37.711063, 10.068741)
+
 [node name="Barriers1" type="StaticBody2D" groups=["paddle"]]
 process_mode = 1
 collision_mask = 2
@@ -1732,6 +1735,26 @@ autostart = true
 wait_time = 8.5
 one_shot = true
 autostart = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(-134, -55.999996)
+rotation = -0.2617994
+shape = SubResource("RectangleShape2D_h5s6p")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2(134, 58.000004)
+rotation = -0.2617994
+shape = SubResource("RectangleShape2D_h5s6p")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="."]
+position = Vector2(131, -55.999996)
+rotation = 0.2617994
+shape = SubResource("RectangleShape2D_h5s6p")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="."]
+position = Vector2(-135.00005, 57.00002)
+rotation = 0.2617994
+shape = SubResource("RectangleShape2D_h5s6p")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

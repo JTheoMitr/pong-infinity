@@ -10,7 +10,8 @@ extends CanvasLayer
 @onready var controller_sprite = $ControllerSprite
 
 @onready var leaderboard_panel: Control = $LeaderboardPanel
-@onready var leaderboard_rows: VBoxContainer = $LeaderboardPanel/VBox/Rows
+@onready var leaderboard_left_rows: VBoxContainer = $LeaderboardPanel/VBox/RowsHBox/LeftRows
+@onready var leaderboard_right_rows: VBoxContainer = $LeaderboardPanel/VBox/RowsHBox/RightRows
 @onready var leaderboard_status: Label = $LeaderboardPanel/VBox/Status
 @onready var leaderboard_title: Label = $LeaderboardPanel/VBox/Title
 
@@ -106,9 +107,11 @@ func _clear_children(node: Node) -> void:
 		
 func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 	leaderboard_panel.visible = true
-	leaderboard_title.text = "\n TOP 10"
+	leaderboard_title.text = "\n TOP 20 Leaderboard \n"
+	leaderboard_title.add_theme_font_override("font", custom_font)
 
-	_clear_children(leaderboard_rows)
+	_clear_children(leaderboard_left_rows)
+	_clear_children(leaderboard_right_rows)
 
 	if not ok:
 		leaderboard_status.visible = true
@@ -129,16 +132,21 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 		leaderboard_status.text = "No scores yet" if ok else "Leaderboard unavailable (offline)"
 		return
 
-	for rec in records:
+	for i in range(records.size()):
+		var rec = records[i]
 		var rank: int = int(rec.get("rank", 0))
 		var player_name: String = str(rec.get("username", "unknown"))
 		var score: int = int(rec.get("score", 0))
 
 		var row := Label.new()
-		row.add_theme_font_override("font", custom_font)
 		row.text = "%d. %s  —  %d" % [rank, player_name, score]
+		row.add_theme_font_override("font", custom_font)
 		row.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		leaderboard_rows.add_child(row)
+
+		if i < 10:
+			leaderboard_left_rows.add_child(row)
+		else:
+			leaderboard_right_rows.add_child(row)
 
 func hide_leaderboard() -> void:
 	leaderboard_panel.visible = false

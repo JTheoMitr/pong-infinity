@@ -245,14 +245,18 @@ func start_game() -> void:
 	mine_timer.start()
 	crystal1_timer.start()
 	panel_timer_1.start()
+	#Engine.time_scale = 1.0
 	#hud.hide_leaderboard()
 	#ice_mine_timer.start()
+	reset_game_time_scale()
 
 
 
 func game_over() -> void:
 	game_started = false
 	game_over_state = true
+	#Engine.time_scale = 1.0
+	reset_game_time_scale()
 	awaiting_score_submit = true
 	final_score_to_submit = score
 	clear_all_buffs()
@@ -389,7 +393,9 @@ func _on_corner_hit(paddle: Node) -> void:
 	hud.update_score(score)
 	
 func _on_multiplier_hit(_multi: Node) -> void:
-	trigger_zoom_punch(1.1, .75)
+	trigger_zoom_punch(1.3, .75)
+	trigger_time_slowdown(.5, 0.5, 0.4)
+	
 	score *= 2
 	var multi_1_bonk = multi_connect_sfx.instantiate()
 	get_parent().add_child(multi_1_bonk)
@@ -461,6 +467,22 @@ func trigger_zoom_punch(scale_amount: float, duration: float) -> void:
 
 	tween.tween_property(cam, "zoom", target_zoom, duration * 0.5)
 	tween.tween_property(cam, "zoom", Vector2.ONE, duration * 0.5)
+
+func trigger_time_slowdown(slow_scale: float = 0.75, slow_duration: float = 0.35, recover_duration: float = 0.4) -> void:
+	#Kill any existing time-scale tween by resetting first
+	Engine.time_scale = 1.0
+	
+	var tween := create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	
+	#Ease into slowdown
+	tween.tween_property(Engine, "time_scale", slow_scale, 0.08)
+	
+	#Hold the slowdown briefly
+	tween.tween_interval(slow_duration)
+	
+	#Ease back to normal
+	tween.tween_property(Engine, "time_scale", 1.0, recover_duration)
 
 
 		
@@ -550,7 +572,7 @@ func spawn_fire_zone_1() -> void:
 	fire_1.ball_on_fire.connect(_on_fire_zone_entered)
 	get_parent().call_deferred("add_child", fire_1)
 	buff_ids.append(fire_1.get_instance_id())
-	trigger_shake(16.0)
+	trigger_shake(30.0)
 	#trigger a zoom punch here too?
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -756,4 +778,7 @@ func _resume_all_timers() -> void:
 	ice_mine_timer.paused = false
 	panel_timer_1.paused = false
 	spin_head_timer.paused = false
+	
+func reset_game_time_scale() -> void:
+	Engine.time_scale = 1.0
 	

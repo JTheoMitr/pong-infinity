@@ -393,7 +393,7 @@ func _on_corner_hit(paddle: Node) -> void:
 	hud.update_score(score)
 	
 func _on_multiplier_hit(_multi: Node) -> void:
-	trigger_zoom_punch(1.3, .75)
+	trigger_zoom_punch(1.2, .75)
 	trigger_time_slowdown(.5, 0.5, 0.4)
 	
 	score *= 2

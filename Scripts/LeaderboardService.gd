@@ -3,9 +3,15 @@ extends Node
 @onready var _http: HTTPRequest = HTTPRequest.new()
 # ===== Local dev settings (change HOST later to Hetzner IP) =====
 const SERVER_KEY: String = "defaultkey"
-const HOST: String = "89.167.86.254"
-const PORT: int = 7350
-const SCHEME: String = "http" # use "https" when you put it behind TLS later
+
+#original, raw http:
+#const HOST: String = "89.167.86.254"
+#const PORT: int = 7350
+#const SCHEME: String = "http" # use "https" when you put it behind TLS later
+
+const HOST: String = "api.vomvis.com"
+const PORT: int = 443
+const SCHEME: String = "https"
 
 const LEADERBOARD_ID: String = "neuroball_scores"
 const TOP_N: int = 20

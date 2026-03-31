@@ -8094,7 +8094,7 @@ text = "Return"
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("6_qe12f")
-text = "Keyboard"
+text = "Controller"
 
 [node name="NeuroballSpoken" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_j5v2v")

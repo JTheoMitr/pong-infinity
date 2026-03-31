@@ -26,12 +26,29 @@ var last_error: String = ""
 func _ready() -> void:
 	_client = Nakama.create_client(SERVER_KEY, HOST, PORT, SCHEME)
 	add_child(_http)
+	
+func _get_device_id() -> String:
+	if OS.has_feature("web"):
+		var cfg := ConfigFile.new()
+		var path := "user://web_identity.cfg"
+		
+		if cfg.load(path) == OK:
+			var existing: String = str(cfg.get_value("auth", "device_id", ""))
+			if existing != "":
+				return existing
+				
+		var new_id := "web_%d_%d" % [Time.get_unix_time_from_system(), randi()]
+		cfg.set_value("auth", "device_id", new_id)
+		cfg.save(path)
+		return new_id
+	
+	return OS.get_unique_id()
 
 func _ensure_session() -> bool:
 	if _session != null and not _session.is_expired():
 		return true
 
-	var device_id: String = OS.get_unique_id()
+	var device_id: String = _get_device_id()
 	var res: Variant = await _client.authenticate_device_async(device_id, null, true)
 
 	if res == null or res.is_exception():

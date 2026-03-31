@@ -7774,8 +7774,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dy7ct")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_ql5ya")
-offset_right = 1148.0
-offset_bottom = 646.0
+offset_right = 1153.0
+offset_bottom = 648.0
 
 [node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(575, 159)
@@ -8026,9 +8026,9 @@ theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "[center]Move paddles up/left/right/down with the arrow keys. 
 
-Rotate the paddles clockwise or counter-Clockwise with the C and Z buttons. 
+Rotate the paddles clockwise or counter-Clockwise with the C and Z keys. 
 
-The X button will Reset the paddles to their default positions (for quicker screen coverage, when needed)."
+The X key will Reset the paddles to their default positions (for quicker screen coverage, when needed)."
 
 [node name="RichTextLabel11" type="RichTextLabel" parent="ControlsPopup"]
 visible = false

@@ -1,0 +1,145 @@
+[gd_scene load_steps=16 format=3 uid="uid://de6bsxlo14sa6"]
+
+[ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
+[ext_resource type="PackedScene" uid="uid://713ean61cug7" path="res://models/shop/247_cyberpunk_store_12MB.glb" id="1_viryw"]
+[ext_resource type="Texture2D" uid="uid://brapxoty7otp6" path="res://anims/mina_talking_helmet_1.png" id="3_myf4l"]
+[ext_resource type="Texture2D" uid="uid://c86x46k0rvtml" path="res://anims/mina_talking_helmet_2.png" id="4_p5a0g"]
+[ext_resource type="Texture2D" uid="uid://bi52i6wnv47ls" path="res://anims/mina_talking_helmet_3.png" id="5_xqmyw"]
+[ext_resource type="Texture2D" uid="uid://bdc1rwatdpqgg" path="res://anims/mina_talking_helmet_4.png" id="6_sw5c6"]
+[ext_resource type="PackedScene" uid="uid://2ugduaavbfuh" path="res://models/low-poly_sci-fi_motorcycle_-_cyberpunk_theme.glb" id="7_8kdgp"]
+[ext_resource type="PackedScene" uid="uid://bhl0elavp4mde" path="res://models/vending_machine2k_retro-futuristic.glb" id="8_myf4l"]
+[ext_resource type="Texture2D" uid="uid://bh27ooa0un2xr" path="res://anims/mina_talking_4.png" id="9_p5a0g"]
+[ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="10_xqmyw"]
+
+[sub_resource type="Environment" id="Environment_viryw"]
+background_mode = 1
+background_color = Color(7.3700214e-08, 0, 0.119860046, 1)
+tonemap_mode = 3
+glow_enabled = true
+glow_bloom = 0.55
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_xqmyw"]
+frames = 4
+frame_0/texture = ExtResource("3_myf4l")
+frame_0/duration = 0.3
+frame_1/texture = ExtResource("4_p5a0g")
+frame_1/duration = 0.3
+frame_2/texture = ExtResource("5_xqmyw")
+frame_2/duration = 0.3
+frame_3/texture = ExtResource("6_sw5c6")
+frame_3/duration = 0.3
+
+[sub_resource type="QuadMesh" id="QuadMesh_p5a0g"]
+size = Vector2(2, 2)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xqmyw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sw5c6"]
+bg_color = Color(1, 0.35763314, 0.99153453, 0.5019608)
+
+[node name="Shop" type="Node3D"]
+script = ExtResource("1_e7rdd")
+
+[node name="ShopModel" parent="." instance=ExtResource("1_viryw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4646533, 0.9966154, 0.72604465)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, 0)
+fov = 65.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.6013597, -0.5307659, -0.5972052, -0.5426948, -0.81992227, 0.18223558, -0.5863864, 0.214511, -0.7811121, -8.727171, 10.145993, -12.213742)
+light_color = Color(1.2513996e-06, 0.72937196, 0.73028195, 1)
+light_energy = 0.15
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.08594391, 0.39079297, -0.9164576, 0.5281008, 0.79787326, 0.2907022, 0.8448214, -0.4589979, -0.27495044, 4.344907, 17.314054, 6.9416885)
+light_color = Color(1.2513996e-06, 0.72937196, 0.73028195, 1)
+light_energy = 0.15
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_viryw")
+
+[node name="CameraStart" type="Marker3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.9442945, 2.0749083, 0)
+
+[node name="CameraShopView" type="Marker3D" parent="."]
+transform = Transform3D(-0.08715576, 0, 0.99619466, 0, 1, 0, -0.99619466, 0, -0.08715576, 0.8035331, 2.228778, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4693542, 2.9115815, -0.7794397)
+light_color = Color(1, 0.3254902, 1, 1)
+light_energy = 3.316
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4693542, 2.9115815, 3.6385138)
+light_color = Color(0.3847875, 0.31714913, 0.87669927, 1)
+light_energy = 3.316
+
+[node name="Cybercycle" parent="." instance=ExtResource("7_8kdgp")]
+transform = Transform3D(0.021448804, -0.0028999923, 0.0976296, 0.013398618, 0.09909831, 0, -0.09674929, 0.013081018, 0.021643965, 0.12735432, 1.4424274, -2.997157)
+
+[node name="VendingMachine" parent="." instance=ExtResource("8_myf4l")]
+transform = Transform3D(-0.060711496, 0, 1.1984632, 0, 1.2, 0, -1.1984632, 0, -0.060711496, -7.0031457, 1.1483209, -8.577339)
+
+[node name="Monitor" type="Node3D" parent="."]
+
+[node name="Vendor" type="Sprite3D" parent="Monitor"]
+transform = Transform3D(0.12839499, 0, -0.53480345, 0, 0.55, 0, 0.53480345, 0, 0.12839499, -1.8044314, 2.628995, 0.4146285)
+texture = SubResource("AnimatedTexture_xqmyw")
+
+[node name="ScreenSurface" type="Sprite3D" parent="Monitor"]
+transform = Transform3D(0.23853344, 0, -0.9711343, 0, 1, 0, 0.9711343, 0, 0.23853344, 1.3677998, 2.887137, 0.26880622)
+visible = false
+texture = ExtResource("9_p5a0g")
+
+[node name="ScreenQuad" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.1736482, 0, 0.9848077, 0, 1, 0, -0.9848077, 0, -0.1736482, -2, 2.6, -1.1)
+mesh = SubResource("QuadMesh_p5a0g")
+
+[node name="ScreenViewport" type="SubViewport" parent="ScreenQuad"]
+size = Vector2i(1024, 1024)
+render_target_update_mode = 4
+
+[node name="ColorRect" type="ColorRect" parent="ScreenQuad/ScreenViewport"]
+custom_minimum_size = Vector2(512, 512)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(5.1138922e-08, 0.09240354, 0.06872421, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScreenQuad/ScreenViewport"]
+custom_minimum_size = Vector2(512, 512)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_colors/default_color = Color(0.75046, 0.0004335618, 0.750455, 1)
+theme_override_fonts/normal_font = ExtResource("10_xqmyw")
+theme_override_font_sizes/normal_font_size = 55
+bbcode_enabled = true
+text = "[center]Menu"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenQuad/ScreenViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -20.0
+offset_right = 46.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="ScreenQuad/ScreenViewport/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.8745098, 0.8745098, 1)
+theme_override_fonts/font = ExtResource("10_xqmyw")
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xqmyw")
+theme_override_styles/focus = SubResource("StyleBoxFlat_sw5c6")
+text = "Neuroballs"

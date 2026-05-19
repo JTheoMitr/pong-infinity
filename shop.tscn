@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=19 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="PackedScene" uid="uid://713ean61cug7" path="res://models/shop/247_cyberpunk_store_12MB.glb" id="1_viryw"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://2ugduaavbfuh" path="res://models/low-poly_sci-fi_motorcycle_-_cyberpunk_theme.glb" id="7_8kdgp"]
 [ext_resource type="PackedScene" uid="uid://bhl0elavp4mde" path="res://models/vending_machine2k_retro-futuristic.glb" id="8_myf4l"]
 [ext_resource type="Texture2D" uid="uid://bh27ooa0un2xr" path="res://anims/mina_talking_4.png" id="9_p5a0g"]
+[ext_resource type="Shader" uid="uid://coim8js1lwiht" path="res://crt_screen_3d.gdshader" id="10_sw5c6"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="10_xqmyw"]
 
 [sub_resource type="Environment" id="Environment_viryw"]
@@ -17,6 +18,16 @@ background_color = Color(7.3700214e-08, 0, 0.119860046, 1)
 tonemap_mode = 3
 glow_enabled = true
 glow_bloom = 0.55
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sw5c6"]
+render_priority = 0
+shader = ExtResource("10_sw5c6")
+shader_parameter/brightness = 1.2
+shader_parameter/scanline_strength = 0.18
+shader_parameter/scanline_count = 240.0
+shader_parameter/flicker_strength = 0.08
+shader_parameter/glitch_strength = 0.015
+shader_parameter/tint = Color(0.55, 0.9, 1, 1)
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_xqmyw"]
 frames = 4
@@ -29,7 +40,18 @@ frame_2/duration = 0.3
 frame_3/texture = ExtResource("6_sw5c6")
 frame_3/duration = 0.3
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_msgp6"]
+render_priority = 0
+shader = ExtResource("10_sw5c6")
+shader_parameter/brightness = 1.2
+shader_parameter/scanline_strength = 0.18
+shader_parameter/scanline_count = 240.0
+shader_parameter/flicker_strength = 0.08
+shader_parameter/glitch_strength = 0.015
+shader_parameter/tint = Color(0.55, 0.9, 1, 1)
+
 [sub_resource type="QuadMesh" id="QuadMesh_p5a0g"]
+material = SubResource("ShaderMaterial_msgp6")
 size = Vector2(2, 2)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xqmyw"]
@@ -88,6 +110,7 @@ transform = Transform3D(-0.060711496, 0, 1.1984632, 0, 1.2, 0, -1.1984632, 0, -0
 
 [node name="Vendor" type="Sprite3D" parent="Monitor"]
 transform = Transform3D(0.12839499, 0, -0.53480345, 0, 0.55, 0, 0.53480345, 0, 0.12839499, -1.8044314, 2.628995, 0.4146285)
+material_override = SubResource("ShaderMaterial_sw5c6")
 texture = SubResource("AnimatedTexture_xqmyw")
 
 [node name="ScreenSurface" type="Sprite3D" parent="Monitor"]
@@ -110,7 +133,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(5.1138922e-08, 0.09240354, 0.06872421, 1)
+color = Color(0, 0.21960784, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ScreenQuad/ScreenViewport"]
 custom_minimum_size = Vector2(512, 512)

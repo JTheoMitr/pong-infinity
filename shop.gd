@@ -8,30 +8,48 @@ extends Node3D
 @onready var screen_quad: MeshInstance3D = $ScreenQuad
 @onready var screen_viewport: SubViewport = $ScreenQuad/ScreenViewport
 @onready var color_rect: ColorRect = $ScreenQuad/ScreenViewport/ColorRect
+@onready var vendor_sprite: Sprite3D = $Monitor/Vendor
 
 func _ready() -> void:
 	
-	screen_viewport.size = Vector2i(512, 256)
+	# =========================
+	# SUBVIEWPORT SCREEN SETUP
+	# =========================
+
+	screen_viewport.size = Vector2i(512, 512)
 	screen_viewport.transparent_bg = false
 	screen_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	screen_viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 
 	color_rect.position = Vector2.ZERO
-	color_rect.size = Vector2(512, 256)
-
+	color_rect.size = Vector2(512, 512)
 
 	await RenderingServer.frame_post_draw
 
-	var mat := StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	mat.albedo_texture = screen_viewport.get_texture()
+	var screen_mat := ShaderMaterial.new()
+	screen_mat.shader = preload("res://crt_screen_3d.gdshader")
 
-	screen_quad.material_override = mat
+	screen_mat.set_shader_parameter(
+		"screen_texture",
+		screen_viewport.get_texture()
+	)
 
-	print("Viewport texture:", screen_viewport.get_texture())
-	print("Viewport size:", screen_viewport.size)
-	
+	screen_quad.material_override = screen_mat
+
+
+	# =========================
+	# VENDOR SPRITE SETUP
+	# =========================
+
+	var vendor_mat := ShaderMaterial.new()
+	vendor_mat.shader = preload("res://crt_screen_3d.gdshader")
+
+	vendor_mat.set_shader_parameter(
+		"screen_texture",
+		vendor_sprite.texture
+	)
+
+	vendor_sprite.material_override = vendor_mat
 	
 	#shop camera vv
 	

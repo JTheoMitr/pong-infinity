@@ -18,13 +18,13 @@ func _ready() -> void:
 	# SUBVIEWPORT SCREEN SETUP
 	# =========================
 
-	screen_viewport.size = Vector2i(512, 512)
+	#screen_viewport.size = Vector2i(512, 512)
 	screen_viewport.transparent_bg = false
 	screen_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	screen_viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 
 	color_rect.position = Vector2.ZERO
-	color_rect.size = Vector2(512, 512)
+	#color_rect.size = Vector2(512, 512)
 
 	await RenderingServer.frame_post_draw
 

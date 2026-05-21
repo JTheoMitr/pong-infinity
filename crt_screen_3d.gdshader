@@ -3,7 +3,7 @@ render_mode unshaded, cull_disabled, blend_mix, depth_draw_opaque;
 
 uniform sampler2D screen_texture : source_color;
 uniform float brightness = 1.2;
-uniform float scanline_strength = 0.18;
+uniform float scanline_strength = 0.68;
 uniform float scanline_count = 240.0;
 uniform float flicker_strength = 0.08;
 uniform float glitch_strength = 0.015;

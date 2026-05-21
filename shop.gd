@@ -9,6 +9,8 @@ extends Node3D
 @onready var screen_viewport: SubViewport = $ScreenQuad/ScreenViewport
 @onready var color_rect: ColorRect = $ScreenQuad/ScreenViewport/ColorRect
 @onready var vendor_sprite: Sprite3D = $Monitor/Vendor
+@onready var vendor_anim: AnimatedTexture = vendor_sprite.texture
+@onready var vendor_voice_intro: AudioStreamPlayer = $VendorVoiceIntro
 
 func _ready() -> void:
 	
@@ -50,6 +52,8 @@ func _ready() -> void:
 	)
 
 	vendor_sprite.material_override = vendor_mat
+	vendor_anim.pause = true
+	vendor_anim.current_frame = 3
 	
 	#shop camera vv
 	
@@ -71,4 +75,32 @@ func enter_shop() -> void:
 	tween.parallel().tween_property(camera, "global_rotation", camera_shop_view.global_rotation, 2.5)
 
 	await tween.finished
+	await play_vendor_intro()
 	shop_ui.visible = true
+
+func play_vendor_intro() -> void:
+	await get_tree().create_timer(0.2).timeout
+
+	vendor_anim.current_frame = 3
+	vendor_anim.pause = false
+
+	vendor_voice_intro.play()
+	
+	await get_tree().create_timer(1.0).timeout
+	
+	
+	vendor_anim.pause = true
+	vendor_anim.current_frame = 3
+	
+	await get_tree().create_timer(1.1).timeout
+	
+	vendor_anim.current_frame = 3
+	vendor_anim.pause = false
+
+	await get_tree().create_timer(1.3).timeout
+	
+	
+	vendor_anim.pause = true
+	vendor_anim.current_frame = 3
+
+	

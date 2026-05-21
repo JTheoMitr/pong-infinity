@@ -12,6 +12,8 @@ extends Node3D
 @onready var vendor_anim: AnimatedTexture = vendor_sprite.texture
 @onready var vendor_voice_intro: AudioStreamPlayer = $VendorVoiceIntro
 
+@onready var item_1_button: Button = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer/Button
+
 func _ready() -> void:
 	
 	# =========================
@@ -102,5 +104,5 @@ func play_vendor_intro() -> void:
 	
 	vendor_anim.pause = true
 	vendor_anim.current_frame = 3
-
+	item_1_button.grab_focus()
 	

@@ -30,7 +30,7 @@ void fragment() {
 	float flicker = 1.0 - rand(vec2(TIME * 20.0, uv.y)) * flicker_strength;
 
 	col.rgb *= scan * flicker * brightness;
-	col.rgb *= tint.rgb;
+	//col.rgb *= tint.rgb;
 
 	ALBEDO = col.rgb;
 	ALPHA = col.a * tint.a;

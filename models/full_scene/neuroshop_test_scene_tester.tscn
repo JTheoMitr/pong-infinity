@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://sqo6bp6grlws"]
+
+[ext_resource type="PackedScene" uid="uid://bb34dsbgo3ps1" path="res://models/full_scene/neuroshop_test.glb" id="1_kdrj7"]
+
+[node name="neuroshop_test" instance=ExtResource("1_kdrj7")]
+
+[node name="Sketchfab_model_004" parent="." index="4"]
+transform = Transform3D(-0.010900818, 0.0014738474, -5.2541044e-10, 0.0014738339, 0.010900712, -4.8188842e-05, -6.456219e-06, -4.7754962e-05, -0.010999895, -1.9827328, 0.009091616, -4.6375732)

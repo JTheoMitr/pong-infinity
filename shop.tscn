@@ -1,7 +1,6 @@
-[gd_scene load_steps=630 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=643 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
-[ext_resource type="PackedScene" uid="uid://713ean61cug7" path="res://models/shop/247_cyberpunk_store_12MB.glb" id="1_viryw"]
 [ext_resource type="Texture2D" uid="uid://brapxoty7otp6" path="res://anims/mina_talking_helmet_1.png" id="3_myf4l"]
 [ext_resource type="Texture2D" uid="uid://c86x46k0rvtml" path="res://anims/mina_talking_helmet_2.png" id="4_p5a0g"]
 [ext_resource type="Shader" uid="uid://d1f5urjlscutw" path="res://vendor_crt_screen_3d.gdshader" id="5_mvg5f"]
@@ -13,7 +12,6 @@
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="11_msgp6"]
 [ext_resource type="Texture2D" uid="uid://dgvsgxr1pjw7j" path="res://models/sushi/sushi-spin-png/frame_000_delay-0.03s.png" id="12_vy100"]
 [ext_resource type="Texture2D" uid="uid://b6vekqunm3n5i" path="res://models/sushi/sushi-spin-png/frame_001_delay-0.04s.png" id="13_4kwdw"]
-[ext_resource type="AudioStream" uid="uid://b0ohmj8s5x6an" path="res://Assets/Music/neuroshop1.wav" id="13_e23gp"]
 [ext_resource type="Texture2D" uid="uid://cduw62pygvicu" path="res://models/sushi/sushi-spin-png/frame_002_delay-0.03s.png" id="14_e8na0"]
 [ext_resource type="Texture2D" uid="uid://dkig5o2awrknx" path="res://models/sushi/sushi-spin-png/frame_003_delay-0.03s.png" id="15_0qctn"]
 [ext_resource type="Texture2D" uid="uid://bkmsmk34qa0bd" path="res://models/sushi/sushi-spin-png/frame_004_delay-0.04s.png" id="16_1qt77"]
@@ -616,9 +614,21 @@
 [ext_resource type="Texture2D" uid="uid://dm33p2e4w4ty" path="res://models/eyeball/eye-spin-anim/frame_147_delay-0.03s.png" id="614_fqau7"]
 [ext_resource type="Texture2D" uid="uid://0wpkvkx6k1vn" path="res://models/eyeball/eye-spin-anim/frame_148_delay-0.04s.png" id="615_e4i5c"]
 [ext_resource type="Texture2D" uid="uid://bcx31iawgun6v" path="res://models/eyeball/eye-spin-anim/frame_149_delay-0.03s.png" id="616_2pl55"]
+[ext_resource type="AudioStream" uid="uid://rla7kqb8v0by" path="res://Assets/Music/neuroshop1-1.mp3" id="616_jx570"]
 [ext_resource type="Texture2D" uid="uid://dua0j42x36uvt" path="res://models/eyeball/eye-spin-anim/frame_150_delay-0.03s.png" id="617_gvj1d"]
+[ext_resource type="Texture2D" uid="uid://sgr273tyiuiy" path="res://Assets/Sprites/neurotitle.png" id="619_2nmvk"]
+[ext_resource type="PackedScene" uid="uid://2vhudovhr1sb" path="res://models/shop-reboot/shop-reboot-new.glb" id="619_jx570"]
 [ext_resource type="PackedScene" uid="uid://h0yqkiyjg1bg" path="res://models/old-metal-door/door___old___metal_-_14mb.glb" id="620_2nmvk"]
-[ext_resource type="PackedScene" uid="uid://tc3nmeoyjjyf" path="res://models/neuroshop_simple_1/neuroshop_simplified_1.glb" id="620_j3d4a"]
+[ext_resource type="Texture2D" uid="uid://cr7ry2puaelno" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_001.png" id="620_xww5d"]
+[ext_resource type="Texture2D" uid="uid://dwrptnaub0lwn" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_002.png" id="621_0glof"]
+[ext_resource type="Texture2D" uid="uid://bn2juhbv4sl0o" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_003.png" id="622_5bqu3"]
+[ext_resource type="Texture2D" uid="uid://cffgwybic1vgr" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_009.png" id="622_bfdc3"]
+[ext_resource type="Texture2D" uid="uid://di12gmblpq71v" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_008.png" id="623_sjfe1"]
+[ext_resource type="Texture2D" uid="uid://w0xbn35vgu78" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_004.png" id="623_vw4ot"]
+[ext_resource type="Texture2D" uid="uid://cooiugir20drd" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_007.png" id="624_sa7fn"]
+[ext_resource type="Texture2D" uid="uid://cn3nvmxq43afa" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_005.png" id="624_ybqo6"]
+[ext_resource type="Texture2D" uid="uid://b3mdbovheov3s" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_006.png" id="625_k57ne"]
+[ext_resource type="Texture2D" uid="uid://dwgm716ow1di4" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_010.png" id="629_cc6t8"]
 
 [sub_resource type="Environment" id="Environment_viryw"]
 background_mode = 1
@@ -2508,12 +2518,52 @@ animations = [{
 "speed": 35.0
 }]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3d4a"]
+albedo_texture = ExtResource("619_2nmvk")
+
+[sub_resource type="QuadMesh" id="QuadMesh_6tgid"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_bfdc3"]
+frames = 18
+speed_scale = 3.0
+frame_0/texture = ExtResource("620_xww5d")
+frame_1/texture = ExtResource("621_0glof")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("622_5bqu3")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("623_vw4ot")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("624_ybqo6")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("625_k57ne")
+frame_5/duration = 1.0
+frame_6/texture = ExtResource("624_sa7fn")
+frame_6/duration = 1.0
+frame_7/texture = ExtResource("623_sjfe1")
+frame_7/duration = 1.0
+frame_8/texture = ExtResource("622_bfdc3")
+frame_8/duration = 1.0
+frame_9/texture = ExtResource("629_cc6t8")
+frame_9/duration = 1.0
+frame_10/texture = ExtResource("622_bfdc3")
+frame_10/duration = 1.0
+frame_11/texture = ExtResource("623_sjfe1")
+frame_11/duration = 1.0
+frame_12/texture = ExtResource("624_sa7fn")
+frame_12/duration = 1.0
+frame_13/texture = ExtResource("625_k57ne")
+frame_13/duration = 1.0
+frame_14/texture = ExtResource("624_ybqo6")
+frame_14/duration = 1.0
+frame_15/texture = ExtResource("623_vw4ot")
+frame_15/duration = 1.0
+frame_16/texture = ExtResource("622_5bqu3")
+frame_16/duration = 1.0
+frame_17/texture = ExtResource("621_0glof")
+frame_17/duration = 1.0
+
 [node name="Shop" type="Node3D"]
 script = ExtResource("1_e7rdd")
-
-[node name="ShopModel" parent="." instance=ExtResource("1_viryw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4646533, 0.9966154, 0.72604465)
-visible = false
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, 0)
@@ -2784,7 +2834,7 @@ bbcode_enabled = true
 text = "[center][rainbow]50 C"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_e23gp")
+stream = ExtResource("616_jx570")
 volume_db = -5.0
 autoplay = true
 
@@ -2796,5 +2846,15 @@ pitch_scale = 0.9
 [node name="MetalDoor" parent="." instance=ExtResource("620_2nmvk")]
 transform = Transform3D(0.007353083, 0, -0.0031515355, 0, 0.008, 0, 0.0031515355, 0, 0.007353083, -0.72899556, 1.3486285, 1.798054)
 
-[node name="neuroshop_simplified_1" parent="." instance=ExtResource("620_j3d4a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43, 1.01, 0.74)
+[node name="shop-reboot-new" parent="." instance=ExtResource("619_jx570")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.56009513, 0, 0.388573, 0, 0.3, 0, -0.6916599, 0, 0.3146602, -5.771989, 3.1386216, -3.6124842)
+material_override = SubResource("StandardMaterial3D_j3d4a")
+mesh = SubResource("QuadMesh_6tgid")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.05462927, 0, 0.058443498, 0, 0.08, 0, -0.058443498, 0, 0.05462927, -5.8085694, 2.684443, -3.629391)
+modulate = Color(0.67580557, 0.6758044, 0.67580503, 1)
+texture = SubResource("AnimatedTexture_bfdc3")

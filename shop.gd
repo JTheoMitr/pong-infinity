@@ -170,9 +170,21 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	elif event.is_action_pressed("ui_accept"):
 		if in_game_view:
+			var scene_path := "res://main_menu.tscn"
+
+			ResourceLoader.load_threaded_request(scene_path)
+
 			await move_into_cabinet()
+
 			set_screen_animation_active(false)
-			get_tree().change_scene_to_file("res://main_menu.tscn")
+
+			var status := ResourceLoader.load_threaded_get_status(scene_path)
+
+			if status == ResourceLoader.THREAD_LOAD_LOADED:
+				var packed_scene := ResourceLoader.load_threaded_get(scene_path) as PackedScene
+				get_tree().change_scene_to_packed(packed_scene)
+			else:
+				get_tree().change_scene_to_file(scene_path)
 
 func _update_selection() -> void:
 	for i in range(row_labels.size()):
@@ -234,7 +246,7 @@ func move_back_to_shop() -> void:
 func move_into_cabinet() -> void:
 	camera_moving = true
 	
-	await tween_camera_to_marker(camera_cabinet, 2.0)
+	await tween_camera_to_marker(camera_cabinet, 5.0)
 	
 	camera_moving = false
 	in_game_view = false

@@ -2592,7 +2592,7 @@ transform = Transform3D(-0.08715576, 0, 0.99619466, 0, 1, 0, -0.99619466, 0, -0.
 transform = Transform3D(-0.08715577, 0, 0.9961947, 0, 1, 0, -0.9961947, 0, -0.08715577, -0.9288753, 2.7845247, -3.9156692)
 
 [node name="CameraGameView" type="Marker3D" parent="."]
-transform = Transform3D(-0.08715577, 0, 0.9961947, 0, 1, 0, -0.9961947, 0, -0.08715577, -4.918104, 2.73519, -3.4972742)
+transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.280925, 2.73519, -3.1789265)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -2855,6 +2855,6 @@ material_override = SubResource("StandardMaterial3D_j3d4a")
 mesh = SubResource("QuadMesh_6tgid")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(0.05462927, 0, 0.058443498, 0, 0.08, 0, -0.058443498, 0, 0.05462927, -5.8085694, 2.684443, -3.629391)
+transform = Transform3D(0.05248472, 0, 0.060376763, 0, 0.08, 0, -0.060376763, 0, 0.05248472, -5.818623, 2.684443, -3.6193376)
 modulate = Color(0.67580557, 0.6758044, 0.67580503, 1)
 texture = SubResource("AnimatedTexture_bfdc3")

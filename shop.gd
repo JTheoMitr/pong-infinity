@@ -90,7 +90,7 @@ func _ready() -> void:
 	
 	#shop camera vv
 	
-	shop_ui.visible = false
+	# shop_ui.visible = false
 
 	camera.global_position = camera_start.global_position
 	camera.global_rotation = camera_start.global_rotation

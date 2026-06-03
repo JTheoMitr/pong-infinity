@@ -14,6 +14,7 @@ extends Node3D
 
 @onready var camera_corner: Marker3D = $CameraCorner
 @onready var camera_game_view: Marker3D = $CameraGameView
+@onready var camera_cabinet: Marker3D = $CameraCabinet
 
 @onready var fade_cover: ColorRect = $CanvasLayer/FadeCover
 @onready var loading_icon: RichTextLabel = $CanvasLayer/LoadingIcon
@@ -151,6 +152,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if not in_game_view:
 			await move_to_game_view()
 			set_screen_animation_active(false)
+			
+
 
 	elif event.is_action_pressed("ui_paddle_rotate_counterclockwise"):
 		if in_game_view:
@@ -166,7 +169,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_update_selection()
 
 	elif event.is_action_pressed("ui_accept"):
-		pass
+		if in_game_view:
+			await move_into_cabinet()
+			set_screen_animation_active(false)
+			get_tree().change_scene_to_file("res://main_menu.tscn")
 
 func _update_selection() -> void:
 	for i in range(row_labels.size()):
@@ -224,6 +230,14 @@ func move_back_to_shop() -> void:
 
 	in_game_view = false
 	camera_moving = false
+	
+func move_into_cabinet() -> void:
+	camera_moving = true
+	
+	await tween_camera_to_marker(camera_cabinet, 2.0)
+	
+	camera_moving = false
+	in_game_view = false
 
 
 func tween_camera_to_marker(marker: Marker3D, duration: float) -> void:

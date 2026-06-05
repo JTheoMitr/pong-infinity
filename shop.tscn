@@ -617,7 +617,6 @@
 [ext_resource type="AudioStream" uid="uid://rla7kqb8v0by" path="res://Assets/Music/neuroshop1-1.mp3" id="616_jx570"]
 [ext_resource type="Texture2D" uid="uid://dua0j42x36uvt" path="res://models/eyeball/eye-spin-anim/frame_150_delay-0.03s.png" id="617_gvj1d"]
 [ext_resource type="Texture2D" uid="uid://sgr273tyiuiy" path="res://Assets/Sprites/neurotitle.png" id="619_2nmvk"]
-[ext_resource type="PackedScene" uid="uid://2vhudovhr1sb" path="res://models/shop-reboot/shop-reboot-new.glb" id="619_jx570"]
 [ext_resource type="PackedScene" uid="uid://h0yqkiyjg1bg" path="res://models/old-metal-door/door___old___metal_-_14mb.glb" id="620_2nmvk"]
 [ext_resource type="Texture2D" uid="uid://cr7ry2puaelno" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_001.png" id="620_xww5d"]
 [ext_resource type="Texture2D" uid="uid://dwrptnaub0lwn" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_002.png" id="621_0glof"]
@@ -629,6 +628,7 @@
 [ext_resource type="Texture2D" uid="uid://cn3nvmxq43afa" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_005.png" id="624_ybqo6"]
 [ext_resource type="Texture2D" uid="uid://b3mdbovheov3s" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_006.png" id="625_k57ne"]
 [ext_resource type="Texture2D" uid="uid://dwgm716ow1di4" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_010.png" id="629_cc6t8"]
+[ext_resource type="PackedScene" uid="uid://bl2dldtfk6wav" path="res://models/shop-smoker/shop-reboot-new-2.glb" id="630_sjfe1"]
 
 [sub_resource type="Environment" id="Environment_viryw"]
 background_mode = 1
@@ -2597,6 +2597,9 @@ transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64
 [node name="CameraCabinet" type="Marker3D" parent="."]
 transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.529, 2.68, -3.355)
 
+[node name="CameraSmoker" type="Marker3D" parent="."]
+transform = Transform3D(-0.44330594, 0, -0.8963704, 0, 1, 0, 0.8963704, 0, -0.44330594, -6.8672557, 2.836391, -2.1679792)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="FadeCover" type="ColorRect" parent="CanvasLayer"]
@@ -2849,9 +2852,6 @@ pitch_scale = 0.9
 [node name="MetalDoor" parent="." instance=ExtResource("620_2nmvk")]
 transform = Transform3D(0.007353083, 0, -0.0031515355, 0, 0.008, 0, 0.0031515355, 0, 0.007353083, -0.72899556, 1.3486285, 1.798054)
 
-[node name="shop-reboot-new" parent="." instance=ExtResource("619_jx570")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.56009513, 0, 0.388573, 0, 0.3, 0, -0.6916599, 0, 0.3146602, -5.771989, 3.1386216, -3.6124842)
 material_override = SubResource("StandardMaterial3D_j3d4a")
@@ -2861,3 +2861,6 @@ mesh = SubResource("QuadMesh_6tgid")
 transform = Transform3D(0.05248472, 0, 0.060376763, 0, 0.08, 0, -0.060376763, 0, 0.05248472, -5.818623, 2.684443, -3.6193376)
 modulate = Color(0.67580557, 0.6758044, 0.67580503, 1)
 texture = SubResource("AnimatedTexture_bfdc3")
+
+[node name="shop-reboot-new-2" parent="." instance=ExtResource("630_sjfe1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)

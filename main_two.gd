@@ -259,6 +259,8 @@ func game_over() -> void:
 	reset_game_time_scale()
 	awaiting_score_submit = true
 	final_score_to_submit = score
+	var round_xp: int = score
+	SaveManager.add_xp(round_xp)
 	clear_all_buffs()
 	var game_over_chime = game_over_sfx.instantiate()
 	get_parent().add_child(game_over_chime)

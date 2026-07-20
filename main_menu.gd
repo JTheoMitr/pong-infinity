@@ -45,7 +45,8 @@ extends Node2D
 
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
-const MAIN_TWO_PATH := "res://main_two.tscn"
+#const MAIN_TWO_PATH := "res://main_two.tscn"
+const MAIN_TWO_PATH := "res://shop.tscn"
 var texture = load("res://Assets/Sprites/gdb-playstation-2 triangle flat.png")
 
 var panel_sliding: bool = false

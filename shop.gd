@@ -1,5 +1,14 @@
 extends Node3D
 
+const SHOP_BALL_IDS: Array[String] = [
+	"sushi",
+	"burger_ball",
+	"saturn",
+	"eyeball"
+]
+
+var pending_equip_ball_id: String = ""
+
 enum CameraZone {
 	SHOP,
 	GAME,
@@ -32,6 +41,8 @@ enum CameraZone {
 @onready var button_3: Label = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer3/Label
 @onready var button_4: Label = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer4/Label
 
+@onready var dialogue_ui: Control = $CanvasLayer/DialogueUI
+
 var camera_moving: bool = false
 var camera_zone: CameraZone = CameraZone.SHOP
 
@@ -40,7 +51,10 @@ var row_labels: Array[Label] = []
 
 
 func _ready() -> void:
+	SaveManager.add_xp(100)
+	#for testing
 	show_loading_cover()
+	dialogue_ui.hide()
 
 	row_labels = [
 		button_1,
@@ -48,7 +62,7 @@ func _ready() -> void:
 		button_3,
 		button_4
 	]
-	_update_selection()
+	refresh_shop_labels()
 
 	screen_viewport.transparent_bg = false
 	screen_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
@@ -107,9 +121,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 	elif event.is_action_pressed("ui_accept"):
-		if camera_zone == CameraZone.GAME:
-			await launch_game_from_cabinet()
-			get_viewport().set_input_as_handled()
+		match camera_zone:
+			CameraZone.SHOP:
+				handle_shop_accept()
+				get_viewport().set_input_as_handled()
+
+			CameraZone.GAME:
+				await launch_game_from_cabinet()
+				get_viewport().set_input_as_handled()
 
 
 func rotate_clockwise() -> void:
@@ -173,10 +192,13 @@ func move_to_patio() -> void:
 
 	camera_zone = CameraZone.PATIO
 	camera_moving = false
+	
+	show_patio_dialogue()
 
 
 func move_back_to_game_view_from_patio() -> void:
 	camera_moving = true
+	dialogue_ui.hide()
 
 	await tween_camera_to_marker(camera_game_view, 3.0)
 
@@ -299,3 +321,73 @@ func hide_loading_cover() -> void:
 
 	loading_icon.visible = false
 	fade_cover.visible = false
+	
+func show_patio_dialogue() -> void:
+	#dialogue_name.text = "???"
+	#dialogue_text.text = "You looking for another round, kid?"
+	dialogue_ui.visible = true
+
+func handle_shop_accept() -> void:
+	if selected_index < 0 or selected_index >= SHOP_BALL_IDS.size():
+		return
+
+	var ball_id: String = SHOP_BALL_IDS[selected_index]
+
+	if SaveManager.owns_ball(ball_id):
+		SaveManager.equip_ball(ball_id)
+		refresh_shop_labels()
+		return
+
+	var purchased: bool = SaveManager.purchase_ball(ball_id)
+
+	if not purchased:
+		show_shop_message("NOT ENOUGH NEUROBITS")
+		return
+
+	pending_equip_ball_id = ball_id
+	show_equip_prompt(ball_id)
+	refresh_shop_labels()
+	
+func show_equip_prompt(ball_id: String) -> void:
+	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
+	var display_name: String = str(
+		ball_data.get("display_name", "BALL")
+	)
+
+	print("Equip %s now?" % display_name)
+
+	# Replace this with your Yes/No panel.
+	# SaveManager.equip_ball(ball_id)
+
+
+func show_shop_message(message: String) -> void:
+	print(message)
+	
+func refresh_shop_labels() -> void:
+	for index in range(row_labels.size()):
+		if index >= SHOP_BALL_IDS.size():
+			continue
+
+		var ball_id: String = SHOP_BALL_IDS[index]
+		var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
+
+		var display_name: String = str(
+			ball_data.get("display_name", "BALL")
+		)
+
+		var price: int = int(
+			ball_data.get("price", 0)
+		)
+
+		var _status_text: String
+
+		if SaveManager.equipped_ball_id == ball_id:
+			_status_text = " [EQUIPPED]"
+		elif SaveManager.owns_ball(ball_id):
+			_status_text = " [OWNED]"
+		else:
+			_status_text = " [%d NB]" % price
+
+		row_labels[index].text = display_name # + status_text
+
+	_update_selection()

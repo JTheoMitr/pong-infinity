@@ -19,6 +19,7 @@ config/icon="uid://cx4ialwgv10xc"
 
 Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
 LeaderboardService="*res://Scripts/LeaderboardService.gd"
+SaveManager="*res://Scripts/save_manager.gd"
 
 [display]
 

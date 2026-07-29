@@ -51,7 +51,19 @@ var row_labels: Array[Label] = []
 
 
 func _ready() -> void:
-	SaveManager.add_xp(100)
+	
+	#SaveManager.owned_balls.erase("sushi")
+#
+	#if SaveManager.equipped_ball_id == "sushi":
+		#SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
+
+	SaveManager.neurobits = 1
+	SaveManager.save()
+	SaveManager.equip_ball("sushi")
+
+	print("Currently equipped: ", SaveManager.equipped_ball_id)
+	
+	#SaveManager.add_xp(100)
 	#for testing
 	show_loading_cover()
 	dialogue_ui.hide()
@@ -63,6 +75,9 @@ func _ready() -> void:
 		button_4
 	]
 	refresh_shop_labels()
+	print("Neurobits: ", SaveManager.neurobits)
+	print("Owned balls: ", SaveManager.owned_balls)
+	print("Equipped ball: ", SaveManager.equipped_ball_id)
 
 	screen_viewport.transparent_bg = false
 	screen_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
@@ -123,12 +138,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_accept"):
 		match camera_zone:
 			CameraZone.SHOP:
-				handle_shop_accept()
 				get_viewport().set_input_as_handled()
+				handle_shop_accept()
 
 			CameraZone.GAME:
-				await launch_game_from_cabinet()
 				get_viewport().set_input_as_handled()
+				launch_game_from_cabinet()
+				
 
 
 func rotate_clockwise() -> void:
@@ -333,9 +349,17 @@ func handle_shop_accept() -> void:
 
 	var ball_id: String = SHOP_BALL_IDS[selected_index]
 
+	print(
+		"Selected shop item: %s | Owned: %s | Neurobits: %d"
+		% [
+			ball_id,
+			SaveManager.owns_ball(ball_id),
+			SaveManager.neurobits
+		]
+	)
+
 	if SaveManager.owns_ball(ball_id):
-		SaveManager.equip_ball(ball_id)
-		refresh_shop_labels()
+		show_shop_message("ITEM ALREADY OWNED")
 		return
 
 	var purchased: bool = SaveManager.purchase_ball(ball_id)
@@ -345,6 +369,12 @@ func handle_shop_accept() -> void:
 		return
 
 	pending_equip_ball_id = ball_id
+
+	show_shop_message(
+		"NEUROBALL PURCHASED: %s"
+		% ball_id
+	)
+
 	show_equip_prompt(ball_id)
 	refresh_shop_labels()
 	
@@ -379,15 +409,43 @@ func refresh_shop_labels() -> void:
 			ball_data.get("price", 0)
 		)
 
-		var _status_text: String
+		var status_text: String
 
-		if SaveManager.equipped_ball_id == ball_id:
-			_status_text = " [EQUIPPED]"
-		elif SaveManager.owns_ball(ball_id):
-			_status_text = " [OWNED]"
+		if SaveManager.owns_ball(ball_id):
+			status_text = " [OWNED]"
 		else:
-			_status_text = " [%d NB]" % price
+			status_text = " [%d NB]" % price
 
-		row_labels[index].text = display_name # + status_text
+		row_labels[index].text = display_name + status_text
 
 	_update_selection()
+
+func confirm_equip_now() -> void:
+	if pending_equip_ball_id.is_empty():
+		return
+
+	var equipped: bool = SaveManager.equip_ball(
+		pending_equip_ball_id
+	)
+
+	if equipped:
+		print(
+			"Equipped purchased Neuroball: %s"
+			% pending_equip_ball_id
+		)
+	else:
+		print(
+			"Could not equip Neuroball: %s"
+			% pending_equip_ball_id
+		)
+
+	pending_equip_ball_id = ""
+
+
+func decline_equip_now() -> void:
+	print(
+		"Purchased Neuroball left unequipped: %s"
+		% pending_equip_ball_id
+	)
+
+	pending_equip_ball_id = ""

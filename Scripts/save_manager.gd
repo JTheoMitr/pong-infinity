@@ -77,8 +77,24 @@ func load_save() -> void:
 func save() -> bool:
 	var config := ConfigFile.new()
 
-	config.set_value("currency", "neurobits", neurobits)
-	config.set_value("inventory", "owned_balls", owned_balls)
+	config.set_value(
+		"currency",
+		"neurobits",
+		neurobits
+	)
+
+	config.set_value(
+		"currency",
+		"xp_toward_next_neurobit",
+		xp_toward_next_neurobit
+	)
+
+	config.set_value(
+		"inventory",
+		"owned_balls",
+		owned_balls
+	)
+
 	config.set_value(
 		"inventory",
 		"equipped_ball_id",
@@ -86,12 +102,6 @@ func save() -> bool:
 	)
 
 	var error: Error = config.save(SAVE_PATH)
-	
-	config.set_value(
-		"currency",
-		"xp_toward_next_neurobit",
-		xp_toward_next_neurobit
-	)
 
 	if error != OK:
 		push_error(

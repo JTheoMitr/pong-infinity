@@ -57,7 +57,7 @@ func _ready() -> void:
 	#if SaveManager.equipped_ball_id == "sushi":
 		#SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
 
-	SaveManager.neurobits = 1
+	#SaveManager.neurobits = 1
 	SaveManager.save()
 	SaveManager.equip_ball("sushi")
 
@@ -405,18 +405,18 @@ func refresh_shop_labels() -> void:
 			ball_data.get("display_name", "BALL")
 		)
 
-		var price: int = int(
-			ball_data.get("price", 0)
-		)
+		#var price: int = int(
+			#ball_data.get("price", 0)
+		#)
 
 		var status_text: String
 
 		if SaveManager.owns_ball(ball_id):
-			status_text = " [OWNED]"
+			status_text = "............[OWNED]"
 		else:
-			status_text = " [%d NB]" % price
+			status_text = display_name #" [%d NB]" % price
 
-		row_labels[index].text = display_name + status_text
+		row_labels[index].text = status_text # + status_text
 
 	_update_selection()
 

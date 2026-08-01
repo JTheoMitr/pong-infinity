@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var pause_label: Label = $PauseLabel
 @onready var center_container = $CenterContainer
 @onready var score_label: Label = $ScoreLabel
+@onready var nb_label = $NBLabel
 @onready var controller_sprite = $ControllerSprite
 
 @onready var leaderboard_panel: Control = $LeaderboardPanel
@@ -23,6 +24,8 @@ extends CanvasLayer
 @onready var submit_panel = $LeaderboardPanel/SubmitPanel
 @onready var quit_button = $LeaderboardPanel/VBoxContainer/QuitButton
 @onready var music_button = $PauseLabel/MusicButton
+
+
 
 var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
 var musicOn = true
@@ -41,6 +44,7 @@ func _ready() -> void:
 	countdown_label.visible = false
 	start_button.visible = true
 	pause_label.visible = false
+	nb_label.visible = false
 	score_label.visible = false
 	start_button.pressed.connect(_on_start_button_pressed)
 	submit_message.visible = false
@@ -58,6 +62,7 @@ func _on_start_button_pressed() -> void:
 func show_pause_overlay(paused: bool) -> void:
 	pause_label.visible = paused
 	score_label.visible = paused
+	nb_label.visible = paused
 	if pause_label.visible:
 		resume_button.grab_focus()
 
@@ -95,11 +100,16 @@ func hide_countdown() -> void:
 func update_score(value: int) -> void:
 	score_label.text = "Score: " + str(value)
 	
+	
 func show_score() -> void:
 	score_label.visible = true
+	var neurobits = SaveManager.neurobits
+	nb_label.visible = true
+	nb_label.text = "You now have " + str(neurobits) + " neurobits"
 	
 func hide_score() -> void:
 	score_label.visible = false
+	nb_label.visible = false
 	
 func _clear_children(node: Node) -> void:
 	for c in node.get_children():

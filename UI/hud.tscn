@@ -185,6 +185,19 @@ text = "Score: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="NBLabel" type="Label" parent="."]
+offset_left = 305.0
+offset_top = 117.0
+offset_right = 998.3334
+offset_bottom = 203.66666
+scale = Vector2(0.75, 0.75)
+theme_override_colors/font_color = Color(0.94509804, 0.38039216, 0.8980392, 1)
+theme_override_fonts/font = ExtResource("2_bytes")
+theme_override_font_sizes/font_size = 50
+text = "You earned 7 neurobits"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="LeaderboardPanel" type="PanelContainer" parent="."]
 visible = false
 custom_minimum_size = Vector2(450, 385)
@@ -297,6 +310,7 @@ bbcode_enabled = true
 text = "[shake][center]Submitting Score..."
 
 [node name="ControllerSprite" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(574, 344)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_rnl6m")

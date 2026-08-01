@@ -412,7 +412,7 @@ func refresh_shop_labels() -> void:
 		var status_text: String
 
 		if SaveManager.owns_ball(ball_id):
-			status_text = "............[OWNED]"
+			status_text = "..............[OWNED]"
 		else:
 			status_text = display_name #" [%d NB]" % price
 

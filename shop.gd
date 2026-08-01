@@ -20,6 +20,7 @@ enum CameraZone {
 @onready var camera_start: Marker3D = $CameraStart
 @onready var camera_shop_view: Marker3D = $CameraShopView
 @onready var shop_ui: CanvasLayer = $CanvasLayer
+@onready var nb_lbl: Label = $CanvasLayer/NBLabel
 
 @onready var screen_quad: MeshInstance3D = $ScreenQuad
 @onready var screen_viewport: SubViewport = $ScreenQuad/ScreenViewport
@@ -41,6 +42,12 @@ enum CameraZone {
 @onready var button_3: Label = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer3/Label
 @onready var button_4: Label = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer4/Label
 
+@onready var price_1: RichTextLabel = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer/RichTextLabel
+@onready var price_2: RichTextLabel = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer2/RichTextLabel
+@onready var price_3: RichTextLabel = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer3/RichTextLabel
+@onready var price_4: RichTextLabel = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer4/RichTextLabel
+
+
 @onready var dialogue_ui: Control = $CanvasLayer/DialogueUI
 
 var camera_moving: bool = false
@@ -48,10 +55,10 @@ var camera_zone: CameraZone = CameraZone.SHOP
 
 var selected_index := 0
 var row_labels: Array[Label] = []
-
+var price_labels: Array[RichTextLabel] = []
 
 func _ready() -> void:
-	
+	nb_lbl.visible = false
 	#SaveManager.owned_balls.erase("sushi")
 #
 	#if SaveManager.equipped_ball_id == "sushi":
@@ -74,6 +81,14 @@ func _ready() -> void:
 		button_3,
 		button_4
 	]
+	
+	price_labels = [
+	price_1,
+	price_2,
+	price_3,
+	price_4
+	]
+
 	refresh_shop_labels()
 	print("Neurobits: ", SaveManager.neurobits)
 	print("Owned balls: ", SaveManager.owned_balls)
@@ -173,6 +188,7 @@ func rotate_counterclockwise() -> void:
 
 func enter_shop() -> void:
 	camera_moving = true
+	
 
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
@@ -185,6 +201,9 @@ func enter_shop() -> void:
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
+	var nbits = SaveManager.neurobits
+	nb_lbl.text = "Neurobits: " + str(nbits)
+	nb_lbl.visible = true
 
 	await play_vendor_intro()
 	shop_ui.visible = true
@@ -193,6 +212,7 @@ func enter_shop() -> void:
 func move_to_game_view() -> void:
 	camera_moving = true
 	set_screen_animation_active(false)
+	nb_lbl.visible = false
 
 	await tween_camera_to_marker(camera_corner, 1.4)
 	await tween_camera_to_marker(camera_game_view, 2.5)
@@ -230,6 +250,9 @@ func move_back_to_shop() -> void:
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
+	var nbits = SaveManager.neurobits
+	nb_lbl.text = "Neurobits: " + str(nbits)
+	nb_lbl.visible = true
 	set_screen_animation_active(true)
 
 
@@ -400,11 +423,11 @@ func refresh_shop_labels() -> void:
 
 		var ball_id: String = SHOP_BALL_IDS[index]
 		var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
-
+		
 		var display_name: String = str(
 			ball_data.get("display_name", "BALL")
 		)
-
+		price_labels[index].visible = !SaveManager.owns_ball(ball_id)
 		#var price: int = int(
 			#ball_data.get("price", 0)
 		#)

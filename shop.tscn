@@ -252,6 +252,19 @@ theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]zed"
 
+[node name="NBLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -47.0
+offset_right = 242.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.57254905, 0.93333334, 1, 1)
+theme_override_fonts/font = ExtResource("10_xqmyw")
+theme_override_font_sizes/font_size = 36
+text = "NEUROBITS: 0"
+
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4693542, 2.9115815, -0.7794397)
 light_color = Color(1, 0.3254902, 1, 1)

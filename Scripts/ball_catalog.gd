@@ -13,7 +13,7 @@ const BALLS: Dictionary = {
 	},
 
 	"eyeball": {
-		"display_name": "...............Eyeball",
+		"display_name": "Eyeball",
 		"price": 100,
 		"sprite_frames": preload(
 			"res://models/eyeball/eyeball.tres"
@@ -21,7 +21,7 @@ const BALLS: Dictionary = {
 	},
 
 	"burger_ball": {
-		"display_name": "..................Burger",
+		"display_name": "Burger",
 		"price": 150,
 		"sprite_frames": preload(
 			"res://models/burger/burger.tres"
@@ -29,7 +29,7 @@ const BALLS: Dictionary = {
 	},
 
 	"saturn": {
-		"display_name": "..................Saturn",
+		"display_name": "Saturn",
 		"price": 100,
 		"sprite_frames": preload(
 			"res://models/saturn/saturn.tres"
@@ -37,7 +37,7 @@ const BALLS: Dictionary = {
 	},
 	
 	"sushi": {
-		"display_name": "..................Sushi",
+		"display_name": "Sushi",
 		"price": 150,
 		"sprite_frames": preload(
 			"res://models/sushi/sushi.tres"

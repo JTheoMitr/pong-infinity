@@ -437,7 +437,7 @@ func refresh_shop_labels() -> void:
 		if SaveManager.owns_ball(ball_id):
 			status_text = "..............[OWNED]"
 		else:
-			status_text = display_name #" [%d NB]" % price
+			status_text = ".............." + display_name #" [%d NB]" % price
 
 		row_labels[index].text = status_text # + status_text
 

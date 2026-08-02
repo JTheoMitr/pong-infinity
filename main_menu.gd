@@ -43,6 +43,81 @@ extends Node2D
 @onready var keyboard_text4 = $ControlsPopup/RichTextLabel11
 @onready var keyboard_text5 = $ControlsPopup/RichTextLabel12
 
+# ball and table select
+
+@onready var loadout_overlay: Control = $CanvasLayer/LoadoutOverlay
+
+@onready var ball_carousel: Control = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel
+)
+
+@onready var ball_preview: AnimatedSprite2D = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/BallPreview
+)
+
+@onready var ball_name_label: Label = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/BallName
+)
+
+@onready var ball_status_label: Label = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/BallStatus
+)
+
+@onready var ball_left_arrow: AnimatedSprite2D = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/LeftArrow
+)
+
+@onready var ball_right_arrow: AnimatedSprite2D = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/RightArrow
+)
+
+@onready var board_carousel: Control = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel
+)
+
+@onready var board_preview: AnimatedSprite2D = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow/BoardPreview
+)
+
+@onready var board_name_label: Label = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel/BoardName
+)
+
+@onready var board_left_arrow: AnimatedSprite2D = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow/LeftArrow
+)
+
+@onready var board_right_arrow: AnimatedSprite2D = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow/RightArrow
+)
+
+@onready var start_loadout_button: Button = (
+	$CanvasLayer/LoadoutOverlay/StartLoadoutButton
+)
+
+enum LoadoutFocus {
+	BALL,
+	BOARD,
+	START
+}
+
+const BOARD_IDS: Array[String] = [
+	"classic"
+]
+
+const BOARD_NAMES: Dictionary = {
+	"classic": "NEUROBALL CLASSIC"
+}
+
+var loadout_is_open: bool = false
+var loadout_focus: LoadoutFocus = LoadoutFocus.BALL
+
+var owned_ball_ids: Array[String] = []
+var selected_ball_index: int = 0
+var selected_board_index: int = 0
+
+var selected_difficulty: String = "normal"
+
 
 const ButtonClick = preload("res://Assets/SFX/sfx_button_click_1.tscn")
 const MAIN_TWO_PATH := "res://main_two.tscn"
@@ -88,6 +163,11 @@ func _ready() -> void:
 	difficulty_select.hide()
 	cyborg_head.scale.x = 3.0
 	cyborg_head.scale.y = 3.0
+	
+	loadout_overlay.hide()
+
+	start_loadout_button.focus_mode = Control.FOCUS_NONE
+	start_loadout_button.pressed.connect(_confirm_loadout_and_start)
 	
 	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
 	
@@ -179,8 +259,7 @@ func _on_easybutton_pressed() -> void:
 
 
 func _on_normalbutton_pressed() -> void:
-	_initiate_visor()
-
+	open_loadout_menu("normal")
 
 func _on_hardbutton_pressed() -> void:
 	pass
@@ -249,3 +328,266 @@ func _on_codex_button_pressed() -> void:
 
 func _on_back_button_pressed() -> void:
 	codex_popup.hide()
+	
+func open_loadout_menu(difficulty_id: String) -> void:
+	selected_difficulty = difficulty_id
+
+	difficulty_select.hide()
+	loadout_overlay.show()
+	loadout_is_open = true
+
+	owned_ball_ids.clear()
+
+	for ball_id: String in SaveManager.owned_balls:
+		if BallCatalog.has_ball(ball_id):
+			owned_ball_ids.append(ball_id)
+
+	if owned_ball_ids.is_empty():
+		owned_ball_ids.append(BallCatalog.DEFAULT_BALL_ID)
+
+	selected_ball_index = owned_ball_ids.find(
+		SaveManager.equipped_ball_id
+	)
+
+	if selected_ball_index < 0:
+		selected_ball_index = 0
+
+	selected_board_index = 0
+	loadout_focus = LoadoutFocus.BALL
+
+	_refresh_loadout_menu()
+	
+func _unhandled_input(event: InputEvent) -> void:
+	if not loadout_is_open:
+		return
+
+	if event.is_action_pressed("ui_up"):
+		_move_loadout_focus(-1)
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_down"):
+		_move_loadout_focus(1)
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_left"):
+		_move_active_carousel(-1)
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_right"):
+		_move_active_carousel(1)
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_accept"):
+		if loadout_focus == LoadoutFocus.START:
+			_confirm_loadout_and_start()
+		else:
+			# Optional convenience:
+			# Accept while viewing a carousel moves down.
+			_move_loadout_focus(1)
+
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_cancel"):
+		close_loadout_menu()
+		get_viewport().set_input_as_handled()
+		
+func _move_loadout_focus(direction: int) -> void:
+	var next_focus: int = int(loadout_focus) + direction
+
+	next_focus = clamp(
+		next_focus,
+		int(LoadoutFocus.BALL),
+		int(LoadoutFocus.START)
+	)
+
+	loadout_focus = next_focus as LoadoutFocus
+	_refresh_loadout_focus()
+	
+func _move_active_carousel(direction: int) -> void:
+	match loadout_focus:
+		LoadoutFocus.BALL:
+			if owned_ball_ids.is_empty():
+				return
+
+			selected_ball_index = wrapi(
+				selected_ball_index + direction,
+				0,
+				owned_ball_ids.size()
+			)
+
+			_refresh_ball_carousel()
+
+		LoadoutFocus.BOARD:
+			if BOARD_IDS.is_empty():
+				return
+
+			selected_board_index = wrapi(
+				selected_board_index + direction,
+				0,
+				BOARD_IDS.size()
+			)
+
+			_refresh_board_carousel()
+
+		LoadoutFocus.START:
+			pass
+			
+func _refresh_loadout_menu() -> void:
+	_refresh_ball_carousel()
+	_refresh_board_carousel()
+	_refresh_loadout_focus()
+
+
+func _refresh_ball_carousel() -> void:
+	if owned_ball_ids.is_empty():
+		ball_name_label.text = "NO NEUROBALLS"
+		ball_status_label.text = ""
+		return
+
+	var ball_id: String = owned_ball_ids[selected_ball_index]
+	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
+
+	var display_name: String = str(
+		ball_data.get("display_name", "NEUROBALL")
+	)
+
+	var sprite_frames: SpriteFrames = ball_data.get(
+		"sprite_frames"
+	) as SpriteFrames
+
+	ball_name_label.text = display_name
+
+	if ball_id == SaveManager.equipped_ball_id:
+		ball_status_label.text = "EQUIPPED"
+	else:
+		ball_status_label.text = "OWNED"
+
+	if sprite_frames == null:
+		ball_preview.stop()
+		ball_preview.sprite_frames = null
+		return
+
+	ball_preview.sprite_frames = sprite_frames
+
+	if sprite_frames.has_animation("spin"):
+		ball_preview.play("spin")
+	elif sprite_frames.has_animation("default"):
+		ball_preview.play("default")
+	else:
+		var animations: PackedStringArray = (
+			sprite_frames.get_animation_names()
+		)
+
+		if not animations.is_empty():
+			ball_preview.play(animations[0])
+			
+func _refresh_board_carousel() -> void:
+	if BOARD_IDS.is_empty():
+		board_name_label.text = "NO BOARDS"
+		return
+
+	var board_id: String = BOARD_IDS[selected_board_index]
+
+	board_name_label.text = str(
+		BOARD_NAMES.get(board_id, "BOARD")
+	)
+
+	if not board_preview.is_playing():
+		if board_preview.sprite_frames != null:
+			var animations: PackedStringArray = (
+				board_preview.sprite_frames.get_animation_names()
+			)
+
+			if not animations.is_empty():
+				board_preview.play(animations[0])
+				
+func _refresh_loadout_focus() -> void:
+	var active_color := Color.WHITE
+	var inactive_color := Color(
+		0.32,
+		0.32,
+		0.32,
+		0.65
+	)
+
+	ball_carousel.modulate = (
+		active_color
+		if loadout_focus == LoadoutFocus.BALL
+		else inactive_color
+	)
+
+	board_carousel.modulate = (
+		active_color
+		if loadout_focus == LoadoutFocus.BOARD
+		else inactive_color
+	)
+
+	if loadout_focus == LoadoutFocus.START:
+		start_loadout_button.modulate = Color(
+			1.0,
+			0.667,
+			0.0,
+			1.0
+		)
+	else:
+		start_loadout_button.modulate = inactive_color
+
+	ball_left_arrow.visible = (
+		loadout_focus == LoadoutFocus.BALL
+	)
+
+	ball_right_arrow.visible = (
+		loadout_focus == LoadoutFocus.BALL
+	)
+
+	board_left_arrow.visible = (
+		loadout_focus == LoadoutFocus.BOARD
+	)
+
+	board_right_arrow.visible = (
+		loadout_focus == LoadoutFocus.BOARD
+	)
+	
+func _confirm_loadout_and_start() -> void:
+	if owned_ball_ids.is_empty():
+		return
+
+	var selected_ball_id: String = (
+		owned_ball_ids[selected_ball_index]
+	)
+
+	var equipped: bool = SaveManager.equip_ball(
+		selected_ball_id
+	)
+
+	if not equipped:
+		push_warning(
+			"Could not equip selected Neuroball: %s"
+			% selected_ball_id
+		)
+		return
+
+	var selected_board_id: String = (
+		BOARD_IDS[selected_board_index]
+	)
+
+	print(
+		"Starting game | Difficulty: %s | Ball: %s | Board: %s"
+		% [
+			selected_difficulty,
+			selected_ball_id,
+			selected_board_id
+		]
+	)
+
+	loadout_is_open = false
+	loadout_overlay.hide()
+
+	_initiate_visor()
+	
+func close_loadout_menu() -> void:
+	loadout_is_open = false
+	loadout_overlay.hide()
+
+	difficulty_select.show()
+	normal_button.grab_focus()

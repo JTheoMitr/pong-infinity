@@ -310,7 +310,6 @@ bbcode_enabled = true
 text = "[shake][center]Submitting Score..."
 
 [node name="ControllerSprite" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(574, 344)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_rnl6m")

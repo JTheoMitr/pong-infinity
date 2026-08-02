@@ -67,6 +67,8 @@ const points_500 = preload("res://Buffs/point_pop_up_500.tscn")
 @export var silver_panel_1: PackedScene
 @export var spinning_head_1: PackedScene
 
+@onready var custom_cursor_sprite: Sprite2D = $HUD/CustomCursor
+
 
 var game_started: bool = false
 var start_pressed: bool = false
@@ -83,6 +85,7 @@ var ball_is_frozen: bool = false
 var awaiting_score_submit: bool = false
 var musicOn = true
 
+
 # --- Camera Effects ---
 var shake_strength := 0.0
 var shake_decay := 5.0
@@ -90,7 +93,7 @@ var original_cam_position := Vector2.ZERO
 
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
 	hud.show_start_message("Get Ready") # controller anim will show here
 	hud.start_button_pressed.connect(_on_start_button_pressed)
@@ -112,6 +115,9 @@ func _ready() -> void:
 	level_music_2.volume_db = 5
 	level_music_3.volume_db = 0
 	
+	_restore_normal_cursor()
+	
+
 	# local test for leaderboard:
 	
 	#LeaderboardService.set_display_name_best_effort("John")
@@ -140,6 +146,12 @@ func _ready() -> void:
 
 	
 func _process(delta: float) -> void:
+	
+	if custom_cursor_sprite.visible:
+		custom_cursor_sprite.position = (
+			get_viewport().get_mouse_position()
+		)
+		
 	if shake_strength > 0.0:
 		var offset := Vector2(
 			randf_range(-1.0, 1.0),
@@ -201,9 +213,11 @@ func toggle_pause() -> void:
 	#print(ball.base_speed)
 	if get_tree().paused:
 		_pause_all_timers()
+		_restore_normal_cursor()
 		#print("paused")
 	else:
 		_resume_all_timers()
+		_activate_custom_cursor()
 		#print("resumed")
 
 
@@ -236,6 +250,7 @@ func countdown_and_start() -> void:
 
 	# Wake the ball back up
 	start_game()
+
 	
 func start_game() -> void:
 	ball.base_speed = 390.0
@@ -249,6 +264,7 @@ func start_game() -> void:
 	#hud.hide_leaderboard()
 	#ice_mine_timer.start()
 	reset_game_time_scale()
+	_activate_custom_cursor()
 
 
 
@@ -273,6 +289,7 @@ func game_over() -> void:
 	ball_is_on_fire = false
 	ball_is_frozen = false
 	hud.show_score()
+	_restore_normal_cursor()
 	
 	await get_tree().create_timer(3.0).timeout
 	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
@@ -784,3 +801,17 @@ func _resume_all_timers() -> void:
 func reset_game_time_scale() -> void:
 	Engine.time_scale = 1.0
 	
+
+func _activate_custom_cursor() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+	custom_cursor_sprite.position = (
+		get_viewport().get_mouse_position()
+	)
+
+	custom_cursor_sprite.show()
+
+
+func _restore_normal_cursor() -> void:
+	custom_cursor_sprite.hide()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

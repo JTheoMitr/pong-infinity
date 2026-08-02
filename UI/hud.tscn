@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=20 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="3_2o5uh"]
 [ext_resource type="Texture2D" uid="uid://c2v6pykkgv2al" path="res://Assets/Sprites/ps4_gamepad isolated.png" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://bbjbohphpmd6m" path="res://Assets/Anims/gdb-playstation-2 x pressed.png" id="5_1ui3w"]
+[ext_resource type="Texture2D" uid="uid://didix4x6kwytm" path="res://UI/neuro_cursor.png" id="6_1ui3w"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bytes"]
 
@@ -320,6 +321,10 @@ scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_23s3h")
 autoplay = "default"
 frame_progress = 0.87903553
+
+[node name="CustomCursor" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_1ui3w")
 
 [connection signal="pressed" from="PauseLabel/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="PauseLabel/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -76,6 +76,7 @@ const ARMED_CURSOR_ROTATION_SPEED: float = 3.5
 var laser_crystal_charge: int = 0
 var laser_armed: bool = false
 var laser_firing: bool = false
+@export var laser_impact_radius: float = 55.0
 
 var game_started: bool = false
 var start_pressed: bool = false
@@ -500,7 +501,7 @@ func _on_crystal_hit(_multi: Node) -> void:
 	
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
-	#print("crystal hit")
+	print("crystal hit")
 	# Spawn particles at impact
 	spawn_impact_particles_crystal1(ball.global_position)
 	
@@ -947,9 +948,61 @@ func _fire_laser_test() -> void:
 func _on_laser_impact(target_position: Vector2) -> void:
 	print("LASER IMPACT AT: ", target_position)
 
-	# Target detection and destruction comes next.
+	var target := _find_nearest_laser_target(
+		target_position,
+		laser_impact_radius
+	)
 
+	if target == null:
+		print("Laser hit empty space.")
+		return
+
+	print(
+		"Laser target found: %s at %s"
+		% [target.name, target.global_position]
+	)
+
+	_destroy_laser_target(target)
 
 func _on_laser_strike_finished() -> void:
 	laser_firing = false
 	print("LASER STRIKE FINISHED")
+
+func _find_nearest_laser_target(
+	impact_position: Vector2,
+	radius: float
+) -> Node2D:
+	var closest_target: Node2D = null
+	var closest_distance: float = radius
+
+	for node: Node in get_tree().get_nodes_in_group("laser_target"):
+		var target := node as Node2D
+
+		if target == null:
+			continue
+
+		if not is_instance_valid(target):
+			continue
+
+		if target.is_queued_for_deletion():
+			continue
+
+		var distance := target.global_position.distance_to(
+			impact_position
+		)
+
+		if distance <= closest_distance:
+			closest_distance = distance
+			closest_target = target
+
+	return closest_target
+	
+func _destroy_laser_target(target: Node2D) -> void:
+	if not target.has_method("destroy_by_laser"):
+		push_warning(
+			"Laser target has no destroy_by_laser(): %s"
+			% target.name
+		)
+		return
+
+	target.call("destroy_by_laser")

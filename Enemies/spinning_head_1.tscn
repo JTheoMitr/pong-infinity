@@ -633,7 +633,7 @@ animations = [{
 radius = 36.0
 height = 114.0
 
-[node name="SpinningHead1" type="StaticBody2D" groups=["paddle"]]
+[node name="SpinningHead1" type="StaticBody2D" groups=["laser_target", "paddle"]]
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_3xcvu")
 script = ExtResource("1_l2i81")

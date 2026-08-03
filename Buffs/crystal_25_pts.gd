@@ -5,7 +5,7 @@ extends Area2D
 @onready var spinning_blue_crystal: AnimatedSprite2D = $AnimatedSprite2D
 
 signal ball_hit_crystal_1(multiplier: Node)
-
+var destroyed: bool = false
 
 func _ready() -> void:
 	lightning_anim.play()
@@ -13,10 +13,12 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("ball"):
-		emit_signal("ball_hit_crystal_1", self)
-		self.queue_free() 
+		_destroy_crystal()
+		#emit_signal("ball_hit_crystal_1", self)
+		#self.queue_free() 
 		#print("crystal_1")
-
+func destroy_by_laser() -> void:
+	_destroy_crystal()
 
 func _on_animated_sprite_2d_3_animation_finished() -> void:
 	lightning_anim.stop()
@@ -31,4 +33,12 @@ func _on_timer_timeout() -> void:
 	start_fade_out()
 	
 func _on_timer_2_timeout() -> void:
+	self.queue_free()
+
+func _destroy_crystal() -> void:
+	if destroyed:
+		return
+
+	destroyed = true
+	emit_signal("ball_hit_crystal_1", self)
 	self.queue_free()

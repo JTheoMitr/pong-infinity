@@ -10,6 +10,7 @@ var moving_right: bool = true
 var moving_left: bool = false
 
 var hit_counter: int = 0
+var destroyed: bool = false
 
 signal ball_hit_spinning_head
 signal panel_pop
@@ -91,3 +92,15 @@ func _on_timer_3_timeout() -> void:
 func _on_timer_4_timeout() -> void:
 	self.queue_free()
 	#emit_signal("restarting")
+	
+func destroy_by_laser() -> void:
+	_destroy_head()
+
+
+func _destroy_head() -> void:
+	if destroyed:
+		return
+
+	destroyed = true
+	emit_signal("panel_pop")
+	self.queue_free()

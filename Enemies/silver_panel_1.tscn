@@ -577,7 +577,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dnbbf"]
 size = Vector2(84, 39)
 
-[node name="SilverPanel1" type="StaticBody2D" groups=["paddle"]]
+[node name="SilverPanel1" type="StaticBody2D" groups=["laser_target", "paddle"]]
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_3xcvu")
 script = ExtResource("1_dnbbf")

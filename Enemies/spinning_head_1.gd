@@ -81,7 +81,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		hit_counter += 1
 		if hit_counter > 1:
 			self.queue_free()
-			emit_signal("panel_pop")
+			panel_pop.emit(self)
 		#print_debug("spinning head")
 
 
@@ -102,5 +102,5 @@ func _destroy_head() -> void:
 		return
 
 	destroyed = true
-	emit_signal("panel_pop")
+	panel_pop.emit(self)
 	self.queue_free()

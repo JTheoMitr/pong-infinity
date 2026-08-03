@@ -299,7 +299,7 @@ func countdown_and_start() -> void:
 
 	
 func start_game() -> void:
-	ball.base_speed = 390.0
+	ball.base_speed = 350.0
 	game_started = true
 	start_pressed = false
 	ball.launch()
@@ -383,21 +383,22 @@ func _on_silver_panel_hit(paddle: Node) -> void:
 	# else: particle effect, sfx, and glitch effect (or just glitch effect randomized for its lifespan entirety)
 
 	
-func _silver_panel_destroyed() -> void:
+func _silver_panel_destroyed(panel: Node2D) -> void:
+	var impact_position: Vector2 = panel.global_position
 	var panel_pop = panel_destroyed_sfx.instantiate() 
 	get_parent().add_child(panel_pop)
-	spawn_impact_particles_panel_pop(ball.global_position) #change to new color
+	spawn_impact_particles_panel_pop(impact_position) #change to new color
 	trigger_shake(15.0)
 	if ball_is_on_fire:
 		score += 500
 		var popup_500 = points_500.instantiate()
 		get_parent().add_child(popup_500)
-		popup_500.global_position = ball.global_position
+		popup_500.global_position = impact_position
 	else:
 		score += 250
 		var popup_250 = points_250.instantiate()
 		get_parent().add_child(popup_250)
-		popup_250.global_position = ball.global_position
+		popup_250.global_position = impact_position
 	
 	hud.update_score(score)
 	
@@ -415,21 +416,22 @@ func _on_spinning_head_hit(paddle: Node) -> void:
 	# else: particle effect, sfx, and glitch effect (or just glitch effect randomized for its lifespan entirety)
 
 	
-func _spinning_head_destroyed() -> void:
+func _spinning_head_destroyed(spinning_head: Node2D) -> void:
+	var impact_position: Vector2 = spinning_head.global_position
 	var panel_pop = panel_destroyed_sfx.instantiate() 
 	get_parent().add_child(panel_pop)
-	spawn_impact_particles_multiplier1(ball.global_position) #change to new color
+	spawn_impact_particles_multiplier1(impact_position) #change to new color
 	trigger_shake(15.0)
 	if ball_is_on_fire:
 		score += 500
 		var popup_500 = points_500.instantiate()
 		get_parent().add_child(popup_500)
-		popup_500.global_position = ball.global_position
+		popup_500.global_position = impact_position
 	else:
 		score += 250
 		var popup_250 = points_250.instantiate()
 		get_parent().add_child(popup_250)
-		popup_250.global_position = ball.global_position
+		popup_250.global_position = impact_position
 	
 	hud.update_score(score)
 	
@@ -441,7 +443,7 @@ func _on_corner_hit(paddle: Node) -> void:
 	get_parent().add_child(corner_bonk)
 	
 	
-	ball.base_speed *= 1.01 #was 1.03
+	ball.base_speed *= 1.003 #was 1.03
 	#print("corner hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
@@ -483,18 +485,19 @@ func _on_multiplier_hit(_multi: Node) -> void:
 			
 	
 	
-func _on_crystal_hit(_multi: Node) -> void:
+func _on_crystal_hit(crystal: Node2D) -> void:
+	var impact_position: Vector2 = crystal.global_position
 	
 	if ball_is_on_fire:
 		score += 50
 		var popup_50 = points_50.instantiate()
 		get_parent().add_child(popup_50)
-		popup_50.global_position = ball.global_position
+		popup_50.global_position = impact_position
 	else:
 		score += 25
 		var popup_25 = points_25.instantiate()
 		get_parent().add_child(popup_25)
-		popup_25.global_position = ball.global_position
+		popup_25.global_position = impact_position
 	
 	var crystal_1_bonk = crystal_hit_sfx.instantiate()
 	get_parent().add_child(crystal_1_bonk)
@@ -503,7 +506,7 @@ func _on_crystal_hit(_multi: Node) -> void:
 	hud.update_score(score)
 	print("crystal hit")
 	# Spawn particles at impact
-	spawn_impact_particles_crystal1(ball.global_position)
+	spawn_impact_particles_crystal1(impact_position)
 	
 	if not laser_armed:
 		laser_crystal_charge += 1

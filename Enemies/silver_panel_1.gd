@@ -79,7 +79,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		hit_counter += 1
 		if hit_counter > 1:
 			self.queue_free()
-			emit_signal("panel_pop")
+			panel_pop.emit(self)
 		#print_debug("silver panel")
 
 
@@ -100,6 +100,6 @@ func _destroy_panel() -> void:
 		return
 
 	destroyed = true
-	emit_signal("panel_pop")
+	panel_pop.emit(self)
 	self.queue_free()
 	

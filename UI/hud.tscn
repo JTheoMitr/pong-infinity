@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="3_2o5uh"]
 [ext_resource type="Texture2D" uid="uid://c2v6pykkgv2al" path="res://Assets/Sprites/ps4_gamepad isolated.png" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://bbjbohphpmd6m" path="res://Assets/Anims/gdb-playstation-2 x pressed.png" id="5_1ui3w"]
-[ext_resource type="Texture2D" uid="uid://didix4x6kwytm" path="res://UI/neuro_cursor.png" id="6_1ui3w"]
+[ext_resource type="Texture2D" uid="uid://2bce5x0pnarm" path="res://UI/neuro_crosshair.png" id="6_1ui3w"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bytes"]
 

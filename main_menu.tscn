@@ -15674,7 +15674,6 @@ animation = &"hard"
 frame_progress = 0.7882696
 
 [node name="LoadoutOverlay" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15719,7 +15718,8 @@ position = Vector2(-35, 100)
 rotation = -1.5707964
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_qrhcs")
-frame_progress = 0.9949097
+autoplay = "default"
+frame_progress = 0.33244526
 
 [node name="BallPreview" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow"]
 position = Vector2(310, 85)
@@ -15732,7 +15732,8 @@ position = Vector2(650, 100)
 rotation = 1.5707964
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_gtwrx")
-frame_progress = 0.9924023
+autoplay = "default"
+frame_progress = 0.67163855
 
 [node name="BallName" type="Label" parent="CanvasLayer/LoadoutOverlay/BallCarousel"]
 layout_mode = 2
@@ -15763,7 +15764,8 @@ position = Vector2(20, 0)
 rotation = -1.5707964
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_p3ekk")
-frame_progress = 0.7591566
+autoplay = "default"
+frame_progress = 0.88134056
 
 [node name="BoardPreview" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow"]
 position = Vector2(370, 0)
@@ -15777,7 +15779,8 @@ position = Vector2(725, 0)
 rotation = 1.5707964
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_5xssc")
-frame_progress = 0.35880655
+autoplay = "default"
+frame_progress = 0.40595406
 
 [node name="BoardName" type="Label" parent="CanvasLayer/LoadoutOverlay/BoardCarousel"]
 custom_minimum_size = Vector2(0, 130)

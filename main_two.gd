@@ -68,7 +68,14 @@ const points_500 = preload("res://Buffs/point_pop_up_500.tscn")
 @export var spinning_head_1: PackedScene
 
 @onready var custom_cursor_sprite: Sprite2D = $HUD/CustomCursor
+@onready var laser_armed_sound: AudioStreamPlayer = $LaserArmedSound
 
+const CRYSTALS_TO_ARM: int = 5
+const ARMED_CURSOR_ROTATION_SPEED: float = 3.5
+
+var laser_crystal_charge: int = 0
+var laser_armed: bool = false
+var laser_firing: bool = false
 
 var game_started: bool = false
 var start_pressed: bool = false
@@ -90,6 +97,14 @@ var musicOn = true
 var shake_strength := 0.0
 var shake_decay := 5.0
 var original_cam_position := Vector2.ZERO
+
+const CROSSHAIR_NORMAL: Texture2D = preload(
+	"res://UI/neuro_crosshair.png"
+)
+
+const CROSSHAIR_ARMED: Texture2D = preload(
+	"res://UI/neuro_crosshair_armed.png"
+)
 
 
 func _ready() -> void:
@@ -148,9 +163,14 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	
 	if custom_cursor_sprite.visible:
-		custom_cursor_sprite.position = (
-			get_viewport().get_mouse_position()
-		)
+		custom_cursor_sprite.position = get_viewport().get_mouse_position()
+
+		if laser_armed:
+			custom_cursor_sprite.rotation += (
+				ARMED_CURSOR_ROTATION_SPEED * delta
+			)
+		else:
+			custom_cursor_sprite.rotation = 0.0
 		
 	if shake_strength > 0.0:
 		var offset := Vector2(
@@ -179,9 +199,31 @@ func reset_positions(screen_center: Vector2) -> void:
 	paddle_top.reset_paddle()
 	paddle_bottom.reset_paddle()
 
+func _input(event: InputEvent) -> void:
+	if not game_started:
+		return
 
+	if get_tree().paused:
+		return
+
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+		and not event.is_echo()
+	):
+		print(
+			"Left click detected | armed: %s | firing: %s"
+			% [laser_armed, laser_firing]
+		)
+
+		if laser_armed and not laser_firing:
+			_fire_laser_test()
+
+		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+
 	# --- Start game with Space / Start button ---
 	if not game_started and not awaiting_score_submit and event.is_action_pressed("ui_accept"):
 		_on_start_button_pressed()
@@ -205,7 +247,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		paddle_top.reset_paddle()
 		paddle_bottom.reset_paddle()
 		
-
+	
 
 func toggle_pause() -> void:
 	get_tree().paused = !get_tree().paused
@@ -265,10 +307,13 @@ func start_game() -> void:
 	#ice_mine_timer.start()
 	reset_game_time_scale()
 	_activate_custom_cursor()
+	_reset_laser_charge()
 
 
 
 func game_over() -> void:
+	_reset_laser_charge()
+	_restore_normal_cursor()
 	game_started = false
 	game_over_state = true
 	#Engine.time_scale = 1.0
@@ -455,6 +500,20 @@ func _on_crystal_hit(_multi: Node) -> void:
 	#print("crystal hit")
 	# Spawn particles at impact
 	spawn_impact_particles_crystal1(ball.global_position)
+	
+	if not laser_armed:
+		laser_crystal_charge += 1
+
+		print(
+			"Laser crystal charge: %d/%d"
+			% [
+				laser_crystal_charge,
+				CRYSTALS_TO_ARM
+			]
+		)
+
+		if laser_crystal_charge >= CRYSTALS_TO_ARM:
+			_arm_laser()
 	
 func _on_fire_zone_entered() -> void:
 	#fire stuff...boolean (ball_is_on_fire) to trigger double points on hits
@@ -809,9 +868,65 @@ func _activate_custom_cursor() -> void:
 		get_viewport().get_mouse_position()
 	)
 
+	_refresh_crosshair_visual()
 	custom_cursor_sprite.show()
-
 
 func _restore_normal_cursor() -> void:
 	custom_cursor_sprite.hide()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func _refresh_crosshair_visual() -> void:
+	if custom_cursor_sprite == null:
+		return
+
+	if laser_armed:
+		custom_cursor_sprite.texture = CROSSHAIR_ARMED
+	else:
+		custom_cursor_sprite.texture = CROSSHAIR_NORMAL
+		custom_cursor_sprite.rotation = 0.0
+		
+func _arm_laser() -> void:
+	if laser_armed:
+		return
+
+	laser_armed = true
+	laser_crystal_charge = CRYSTALS_TO_ARM
+
+	_refresh_crosshair_visual()
+
+	if laser_armed_sound != null:
+		laser_armed_sound.play()
+
+	print("LASER ARMED")
+	
+func _reset_laser_charge() -> void:
+	laser_crystal_charge = 0
+	laser_armed = false
+	laser_firing = false
+
+	_refresh_crosshair_visual()
+	
+func _fire_laser_test() -> void:
+	if not laser_armed or laser_firing:
+		return
+
+	laser_firing = true
+
+	var target_position: Vector2 = (
+		get_viewport().get_mouse_position()
+	)
+
+	print(
+		"LASER FIRED AT: %s"
+		% target_position
+	)
+
+	# Consume the armed shot immediately.
+	laser_armed = false
+	laser_crystal_charge = 0
+
+	_refresh_crosshair_visual()
+
+	# Temporary: firing finishes immediately.
+	# Later this remains true until the beam impact animation completes.
+	laser_firing = false

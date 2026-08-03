@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=30 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://r2ymvdg7nfjj" path="res://Enemies/silver_panel_1.tscn" id="21_81bu4"]
 [ext_resource type="AudioStream" uid="uid://buotnoh3wnjj7" path="res://Assets/Music/BristolBummerNew101louderkick.mp3" id="24_ltw2n"]
 [ext_resource type="AudioStream" uid="uid://cc6v07yvoa4op" path="res://Assets/Music/arLow113.mp3" id="25_ggdio"]
+[ext_resource type="AudioStream" uid="uid://b6cbbjsd0qsj6" path="res://Assets/SFX/DSGNTonl_Anime_Cartoon_Comedy_13_ROXY_SOUND_ACE-energy.mp3" id="28_5jw8s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fokku"]
 bg_color = Color(0, 0, 0, 1)
@@ -152,6 +153,10 @@ one_shot = true
 [node name="SpinHeadTimer" type="Timer" parent="."]
 wait_time = 20.0
 one_shot = true
+
+[node name="LaserArmedSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("28_5jw8s")
+pitch_scale = 0.65
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]

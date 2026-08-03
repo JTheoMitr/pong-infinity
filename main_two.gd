@@ -106,6 +106,9 @@ const CROSSHAIR_ARMED: Texture2D = preload(
 	"res://UI/neuro_crosshair_armed.png"
 )
 
+const LASER_STRIKE_SCENE: PackedScene = preload(
+	"res://laser_strike.tscn"
+)
 
 func _ready() -> void:
 	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -916,17 +919,37 @@ func _fire_laser_test() -> void:
 		get_viewport().get_mouse_position()
 	)
 
-	print(
-		"LASER FIRED AT: %s"
-		% target_position
-	)
+	print("LASER FIRED AT: ", target_position)
 
-	# Consume the armed shot immediately.
+	# Consume the charge immediately.
 	laser_armed = false
 	laser_crystal_charge = 0
-
 	_refresh_crosshair_visual()
 
-	# Temporary: firing finishes immediately.
-	# Later this remains true until the beam impact animation completes.
+	var strike := LASER_STRIKE_SCENE.instantiate() as LaserStrike
+
+	if strike == null:
+		push_error("Could not instance LaserStrike.")
+		laser_firing = false
+		return
+
+	# Add it to the current gameplay scene.
+	add_child(strike)
+
+	strike.impact.connect(_on_laser_impact)
+	strike.strike_finished.connect(_on_laser_strike_finished)
+
+	strike.begin_strike(
+		target_position,
+		get_viewport_rect().size
+	)
+	
+func _on_laser_impact(target_position: Vector2) -> void:
+	print("LASER IMPACT AT: ", target_position)
+
+	# Target detection and destruction comes next.
+
+
+func _on_laser_strike_finished() -> void:
 	laser_firing = false
+	print("LASER STRIKE FINISHED")

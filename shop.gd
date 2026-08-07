@@ -66,7 +66,7 @@ func _ready() -> void:
 
 	#SaveManager.neurobits = 1
 	SaveManager.save()
-	SaveManager.equip_ball("sushi")
+	#SaveManager.equip_ball("sushi")
 
 	print("Currently equipped: ", SaveManager.equipped_ball_id)
 	
@@ -115,8 +115,20 @@ func _ready() -> void:
 	vendor_anim.pause = true
 	vendor_anim.current_frame = 3
 
-	camera.global_position = camera_start.global_position
-	camera.global_rotation = camera_start.global_rotation
+	var returning_from_arcade: bool = SaveManager.enter_shop_from_arcade
+
+	# Consume the flag immediately so it only affects this entrance.
+	SaveManager.enter_shop_from_arcade = false
+
+	if returning_from_arcade:
+		camera.global_position = camera_cabinet.global_position
+		camera.global_rotation = camera_cabinet.global_rotation
+		camera_zone = CameraZone.CABINET
+	else:
+		camera.global_position = camera_start.global_position
+		camera.global_rotation = camera_start.global_rotation
+		camera_zone = CameraZone.SHOP
+
 	camera.current = true
 
 	await RenderingServer.frame_post_draw
@@ -124,8 +136,14 @@ func _ready() -> void:
 
 	await hide_loading_cover()
 
+	await hide_loading_cover()
+
 	await get_tree().create_timer(0.5).timeout
-	await enter_shop()
+
+	if returning_from_arcade:
+		await exit_cabinet_to_game_view()
+	else:
+		await enter_shop()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -417,6 +435,8 @@ func show_shop_message(message: String) -> void:
 	print(message)
 	
 func refresh_shop_labels() -> void:
+	var nbits = SaveManager.neurobits
+	nb_lbl.text = "Neurobits: " + str(nbits)
 	for index in range(row_labels.size()):
 		if index >= SHOP_BALL_IDS.size():
 			continue
@@ -472,3 +492,14 @@ func decline_equip_now() -> void:
 	)
 
 	pending_equip_ball_id = ""
+	
+func exit_cabinet_to_game_view() -> void:
+	camera_moving = true
+	nb_lbl.visible = false
+	dialogue_ui.hide()
+	set_screen_animation_active(false)
+
+	await tween_camera_to_marker(camera_game_view, 5.0)
+
+	camera_zone = CameraZone.GAME
+	camera_moving = false

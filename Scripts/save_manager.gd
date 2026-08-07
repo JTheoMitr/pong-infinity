@@ -8,6 +8,7 @@ const SAVE_PATH: String = "user://player_save.cfg"
 
 var neurobits: int = 0
 var xp_toward_next_neurobit: int = 0
+var enter_shop_from_arcade: bool = false
 
 var owned_balls: Array[String] = [
 	BallCatalog.DEFAULT_BALL_ID

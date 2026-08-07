@@ -1,4 +1,4 @@
-[gd_scene load_steps=3027 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=3028 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -9818,6 +9818,9 @@ animations = [{
 "speed": 35.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_re55l"]
+bg_color = Color(0.2901961, 0.84313726, 0.8627451, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qtwp"]
 bg_color = Color(0.63529414, 0.16470589, 0.7019608, 1)
 
@@ -15556,9 +15559,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7vrkn")
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(300, 200)
 offset_left = 226.0
-offset_top = 460.0
+offset_top = 440.0
 offset_right = 926.0
-offset_bottom = 660.0
+offset_bottom = 640.0
 theme_override_fonts/normal_font = ExtResource("2_7vrkn")
 theme_override_font_sizes/normal_font_size = 106
 bbcode_enabled = true
@@ -15572,9 +15575,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -575.0
-offset_top = 166.0
+offset_top = 156.0
 offset_right = 576.0
-offset_bottom = 366.0
+offset_bottom = 356.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -15610,6 +15613,15 @@ theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
 theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Codex"
+
+[node name="NeonAlley" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
+theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
+text = "Return to Neon Alley"
 
 [node name="DifficultySelect" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
 layout_mode = 2
@@ -15674,6 +15686,7 @@ animation = &"hard"
 frame_progress = 0.7882696
 
 [node name="LoadoutOverlay" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15685,7 +15698,7 @@ grow_vertical = 2
 layout_mode = 0
 offset_right = 1158.0
 offset_bottom = 654.0
-color = Color(0.09019608, 0.09019608, 0.09019608, 0.4627451)
+color = Color(0.047058824, 0.047058824, 0.047058824, 0.6)
 
 [node name="BallCarousel" type="VBoxContainer" parent="CanvasLayer/LoadoutOverlay"]
 layout_mode = 1
@@ -15693,9 +15706,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -315.0
-offset_top = 20.0
+offset_top = 60.0
 offset_right = 315.0
-offset_bottom = 285.0
+offset_bottom = 345.0
 grow_horizontal = 2
 alignment = 1
 
@@ -15723,6 +15736,7 @@ frame_progress = 0.33244526
 
 [node name="BallPreview" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow"]
 position = Vector2(310, 85)
+scale = Vector2(0.85, 0.85)
 sprite_frames = SubResource("SpriteFrames_0jqgx")
 autoplay = "default"
 frame_progress = 0.3031583
@@ -15745,6 +15759,11 @@ horizontal_alignment = 1
 
 [node name="BallStatus" type="Label" parent="CanvasLayer/LoadoutOverlay/BallCarousel"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.3647059, 1, 1)
+theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_font_sizes/font_size = 20
+text = "EQUIPPED"
+horizontal_alignment = 1
 
 [node name="BoardCarousel" type="VBoxContainer" parent="CanvasLayer/LoadoutOverlay"]
 layout_mode = 0
@@ -15788,7 +15807,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.23529412, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
 theme_override_font_sizes/font_size = 30
-text = "Original"
+text = "  Original Board"
 horizontal_alignment = 1
 vertical_alignment = 2
 
@@ -15798,6 +15817,9 @@ offset_left = 1006.0
 offset_top = 597.0
 offset_right = 1124.0
 offset_bottom = 625.0
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_styles/focus = SubResource("StyleBoxFlat_re55l")
 text = "START"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -16121,6 +16143,7 @@ text = "Return"
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/CodexButton" to="." method="_on_codex_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/NeonAlley" to="." method="_on_neon_alley_pressed"]
 [connection signal="focus_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button" to="." method="_on_button_focus_entered"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button" to="." method="_on_easybutton_pressed"]
 [connection signal="focus_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button2" to="." method="_on_button_2_focus_entered"]

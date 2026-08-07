@@ -456,11 +456,7 @@ func _refresh_ball_carousel() -> void:
 	) as SpriteFrames
 
 	ball_name_label.text = display_name
-
-	if ball_id == SaveManager.equipped_ball_id:
-		ball_status_label.text = "EQUIPPED"
-	else:
-		ball_status_label.text = "OWNED"
+	ball_status_label.text = "SELECTED"
 
 	if sprite_frames == null:
 		ball_preview.stop()
@@ -552,8 +548,20 @@ func _confirm_loadout_and_start() -> void:
 	if owned_ball_ids.is_empty():
 		return
 
-	var selected_ball_id: String = (
-		owned_ball_ids[selected_ball_index]
+	if BOARD_IDS.is_empty():
+		return
+
+	var selected_ball_id: String = owned_ball_ids[
+		selected_ball_index
+	]
+
+	var selected_board_id: String = BOARD_IDS[
+		selected_board_index
+	]
+
+	print(
+		"Confirming loadout | Ball index: %d | Ball: %s"
+		% [selected_ball_index, selected_ball_id]
 	)
 
 	var equipped: bool = SaveManager.equip_ball(
@@ -566,10 +574,6 @@ func _confirm_loadout_and_start() -> void:
 			% selected_ball_id
 		)
 		return
-
-	var selected_board_id: String = (
-		BOARD_IDS[selected_board_index]
-	)
 
 	print(
 		"Starting game | Difficulty: %s | Ball: %s | Board: %s"
@@ -591,3 +595,8 @@ func close_loadout_menu() -> void:
 
 	difficulty_select.show()
 	normal_button.grab_focus()
+
+
+func _on_neon_alley_pressed() -> void:
+	SaveManager.enter_shop_from_arcade = true
+	get_tree().change_scene_to_file("res://shop.tscn")

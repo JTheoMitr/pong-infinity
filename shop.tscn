@@ -177,10 +177,10 @@ transform = Transform3D(-0.08715576, 0, 0.99619466, 0, 1, 0, -0.99619466, 0, -0.
 transform = Transform3D(-0.08715577, 0, 0.9961947, 0, 1, 0, -0.9961947, 0, -0.08715577, -0.9288753, 2.7845247, -3.9156692)
 
 [node name="CameraGameView" type="Marker3D" parent="."]
-transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.280925, 2.73519, -3.1789265)
+transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.281, 2.735, -3.179)
 
 [node name="CameraCabinet" type="Marker3D" parent="."]
-transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.529, 2.68, -3.355)
+transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.53, 2.68, -3.38)
 
 [node name="CameraSmoker" type="Marker3D" parent="."]
 transform = Transform3D(-0.44330594, 0, -0.8963704, 0, 1, 0, 0.8963704, 0, -0.44330594, -6.8672557, 2.836391, -2.1679792)
@@ -256,9 +256,10 @@ text = "[center]zed"
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = -47.0
-offset_right = 242.0
+offset_left = 15.0
+offset_top = -58.0
+offset_right = 247.0
+offset_bottom = -11.0
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.57254905, 0.93333334, 1, 1)
 theme_override_fonts/font = ExtResource("10_xqmyw")

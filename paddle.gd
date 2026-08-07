@@ -40,13 +40,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
-	var input_value := 0.0
+	var input_value := Input.get_axis("ui_up", "ui_down")
 
 	# --- Keyboard for desktop testing ---
-	if is_left:
-		input_value = Input.get_axis("s", "w")
-	else:
-		input_value = Input.get_axis("ui_up", "ui_down")
+	#if is_left:
+		#input_value = Input.get_axis("s", "w")
+	#else:
+		#input_value = Input.get_axis("ui_up", "ui_down")
 
 	# --- Touch / Mouse drag for mobile or desktop ---
 	if touch_active:

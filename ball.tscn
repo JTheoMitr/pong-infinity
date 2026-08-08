@@ -1872,7 +1872,7 @@ texture = ExtResource("2_41u45")
 shape = SubResource("CircleShape2D_41u45")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.28, 0.28)
+scale = Vector2(0.38, 0.38)
 sprite_frames = ExtResource("3_8vmj3")
 autoplay = "default"
 frame_progress = 0.6332278

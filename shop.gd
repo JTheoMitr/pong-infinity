@@ -50,6 +50,8 @@ enum CameraZone {
 
 @onready var dialogue_ui: Control = $CanvasLayer/DialogueUI
 
+@onready var shop_screen_hitbox: Area3D = $ScreenQuad/ShopScreenHitbox
+
 var camera_moving: bool = false
 var camera_zone: CameraZone = CameraZone.SHOP
 
@@ -144,6 +146,17 @@ func _ready() -> void:
 		await exit_cabinet_to_game_view()
 	else:
 		await enter_shop()
+		
+		
+func _input(event: InputEvent) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+		and camera_zone == CameraZone.SHOP
+		and not camera_moving
+	):
+		_try_select_shop_item_with_mouse(event.position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -503,3 +516,96 @@ func exit_cabinet_to_game_view() -> void:
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
+func _try_select_shop_item_with_mouse(mouse_position: Vector2) -> void:
+	print("Shop click detected at: ", mouse_position)
+
+	var ray_origin := camera.project_ray_origin(mouse_position)
+	var ray_direction := camera.project_ray_normal(mouse_position)
+
+	var query := PhysicsRayQueryParameters3D.create(
+		ray_origin,
+		ray_origin + ray_direction * 1000.0
+	)
+
+	query.collision_mask = 1
+	query.collide_with_areas = true
+	query.collide_with_bodies = false
+
+	var result := get_world_3d().direct_space_state.intersect_ray(query)
+
+	if result.is_empty():
+		print("Ray hit NOTHING")
+		return
+
+	print(
+		"Ray hit: ",
+		result["collider"].name,
+		" at ",
+		result["position"]
+	)
+
+	if result["collider"] != shop_screen_hitbox:
+		print("Hit something other than ShopScreenHitbox")
+		return
+
+	var hit_position: Vector3 = result["position"]
+
+	_select_shop_row_from_world_position(hit_position)
+func _select_shop_row_from_world_position(
+	hit_position: Vector3
+) -> void:
+	var quad := screen_quad.mesh as QuadMesh
+
+	if quad == null:
+		return
+
+	var local_hit: Vector3 = screen_quad.to_local(hit_position)
+	var quad_size: Vector2 = quad.size
+
+	# Convert quad coordinates into 0–1 UV coordinates.
+	var uv := Vector2(
+		(local_hit.x / quad_size.x) + 0.5,
+		0.5 - (local_hit.y / quad_size.y)
+	)
+
+	# Make sure click was actually on the quad.
+	if (
+		uv.x < 0.0
+		or uv.x > 1.0
+		or uv.y < 0.0
+		or uv.y > 1.0
+	):
+		return
+
+	var viewport_position := Vector2(
+		uv.x * screen_viewport.size.x,
+		uv.y * screen_viewport.size.y
+	)
+
+	_select_shop_row_at_viewport_position(viewport_position)
+	
+func _select_shop_row_at_viewport_position(
+	viewport_position: Vector2
+) -> void:
+	for i in range(row_labels.size()):
+		var label: Label = row_labels[i]
+
+		var label_rect := Rect2(
+			label.global_position,
+			label.size
+		)
+
+		if label_rect.has_point(viewport_position):
+			selected_index = i
+			_update_selection()
+
+			print(
+				"Mouse selected shop item: ",
+				SHOP_BALL_IDS[selected_index]
+			)
+
+			screen_viewport.render_target_update_mode = (
+				SubViewport.UPDATE_ONCE
+			)
+
+			return

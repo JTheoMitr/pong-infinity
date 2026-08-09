@@ -47,10 +47,36 @@ enum CameraZone {
 @onready var price_3: RichTextLabel = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer3/RichTextLabel
 @onready var price_4: RichTextLabel = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer4/RichTextLabel
 
-
 @onready var dialogue_ui: Control = $CanvasLayer/DialogueUI
 
 @onready var shop_screen_hitbox: Area3D = $ScreenQuad/ShopScreenHitbox
+
+@onready var purchase_popup: Control = (
+	$ScreenQuad/ScreenViewport/PurchasePopup
+)
+
+@onready var purchase_message: RichTextLabel = (
+	$ScreenQuad/ScreenViewport/PurchasePopup/Panel/VBoxContainer/MessageLabel
+)
+
+@onready var purchase_yes: Label = (
+	$ScreenQuad/ScreenViewport/PurchasePopup/Panel/VBoxContainer/YesLabel
+)
+
+@onready var purchase_no: Label = (
+	$ScreenQuad/ScreenViewport/PurchasePopup/Panel/VBoxContainer/NoLabel
+)
+
+enum PurchasePopupState {
+	CLOSED,
+	CONFIRM_PURCHASE,
+	ALREADY_OWNED,
+	PURCHASED
+}
+
+var purchase_popup_state: PurchasePopupState = PurchasePopupState.CLOSED
+var purchase_popup_index: int = 0
+var pending_purchase_ball_id: String = ""
 
 var camera_moving: bool = false
 var camera_zone: CameraZone = CameraZone.SHOP
@@ -59,21 +85,13 @@ var selected_index := 0
 var row_labels: Array[Label] = []
 var price_labels: Array[RichTextLabel] = []
 
+
 func _ready() -> void:
 	nb_lbl.visible = false
-	#SaveManager.owned_balls.erase("sushi")
-#
-	#if SaveManager.equipped_ball_id == "sushi":
-		#SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
-
-	#SaveManager.neurobits = 1
-	SaveManager.save()
-	#SaveManager.equip_ball("sushi")
+	purchase_popup.hide()
 
 	print("Currently equipped: ", SaveManager.equipped_ball_id)
-	
-	#SaveManager.add_xp(100)
-	#for testing
+
 	show_loading_cover()
 	dialogue_ui.hide()
 
@@ -83,15 +101,16 @@ func _ready() -> void:
 		button_3,
 		button_4
 	]
-	
+
 	price_labels = [
-	price_1,
-	price_2,
-	price_3,
-	price_4
+		price_1,
+		price_2,
+		price_3,
+		price_4
 	]
 
 	refresh_shop_labels()
+
 	print("Neurobits: ", SaveManager.neurobits)
 	print("Owned balls: ", SaveManager.owned_balls)
 	print("Equipped ball: ", SaveManager.equipped_ball_id)
@@ -119,7 +138,6 @@ func _ready() -> void:
 
 	var returning_from_arcade: bool = SaveManager.enter_shop_from_arcade
 
-	# Consume the flag immediately so it only affects this entrance.
 	SaveManager.enter_shop_from_arcade = false
 
 	if returning_from_arcade:
@@ -138,28 +156,50 @@ func _ready() -> void:
 
 	await hide_loading_cover()
 
-	await hide_loading_cover()
-
 	await get_tree().create_timer(0.5).timeout
 
 	if returning_from_arcade:
 		await exit_cabinet_to_game_view()
 	else:
 		await enter_shop()
-		
-		
+
+
 func _input(event: InputEvent) -> void:
-	if (
+	if camera_zone != CameraZone.SHOP:
+		return
+
+	if camera_moving:
+		return
+
+	if purchase_popup_state != PurchasePopupState.CLOSED:
+		if event is InputEventMouseMotion:
+			_try_hover_purchase_popup(event.position)
+
+		elif (
+			event is InputEventMouseButton
+			and event.button_index == MOUSE_BUTTON_LEFT
+			and event.pressed
+		):
+			_try_click_purchase_popup(event.position)
+
+		return
+
+	if event is InputEventMouseMotion:
+		_try_hover_shop_item(event.position)
+
+	elif (
 		event is InputEventMouseButton
 		and event.button_index == MOUSE_BUTTON_LEFT
 		and event.pressed
-		and camera_zone == CameraZone.SHOP
-		and not camera_moving
 	):
 		_try_select_shop_item_with_mouse(event.position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if purchase_popup_state != PurchasePopupState.CLOSED:
+		_handle_purchase_popup_input(event)
+		return
+
 	if camera_moving:
 		return
 
@@ -190,7 +230,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			CameraZone.GAME:
 				get_viewport().set_input_as_handled()
 				launch_game_from_cabinet()
-				
 
 
 func rotate_clockwise() -> void:
@@ -219,7 +258,6 @@ func rotate_counterclockwise() -> void:
 
 func enter_shop() -> void:
 	camera_moving = true
-	
 
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
@@ -232,6 +270,7 @@ func enter_shop() -> void:
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
+
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
 	nb_lbl.visible = true
@@ -259,7 +298,7 @@ func move_to_patio() -> void:
 
 	camera_zone = CameraZone.PATIO
 	camera_moving = false
-	
+
 	show_patio_dialogue()
 
 
@@ -281,9 +320,11 @@ func move_back_to_shop() -> void:
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
+
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
 	nb_lbl.visible = true
+
 	set_screen_animation_active(true)
 
 
@@ -333,8 +374,6 @@ func _update_selection() -> void:
 		else:
 			row_labels[i].text = row_labels[i].text.trim_prefix("> ")
 			row_labels[i].modulate = Color(0.0, 0.918, 1.0, 1.0)
-
-	#screen_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 
 
 func play_vendor_intro() -> void:
@@ -391,11 +430,11 @@ func hide_loading_cover() -> void:
 
 	loading_icon.visible = false
 	fade_cover.visible = false
-	
+
+
 func show_patio_dialogue() -> void:
-	#dialogue_name.text = "???"
-	#dialogue_text.text = "You looking for another round, kid?"
 	dialogue_ui.visible = true
+
 
 func handle_shop_accept() -> void:
 	if selected_index < 0 or selected_index >= SHOP_BALL_IDS.size():
@@ -403,109 +442,42 @@ func handle_shop_accept() -> void:
 
 	var ball_id: String = SHOP_BALL_IDS[selected_index]
 
-	print(
-		"Selected shop item: %s | Owned: %s | Neurobits: %d"
-		% [
-			ball_id,
-			SaveManager.owns_ball(ball_id),
-			SaveManager.neurobits
-		]
-	)
-
 	if SaveManager.owns_ball(ball_id):
-		show_shop_message("ITEM ALREADY OWNED")
+		_show_already_owned_popup(ball_id)
 		return
 
-	var purchased: bool = SaveManager.purchase_ball(ball_id)
-
-	if not purchased:
-		show_shop_message("NOT ENOUGH NEUROBITS")
-		return
-
-	pending_equip_ball_id = ball_id
-
-	show_shop_message(
-		"NEUROBALL PURCHASED: %s"
-		% ball_id
-	)
-
-	show_equip_prompt(ball_id)
-	refresh_shop_labels()
-	
-func show_equip_prompt(ball_id: String) -> void:
-	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
-	var display_name: String = str(
-		ball_data.get("display_name", "BALL")
-	)
-
-	print("Equip %s now?" % display_name)
-
-	# Replace this with your Yes/No panel.
-	# SaveManager.equip_ball(ball_id)
+	_show_purchase_confirmation(ball_id)
 
 
-func show_shop_message(message: String) -> void:
-	print(message)
-	
 func refresh_shop_labels() -> void:
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
+
 	for index in range(row_labels.size()):
 		if index >= SHOP_BALL_IDS.size():
 			continue
 
 		var ball_id: String = SHOP_BALL_IDS[index]
 		var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
-		
+
 		var display_name: String = str(
 			ball_data.get("display_name", "BALL")
 		)
+
 		price_labels[index].visible = !SaveManager.owns_ball(ball_id)
-		#var price: int = int(
-			#ball_data.get("price", 0)
-		#)
 
 		var status_text: String
 
 		if SaveManager.owns_ball(ball_id):
 			status_text = "..............[OWNED]"
 		else:
-			status_text = ".............." + display_name #" [%d NB]" % price
+			status_text = ".............." + display_name
 
-		row_labels[index].text = status_text # + status_text
+		row_labels[index].text = status_text
 
 	_update_selection()
 
-func confirm_equip_now() -> void:
-	if pending_equip_ball_id.is_empty():
-		return
 
-	var equipped: bool = SaveManager.equip_ball(
-		pending_equip_ball_id
-	)
-
-	if equipped:
-		print(
-			"Equipped purchased Neuroball: %s"
-			% pending_equip_ball_id
-		)
-	else:
-		print(
-			"Could not equip Neuroball: %s"
-			% pending_equip_ball_id
-		)
-
-	pending_equip_ball_id = ""
-
-
-func decline_equip_now() -> void:
-	print(
-		"Purchased Neuroball left unequipped: %s"
-		% pending_equip_ball_id
-	)
-
-	pending_equip_ball_id = ""
-	
 func exit_cabinet_to_game_view() -> void:
 	camera_moving = true
 	nb_lbl.visible = false
@@ -516,6 +488,8 @@ func exit_cabinet_to_game_view() -> void:
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
+
+
 func _try_select_shop_item_with_mouse(mouse_position: Vector2) -> void:
 	print("Shop click detected at: ", mouse_position)
 
@@ -551,6 +525,8 @@ func _try_select_shop_item_with_mouse(mouse_position: Vector2) -> void:
 	var hit_position: Vector3 = result["position"]
 
 	_select_shop_row_from_world_position(hit_position)
+
+
 func _select_shop_row_from_world_position(
 	hit_position: Vector3
 ) -> void:
@@ -562,13 +538,11 @@ func _select_shop_row_from_world_position(
 	var local_hit: Vector3 = screen_quad.to_local(hit_position)
 	var quad_size: Vector2 = quad.size
 
-	# Convert quad coordinates into 0–1 UV coordinates.
 	var uv := Vector2(
 		(local_hit.x / quad_size.x) + 0.5,
 		0.5 - (local_hit.y / quad_size.y)
 	)
 
-	# Make sure click was actually on the quad.
 	if (
 		uv.x < 0.0
 		or uv.x > 1.0
@@ -583,7 +557,8 @@ func _select_shop_row_from_world_position(
 	)
 
 	_select_shop_row_at_viewport_position(viewport_position)
-	
+
+
 func _select_shop_row_at_viewport_position(
 	viewport_position: Vector2
 ) -> void:
@@ -608,4 +583,320 @@ func _select_shop_row_at_viewport_position(
 				SubViewport.UPDATE_ONCE
 			)
 
+			handle_shop_accept()
 			return
+
+
+func _show_purchase_confirmation(ball_id: String) -> void:
+	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
+
+	var display_name: String = str(
+		ball_data.get("display_name", "NEUROBALL")
+	)
+
+	var price: int = int(
+		ball_data.get("price", 0)
+	)
+
+	pending_purchase_ball_id = ball_id
+	purchase_popup_state = PurchasePopupState.CONFIRM_PURCHASE
+	purchase_popup_index = 0
+
+	purchase_message.text = (
+		"ARE YOU SURE YOU WANT TO PURCHASE\n"
+		+ display_name
+		+ "?\n\n"
+		+ "COST: %d NEUROBITS" % price
+	)
+
+	purchase_yes.text = "YES"
+	purchase_no.text = "NO"
+
+	purchase_yes.show()
+	purchase_no.show()
+	purchase_popup.show()
+
+	_update_purchase_popup_selection()
+	set_screen_animation_active(true)
+
+
+func _show_already_owned_popup(ball_id: String) -> void:
+	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
+
+	var display_name: String = str(
+		ball_data.get("display_name", "NEUROBALL")
+	)
+
+	purchase_popup_state = PurchasePopupState.ALREADY_OWNED
+	pending_purchase_ball_id = ""
+
+	purchase_message.text = (
+		display_name
+		+ "\n\nALREADY OWNED"
+	)
+
+	purchase_yes.text = "OK"
+	purchase_yes.show()
+	purchase_no.hide()
+
+	purchase_popup_index = 0
+	purchase_popup.show()
+
+	_update_purchase_popup_selection()
+	set_screen_animation_active(true)
+
+
+func _update_purchase_popup_selection() -> void:
+	var labels: Array[Label] = [
+		purchase_yes,
+		purchase_no
+	]
+
+	for i in range(labels.size()):
+		var label := labels[i]
+
+		if not label.visible:
+			continue
+
+		label.text = label.text.trim_prefix("> ")
+
+		if i == purchase_popup_index:
+			label.text = "> " + label.text
+			label.modulate = Color(1.0, 0.667, 0.0, 1.0)
+		else:
+			label.modulate = Color(0.0, 0.918, 1.0, 1.0)
+
+
+func _handle_purchase_popup_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_up"):
+		purchase_popup_index = 0
+		_update_purchase_popup_selection()
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_right") or event.is_action_pressed("ui_down"):
+		if purchase_no.visible:
+			purchase_popup_index = 1
+			_update_purchase_popup_selection()
+
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_accept"):
+		_confirm_purchase_popup_selection()
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_cancel"):
+		_close_purchase_popup()
+		get_viewport().set_input_as_handled()
+
+
+func _confirm_purchase_popup_selection() -> void:
+	match purchase_popup_state:
+		PurchasePopupState.CONFIRM_PURCHASE:
+			if purchase_popup_index == 0:
+				_attempt_pending_purchase()
+			else:
+				_close_purchase_popup()
+
+		PurchasePopupState.ALREADY_OWNED:
+			_close_purchase_popup()
+
+		PurchasePopupState.PURCHASED:
+			_close_purchase_popup()
+
+
+func _attempt_pending_purchase() -> void:
+	if pending_purchase_ball_id.is_empty():
+		_close_purchase_popup()
+		return
+
+	var purchased: bool = SaveManager.purchase_ball(
+		pending_purchase_ball_id
+	)
+
+	if not purchased:
+		purchase_message.text = "NOT ENOUGH NEUROBITS"
+		purchase_yes.text = "OK"
+		purchase_no.hide()
+
+		purchase_popup_state = PurchasePopupState.PURCHASED
+		purchase_popup_index = 0
+		_update_purchase_popup_selection()
+		return
+
+	var ball_data := BallCatalog.get_ball(
+		pending_purchase_ball_id
+	)
+
+	var display_name := str(
+		ball_data.get("display_name", "NEUROBALL")
+	)
+
+	purchase_message.text = (
+		display_name
+		+ "\n\nPURCHASED!"
+	)
+
+	purchase_yes.text = "OK"
+	purchase_no.hide()
+
+	purchase_popup_state = PurchasePopupState.PURCHASED
+	purchase_popup_index = 0
+
+	refresh_shop_labels()
+	_update_purchase_popup_selection()
+
+
+func _close_purchase_popup() -> void:
+	purchase_popup.hide()
+
+	purchase_popup_state = PurchasePopupState.CLOSED
+	purchase_popup_index = 0
+	pending_purchase_ball_id = ""
+
+	purchase_yes.text = "YES"
+	purchase_no.text = "NO"
+	purchase_no.show()
+
+	_update_selection()
+
+
+# ============================================================
+# MOUSE HOVER / POPUP CLICK ADDITIONS
+# ============================================================
+
+func _get_shop_viewport_mouse_position(mouse_position: Vector2) -> Variant:
+	var ray_origin := camera.project_ray_origin(mouse_position)
+	var ray_direction := camera.project_ray_normal(mouse_position)
+
+	var query := PhysicsRayQueryParameters3D.create(
+		ray_origin,
+		ray_origin + ray_direction * 1000.0
+	)
+
+	query.collision_mask = 1
+	query.collide_with_areas = true
+	query.collide_with_bodies = false
+
+	var result := get_world_3d().direct_space_state.intersect_ray(query)
+
+	if result.is_empty():
+		return null
+
+	if result["collider"] != shop_screen_hitbox:
+		return null
+
+	var hit_position: Vector3 = result["position"]
+
+	var quad := screen_quad.mesh as QuadMesh
+
+	if quad == null:
+		return null
+
+	var local_hit: Vector3 = screen_quad.to_local(hit_position)
+	var quad_size: Vector2 = quad.size
+
+	var uv := Vector2(
+		(local_hit.x / quad_size.x) + 0.5,
+		0.5 - (local_hit.y / quad_size.y)
+	)
+
+	if (
+		uv.x < 0.0
+		or uv.x > 1.0
+		or uv.y < 0.0
+		or uv.y > 1.0
+	):
+		return null
+
+	return Vector2(
+		uv.x * screen_viewport.size.x,
+		uv.y * screen_viewport.size.y
+	)
+
+
+func _try_hover_shop_item(mouse_position: Vector2) -> void:
+	var viewport_position = _get_shop_viewport_mouse_position(
+		mouse_position
+	)
+
+	if viewport_position == null:
+		return
+
+	for i in range(row_labels.size()):
+		var label: Label = row_labels[i]
+
+		var label_rect := Rect2(
+			label.global_position,
+			label.size
+		)
+
+		if label_rect.has_point(viewport_position):
+			if selected_index != i:
+				selected_index = i
+				_update_selection()
+
+			return
+
+
+func _try_hover_purchase_popup(
+	mouse_position: Vector2
+) -> void:
+	var viewport_position = _get_shop_viewport_mouse_position(
+		mouse_position
+	)
+
+	if viewport_position == null:
+		return
+
+	var yes_rect := Rect2(
+		purchase_yes.global_position,
+		purchase_yes.size
+	)
+
+	if yes_rect.has_point(viewport_position):
+		purchase_popup_index = 0
+		_update_purchase_popup_selection()
+		return
+
+	if purchase_no.visible:
+		var no_rect := Rect2(
+			purchase_no.global_position,
+			purchase_no.size
+		)
+
+		if no_rect.has_point(viewport_position):
+			purchase_popup_index = 1
+			_update_purchase_popup_selection()
+
+
+func _try_click_purchase_popup(
+	mouse_position: Vector2
+) -> void:
+	var viewport_position = _get_shop_viewport_mouse_position(
+		mouse_position
+	)
+
+	if viewport_position == null:
+		return
+
+	var yes_rect := Rect2(
+		purchase_yes.global_position,
+		purchase_yes.size
+	)
+
+	if yes_rect.has_point(viewport_position):
+		purchase_popup_index = 0
+		_update_purchase_popup_selection()
+		_confirm_purchase_popup_selection()
+		return
+
+	if purchase_no.visible:
+		var no_rect := Rect2(
+			purchase_no.global_position,
+			purchase_no.size
+		)
+
+		if no_rect.has_point(viewport_position):
+			purchase_popup_index = 1
+			_update_purchase_popup_selection()
+			_confirm_purchase_popup_selection()

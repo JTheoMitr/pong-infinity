@@ -67,6 +67,25 @@ enum CameraZone {
 	$ScreenQuad/ScreenViewport/PurchasePopup/Panel/VBoxContainer/NoLabel
 )
 
+@onready var nav_left: Node2D = $CanvasLayer/NavLeft
+@onready var nav_right: Node2D = $CanvasLayer/NavRight
+
+@onready var nav_left_sprite: Sprite2D = (
+	$CanvasLayer/NavLeft/Sprite2D
+)
+
+@onready var nav_right_sprite: Sprite2D = (
+	$CanvasLayer/NavRight/Sprite2D
+)
+
+@onready var nav_left_area: Area2D = (
+	$CanvasLayer/NavLeft/NavLeftArea
+)
+
+@onready var nav_right_area: Area2D = (
+	$CanvasLayer/NavRight/NavRightArea
+)
+
 enum PurchasePopupState {
 	CLOSED,
 	CONFIRM_PURCHASE,
@@ -87,7 +106,19 @@ var price_labels: Array[RichTextLabel] = []
 
 
 func _ready() -> void:
+	nav_left_area.input_event.connect(_on_nav_left_input)
+	nav_right_area.input_event.connect(_on_nav_right_input)
+	## TEMP SHOP TEST RESET
+	#SaveManager.owned_balls = [
+		#BallCatalog.DEFAULT_BALL_ID
+	#]
+#
+	#SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
+	#SaveManager.neurobits = 500
+	#SaveManager.save()
 	nb_lbl.visible = false
+	nav_left.visible = false
+	nav_right.visible = false
 	purchase_popup.hide()
 
 	print("Currently equipped: ", SaveManager.equipped_ball_id)
@@ -274,6 +305,8 @@ func enter_shop() -> void:
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
 	nb_lbl.visible = true
+	#nav_left.visible = true
+	nav_right.visible = true
 
 	await play_vendor_intro()
 	shop_ui.visible = true
@@ -283,12 +316,14 @@ func move_to_game_view() -> void:
 	camera_moving = true
 	set_screen_animation_active(false)
 	nb_lbl.visible = false
+	
 
 	await tween_camera_to_marker(camera_corner, 1.4)
 	await tween_camera_to_marker(camera_game_view, 2.5)
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
+	nav_left.visible = true
 
 
 func move_to_patio() -> void:
@@ -298,6 +333,7 @@ func move_to_patio() -> void:
 
 	camera_zone = CameraZone.PATIO
 	camera_moving = false
+	nav_right.visible = false
 
 	show_patio_dialogue()
 
@@ -310,6 +346,7 @@ func move_back_to_game_view_from_patio() -> void:
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
+	nav_right.visible = true
 
 
 func move_back_to_shop() -> void:
@@ -324,6 +361,7 @@ func move_back_to_shop() -> void:
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
 	nb_lbl.visible = true
+	nav_left.visible = false
 
 	set_screen_animation_active(true)
 
@@ -900,3 +938,66 @@ func _try_click_purchase_popup(
 			purchase_popup_index = 1
 			_update_purchase_popup_selection()
 			_confirm_purchase_popup_selection()
+func _on_nav_left_input(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int
+) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
+		if camera_moving:
+			return
+
+		if purchase_popup_state != PurchasePopupState.CLOSED:
+			return
+
+		await rotate_counterclockwise()
+
+
+func _on_nav_right_input(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int
+) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
+		if camera_moving:
+			return
+
+		if purchase_popup_state != PurchasePopupState.CLOSED:
+			return
+
+		await rotate_clockwise()
+
+
+
+
+func _on_nav_left_area_mouse_entered() -> void:
+	nav_left_sprite.modulate = Color(
+		1.0,
+		0.667,
+		0.0,
+		1.0
+	)
+
+func _on_nav_left_area_mouse_exited() -> void:
+	nav_left_sprite.modulate = Color.WHITE
+
+
+func _on_nav_right_area_mouse_entered() -> void:
+	nav_right_sprite.modulate = Color(
+		1.0,
+		0.667,
+		0.0,
+		1.0
+	)
+
+
+func _on_nav_right_area_mouse_exited() -> void:
+	nav_right_sprite.modulate = Color.WHITE

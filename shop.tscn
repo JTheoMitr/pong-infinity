@@ -1,7 +1,8 @@
-[gd_scene load_steps=51 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=53 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="Texture2D" uid="uid://brapxoty7otp6" path="res://anims/mina_talking_helmet_1.png" id="3_myf4l"]
+[ext_resource type="Texture2D" uid="uid://cn71m1ir6w6oy" path="res://Assets/Sprites/green_arrow_1.png" id="4_aixl6"]
 [ext_resource type="Texture2D" uid="uid://c86x46k0rvtml" path="res://anims/mina_talking_helmet_2.png" id="4_p5a0g"]
 [ext_resource type="Shader" uid="uid://d1f5urjlscutw" path="res://vendor_crt_screen_3d.gdshader" id="5_mvg5f"]
 [ext_resource type="Texture2D" uid="uid://bi52i6wnv47ls" path="res://anims/mina_talking_helmet_3.png" id="5_xqmyw"]
@@ -50,6 +51,9 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.86240643, 0.00040776373, 0.8222656, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ib21s"]
+size = Vector2(74, 37)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sw5c6"]
 render_priority = 0
@@ -274,6 +278,63 @@ theme_override_colors/font_color = Color(0.57254905, 0.93333334, 1, 1)
 theme_override_fonts/font = ExtResource("10_xqmyw")
 theme_override_font_sizes/font_size = 36
 text = "NEUROBITS: 0"
+
+[node name="NavLeft" type="Node2D" parent="CanvasLayer"]
+position = Vector2(230, 110)
+scale = Vector2(0.85, 0.85)
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/NavLeft"]
+position = Vector2(933, 580)
+rotation = 3.1415927
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_aixl6")
+
+[node name="NavLeftArea" type="Area2D" parent="CanvasLayer/NavLeft"]
+position = Vector2(900, 550)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/NavLeft/NavLeftArea"]
+position = Vector2(34, 24.5)
+shape = SubResource("RectangleShape2D_ib21s")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/NavLeft"]
+offset_left = 900.0
+offset_top = 596.0
+offset_right = 989.0
+offset_bottom = 624.0
+theme_override_fonts/normal_font = ExtResource("10_xqmyw")
+theme_override_font_sizes/normal_font_size = 21
+bbcode_enabled = true
+text = "Shop"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="NavRight" type="Node2D" parent="CanvasLayer"]
+position = Vector2(310, 110)
+scale = Vector2(0.85, 0.85)
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/NavRight"]
+position = Vector2(932.99994, 573.99994)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_aixl6")
+
+[node name="NavRightArea" type="Area2D" parent="CanvasLayer/NavRight"]
+position = Vector2(900, 550)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/NavRight/NavRightArea"]
+position = Vector2(34, 24.5)
+shape = SubResource("RectangleShape2D_ib21s")
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/NavRight"]
+offset_left = 889.0
+offset_top = 596.0
+offset_right = 986.0
+offset_bottom = 624.0
+theme_override_fonts/normal_font = ExtResource("10_xqmyw")
+theme_override_font_sizes/normal_font_size = 21
+bbcode_enabled = true
+text = "Arcade"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4693542, 2.9115815, -0.7794397)
@@ -547,7 +608,7 @@ offset_right = 600.0
 offset_bottom = 619.0
 
 [node name="MessageLabel" type="RichTextLabel" parent="ScreenQuad/ScreenViewport/PurchasePopup/Panel/VBoxContainer"]
-custom_minimum_size = Vector2(600, 400)
+custom_minimum_size = Vector2(600, 500)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.8758733, 3.946722e-06, 0.5569111, 1)
 theme_override_fonts/normal_font = ExtResource("10_xqmyw")
@@ -562,7 +623,7 @@ custom_minimum_size = Vector2(150, 55)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.32941177, 1, 1)
 theme_override_fonts/font = ExtResource("10_xqmyw")
-theme_override_font_sizes/font_size = 55
+theme_override_font_sizes/font_size = 60
 text = "Yes"
 horizontal_alignment = 1
 
@@ -571,7 +632,7 @@ custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.32941177, 1, 1)
 theme_override_fonts/font = ExtResource("10_xqmyw")
-theme_override_font_sizes/font_size = 55
+theme_override_font_sizes/font_size = 60
 text = "No"
 horizontal_alignment = 1
 
@@ -637,3 +698,8 @@ visible = false
 
 [node name="shop-reboot-bucket2" parent="." instance=ExtResource("640_wgmdg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)
+
+[connection signal="mouse_entered" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/NavRight/NavRightArea" to="." method="_on_nav_right_area_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/NavRight/NavRightArea" to="." method="_on_nav_right_area_mouse_exited"]

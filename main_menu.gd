@@ -95,6 +95,14 @@ extends Node2D
 	$CanvasLayer/LoadoutOverlay/StartLoadoutButton
 )
 
+@onready var ball_left_arrow_area: Area2D = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/LeftArrow/Area2D
+)
+
+@onready var ball_right_arrow_area: Area2D = (
+	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/RightArrow/Area2D
+)
+
 enum LoadoutFocus {
 	BALL,
 	BOARD,
@@ -154,6 +162,15 @@ func _process(_delta: float) -> void:
 		
 
 func _ready() -> void:
+	board_carousel.hide()
+
+	ball_left_arrow_area.input_event.connect(
+		_on_ball_left_arrow_input
+	)
+
+	ball_right_arrow_area.input_event.connect(
+		_on_ball_right_arrow_input
+	)
 	get_tree().paused = false
 	
 	start_button.grab_focus()
@@ -377,13 +394,22 @@ func _unhandled_input(event: InputEvent) -> void:
 		_move_active_carousel(1)
 		get_viewport().set_input_as_handled()
 
+	#elif event.is_action_pressed("ui_accept"):
+		#if loadout_focus == LoadoutFocus.START:
+			#_confirm_loadout_and_start()
+		#else:
+			## Optional convenience:
+			## Accept while viewing a carousel moves down.
+			#_move_loadout_focus(1)
+#
+		#get_viewport().set_input_as_handled()
+		
 	elif event.is_action_pressed("ui_accept"):
 		if loadout_focus == LoadoutFocus.START:
 			_confirm_loadout_and_start()
 		else:
-			# Optional convenience:
-			# Accept while viewing a carousel moves down.
-			_move_loadout_focus(1)
+			loadout_focus = LoadoutFocus.START
+			_refresh_loadout_focus()
 
 		get_viewport().set_input_as_handled()
 
@@ -391,16 +417,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_loadout_menu()
 		get_viewport().set_input_as_handled()
 		
+#func _move_loadout_focus(direction: int) -> void:
+	#var next_focus: int = int(loadout_focus) + direction
+#
+	#next_focus = clamp(
+		#next_focus,
+		#int(LoadoutFocus.BALL),
+		#int(LoadoutFocus.START)
+	#)
+#
+	#loadout_focus = next_focus as LoadoutFocus
+	#_refresh_loadout_focus()
+	
 func _move_loadout_focus(direction: int) -> void:
-	var next_focus: int = int(loadout_focus) + direction
+	if direction > 0:
+		loadout_focus = LoadoutFocus.START
+	else:
+		loadout_focus = LoadoutFocus.BALL
 
-	next_focus = clamp(
-		next_focus,
-		int(LoadoutFocus.BALL),
-		int(LoadoutFocus.START)
-	)
-
-	loadout_focus = next_focus as LoadoutFocus
 	_refresh_loadout_focus()
 	
 func _move_active_carousel(direction: int) -> void:
@@ -497,6 +531,53 @@ func _refresh_board_carousel() -> void:
 			if not animations.is_empty():
 				board_preview.play(animations[0])
 				
+#func _refresh_loadout_focus() -> void:
+	#var active_color := Color.WHITE
+	#var inactive_color := Color(
+		#0.32,
+		#0.32,
+		#0.32,
+		#0.65
+	#)
+#
+	#ball_carousel.modulate = (
+		#active_color
+		#if loadout_focus == LoadoutFocus.BALL
+		#else inactive_color
+	#)
+#
+	#board_carousel.modulate = (
+		#active_color
+		#if loadout_focus == LoadoutFocus.BOARD
+		#else inactive_color
+	#)
+#
+	#if loadout_focus == LoadoutFocus.START:
+		#start_loadout_button.modulate = Color(
+			#1.0,
+			#0.667,
+			#0.0,
+			#1.0
+		#)
+	#else:
+		#start_loadout_button.modulate = inactive_color
+#
+	#ball_left_arrow.visible = (
+		#loadout_focus == LoadoutFocus.BALL
+	#)
+#
+	#ball_right_arrow.visible = (
+		#loadout_focus == LoadoutFocus.BALL
+	#)
+#
+	#board_left_arrow.visible = (
+		#loadout_focus == LoadoutFocus.BOARD
+	#)
+#
+	#board_right_arrow.visible = (
+		#loadout_focus == LoadoutFocus.BOARD
+	#)
+	
 func _refresh_loadout_focus() -> void:
 	var active_color := Color.WHITE
 	var inactive_color := Color(
@@ -512,11 +593,7 @@ func _refresh_loadout_focus() -> void:
 		else inactive_color
 	)
 
-	board_carousel.modulate = (
-		active_color
-		if loadout_focus == LoadoutFocus.BOARD
-		else inactive_color
-	)
+	board_carousel.hide()
 
 	if loadout_focus == LoadoutFocus.START:
 		start_loadout_button.modulate = Color(
@@ -535,14 +612,7 @@ func _refresh_loadout_focus() -> void:
 	ball_right_arrow.visible = (
 		loadout_focus == LoadoutFocus.BALL
 	)
-
-	board_left_arrow.visible = (
-		loadout_focus == LoadoutFocus.BOARD
-	)
-
-	board_right_arrow.visible = (
-		loadout_focus == LoadoutFocus.BOARD
-	)
+	
 	
 func _confirm_loadout_and_start() -> void:
 	if owned_ball_ids.is_empty():
@@ -600,3 +670,38 @@ func close_loadout_menu() -> void:
 func _on_neon_alley_pressed() -> void:
 	SaveManager.enter_shop_from_arcade = true
 	get_tree().change_scene_to_file("res://shop.tscn")
+	
+func _on_ball_left_arrow_input(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int
+) -> void:
+	if not loadout_is_open:
+		return
+
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
+		loadout_focus = LoadoutFocus.BALL
+		_move_active_carousel(-1)
+		_refresh_loadout_focus()
+
+
+func _on_ball_right_arrow_input(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int
+) -> void:
+	if not loadout_is_open:
+		return
+
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
+		loadout_focus = LoadoutFocus.BALL
+		_move_active_carousel(1)
+		_refresh_loadout_focus()

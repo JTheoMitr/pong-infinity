@@ -78,6 +78,14 @@ enum CameraZone {
 	$CanvasLayer/NavRight/Sprite2D
 )
 
+@onready var nav_right_label: RichTextLabel = (
+	$CanvasLayer/NavRight/RichTextLabel2
+)
+
+@onready var nav_left_label: RichTextLabel = (
+	$CanvasLayer/NavLeft/RichTextLabel
+)
+
 @onready var nav_left_area: Area2D = (
 	$CanvasLayer/NavLeft/NavLeftArea
 )
@@ -266,25 +274,31 @@ func _unhandled_input(event: InputEvent) -> void:
 func rotate_clockwise() -> void:
 	match camera_zone:
 		CameraZone.SHOP:
+			# SHOP → ARCADE
 			await move_to_game_view()
 
 		CameraZone.GAME:
-			await move_to_patio()
+			# ARCADE → SHOP
+			await move_back_to_shop()
 
 		CameraZone.PATIO:
+			# Nowhere to go right from patio
 			pass
 
 
 func rotate_counterclockwise() -> void:
 	match camera_zone:
-		CameraZone.PATIO:
-			await move_back_to_game_view_from_patio()
+		CameraZone.SHOP:
+			# Nowhere to go left from shop
+			pass
 
 		CameraZone.GAME:
-			await move_back_to_shop()
+			# ARCADE → PATIO
+			await move_to_patio()
 
-		CameraZone.SHOP:
-			pass
+		CameraZone.PATIO:
+			# PATIO → ARCADE
+			await move_back_to_game_view_from_patio()
 
 
 func enter_shop() -> void:
@@ -307,6 +321,7 @@ func enter_shop() -> void:
 	nb_lbl.visible = true
 	#nav_left.visible = true
 	nav_right.visible = true
+	nav_right_label.text = "Arcade"
 
 	await play_vendor_intro()
 	shop_ui.visible = true
@@ -317,12 +332,17 @@ func move_to_game_view() -> void:
 	set_screen_animation_active(false)
 	nb_lbl.visible = false
 	
+	nav_right_label.text = "Shop"
+	nav_left_label.text = "Patio"
+	
 
 	await tween_camera_to_marker(camera_corner, 1.4)
 	await tween_camera_to_marker(camera_game_view, 2.5)
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
+	nav_right_label.text = "Shop"
+	nav_left_label.text = "Patio"
 	nav_left.visible = true
 
 
@@ -334,6 +354,8 @@ func move_to_patio() -> void:
 	camera_zone = CameraZone.PATIO
 	camera_moving = false
 	nav_right.visible = false
+		
+	nav_left_label.text = "Arcade"
 
 	show_patio_dialogue()
 
@@ -347,6 +369,8 @@ func move_back_to_game_view_from_patio() -> void:
 	camera_zone = CameraZone.GAME
 	camera_moving = false
 	nav_right.visible = true
+	nav_right_label.text = "Shop"
+	nav_left_label.text = "Patio"
 
 
 func move_back_to_shop() -> void:
@@ -357,6 +381,7 @@ func move_back_to_shop() -> void:
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
+	nav_right_label.text = "Arcade"
 
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
@@ -368,6 +393,8 @@ func move_back_to_shop() -> void:
 
 func move_into_cabinet() -> void:
 	camera_moving = true
+	nav_left.hide()
+	nav_right.hide()
 
 	await tween_camera_to_marker(camera_cabinet, 5.0)
 

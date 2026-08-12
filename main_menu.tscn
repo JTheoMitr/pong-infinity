@@ -1,4 +1,4 @@
-[gd_scene load_steps=3028 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=3030 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -4243,6 +4243,9 @@ animations = [{
 "speed": 35.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_re55l"]
+size = Vector2(316.00003, 580.00006)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_0jqgx"]
 animations = [{
 "frames": [{
@@ -6520,6 +6523,9 @@ animations = [{
 "name": &"default",
 "speed": 35.0
 }]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3lhhj"]
+size = Vector2(300, 520)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p3ekk"]
 animations = [{
@@ -15537,12 +15543,14 @@ offset_left = -148.0
 offset_top = -43.0
 offset_right = 1282.0
 offset_bottom = 781.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dy7ct")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_ql5ya")
 offset_right = 1153.0
 offset_bottom = 648.0
+mouse_filter = 2
 
 [node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(575, 159)
@@ -15686,19 +15694,20 @@ animation = &"hard"
 frame_progress = 0.7882696
 
 [node name="LoadoutOverlay" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Background" type="ColorRect" parent="CanvasLayer/LoadoutOverlay"]
 layout_mode = 0
 offset_right = 1158.0
 offset_bottom = 654.0
-color = Color(0.047058824, 0.047058824, 0.047058824, 0.6)
+mouse_filter = 2
+color = Color(0.047058824, 0.047058824, 0.047058824, 0.7607843)
 
 [node name="BallCarousel" type="VBoxContainer" parent="CanvasLayer/LoadoutOverlay"]
 layout_mode = 1
@@ -15706,9 +15715,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -315.0
-offset_top = 60.0
+offset_top = 158.0
 offset_right = 315.0
-offset_bottom = 345.0
+offset_bottom = 490.0
 grow_horizontal = 2
 alignment = 1
 
@@ -15716,44 +15725,58 @@ alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.31764707, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 56
 text = "Select Neuroball"
 horizontal_alignment = 1
 
 [node name="PreviewRow" type="HBoxContainer" parent="CanvasLayer/LoadoutOverlay/BallCarousel"]
-custom_minimum_size = Vector2(350, 180)
+custom_minimum_size = Vector2(1000, 200)
 layout_mode = 2
 theme_override_constants/separation = 600
 alignment = 1
 
 [node name="LeftArrow" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow"]
-position = Vector2(-35, 100)
+position = Vector2(240, 110)
 rotation = -1.5707964
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_qrhcs")
 autoplay = "default"
 frame_progress = 0.33244526
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/LeftArrow"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/LeftArrow/Area2D"]
+position = Vector2(-6, -6)
+shape = SubResource("RectangleShape2D_re55l")
 
 [node name="BallPreview" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow"]
-position = Vector2(310, 85)
+position = Vector2(492, 106)
 scale = Vector2(0.85, 0.85)
 sprite_frames = SubResource("SpriteFrames_0jqgx")
 autoplay = "default"
 frame_progress = 0.3031583
 
 [node name="RightArrow" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow"]
-position = Vector2(650, 100)
+position = Vector2(765, 110)
 rotation = 1.5707964
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_gtwrx")
 autoplay = "default"
 frame_progress = 0.67163855
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/RightArrow"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/RightArrow/Area2D"]
+position = Vector2(-14, 4)
+shape = SubResource("RectangleShape2D_3lhhj")
 
 [node name="BallName" type="Label" parent="CanvasLayer/LoadoutOverlay/BallCarousel"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.34509805, 0.8784314, 1, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 32
 text = "Original"
 horizontal_alignment = 1
 
@@ -15761,11 +15784,12 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8784314, 0.3647059, 1, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 text = "EQUIPPED"
 horizontal_alignment = 1
 
 [node name="BoardCarousel" type="VBoxContainer" parent="CanvasLayer/LoadoutOverlay"]
+visible = false
 layout_mode = 0
 offset_left = 200.0
 offset_top = 450.0

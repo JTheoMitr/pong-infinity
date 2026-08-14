@@ -34,7 +34,7 @@ enum CameraZone {
 @onready var camera_cabinet: Marker3D = $CameraCabinet
 @onready var camera_smoker: Marker3D = $CameraSmoker
 
-@export var patio_nav_left_x_offset: float = 80.0
+@export var patio_nav_left_x_offset: float = 90.0
 
 var nav_left_default_position: Vector2
 
@@ -337,10 +337,7 @@ func move_to_game_view() -> void:
 	camera_moving = true
 	set_screen_animation_active(false)
 	nb_lbl.visible = false
-	
-	nav_right_label.text = "Shop"
-	nav_left_label.text = "Patio"
-	
+		
 
 	await tween_camera_to_marker(camera_corner, 1.4)
 	await tween_camera_to_marker(camera_game_view, 2.5)

@@ -34,6 +34,10 @@ enum CameraZone {
 @onready var camera_cabinet: Marker3D = $CameraCabinet
 @onready var camera_smoker: Marker3D = $CameraSmoker
 
+@export var patio_nav_left_x_offset: float = 80.0
+
+var nav_left_default_position: Vector2
+
 @onready var fade_cover: ColorRect = $CanvasLayer/FadeCover
 @onready var loading_icon: RichTextLabel = $CanvasLayer/LoadingIcon
 
@@ -114,6 +118,8 @@ var price_labels: Array[RichTextLabel] = []
 
 
 func _ready() -> void:
+	nav_left_default_position = nav_left.position
+	
 	nav_left_area.input_event.connect(_on_nav_left_input)
 	nav_right_area.input_event.connect(_on_nav_right_input)
 	## TEMP SHOP TEST RESET
@@ -355,6 +361,7 @@ func move_to_patio() -> void:
 	camera_moving = false
 	nav_right.visible = false
 		
+	_update_nav_left_position()
 	nav_left_label.text = "Arcade"
 
 	show_patio_dialogue()
@@ -368,6 +375,7 @@ func move_back_to_game_view_from_patio() -> void:
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
+	_update_nav_left_position()
 	nav_right.visible = true
 	nav_right_label.text = "Shop"
 	nav_left_label.text = "Patio"
@@ -1028,3 +1036,12 @@ func _on_nav_right_area_mouse_entered() -> void:
 
 func _on_nav_right_area_mouse_exited() -> void:
 	nav_right_sprite.modulate = Color.WHITE
+
+func _update_nav_left_position() -> void:
+	if camera_zone == CameraZone.PATIO:
+		nav_left.position = (
+			nav_left_default_position
+			+ Vector2(patio_nav_left_x_offset, 0.0)
+		)
+	else:
+		nav_left.position = nav_left_default_position

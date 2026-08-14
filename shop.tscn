@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=54 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="Texture2D" uid="uid://brapxoty7otp6" path="res://anims/mina_talking_helmet_1.png" id="3_myf4l"]
@@ -15,6 +15,7 @@
 [ext_resource type="SpriteFrames" uid="uid://s5m1u1lhivuy" path="res://models/burger/burger.tres" id="12_aixl6"]
 [ext_resource type="SpriteFrames" uid="uid://blvu7mc35xsih" path="res://models/saturn/saturn.tres" id="13_3fyhu"]
 [ext_resource type="SpriteFrames" uid="uid://bp2rf1a1gk6tb" path="res://models/eyeball/eyeball.tres" id="14_110pr"]
+[ext_resource type="AudioStream" uid="uid://bthf30ru2fct4" path="res://Assets/SFX/crystal_hit_1.mp3" id="37_3fyhu"]
 [ext_resource type="AudioStream" uid="uid://bruhwe3tnusk4" path="res://Assets/SFX/shop_vendor_voice_intro.mp3" id="467_a3mke"]
 [ext_resource type="AudioStream" uid="uid://rla7kqb8v0by" path="res://Assets/Music/neuroshop1-1.mp3" id="616_jx570"]
 [ext_resource type="Texture2D" uid="uid://62hhwlmlescx" path="res://Assets/Bgnd/alley_1_purp.jpg" id="618_gyovd"]
@@ -705,6 +706,11 @@ visible = false
 
 [node name="shop-reboot-bucket2" parent="." instance=ExtResource("640_wgmdg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("37_3fyhu")
+volume_db = -9.0
+pitch_scale = 1.8
 
 [connection signal="mouse_entered" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_exited"]

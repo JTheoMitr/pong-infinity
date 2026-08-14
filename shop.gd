@@ -55,6 +55,8 @@ var nav_left_default_position: Vector2
 
 @onready var shop_screen_hitbox: Area3D = $ScreenQuad/ShopScreenHitbox
 
+@onready var ding: AudioStreamPlayer = $AudioStreamPlayer2
+
 @onready var purchase_popup: Control = (
 	$ScreenQuad/ScreenViewport/PurchasePopup
 )
@@ -337,6 +339,7 @@ func move_to_game_view() -> void:
 	camera_moving = true
 	set_screen_animation_active(false)
 	nb_lbl.visible = false
+	ding.play()
 		
 
 	await tween_camera_to_marker(camera_corner, 1.4)
@@ -351,6 +354,7 @@ func move_to_game_view() -> void:
 
 func move_to_patio() -> void:
 	camera_moving = true
+	ding.play()
 
 	await tween_camera_to_marker(camera_smoker, 3.0)
 
@@ -367,6 +371,7 @@ func move_to_patio() -> void:
 func move_back_to_game_view_from_patio() -> void:
 	camera_moving = true
 	dialogue_ui.hide()
+	ding.play()
 
 	await tween_camera_to_marker(camera_game_view, 3.0)
 
@@ -380,7 +385,7 @@ func move_back_to_game_view_from_patio() -> void:
 
 func move_back_to_shop() -> void:
 	camera_moving = true
-
+	ding.play()
 	await tween_camera_to_marker(camera_corner, 2.5)
 	await tween_camera_to_marker(camera_shop_view, 1.4)
 
@@ -970,6 +975,8 @@ func _try_click_purchase_popup(
 			purchase_popup_index = 1
 			_update_purchase_popup_selection()
 			_confirm_purchase_popup_selection()
+			
+			
 func _on_nav_left_input(
 	_viewport: Node,
 	event: InputEvent,
@@ -986,8 +993,24 @@ func _on_nav_left_input(
 		if purchase_popup_state != PurchasePopupState.CLOSED:
 			return
 
-		await rotate_counterclockwise()
+		# Click feedback
+		nav_left_sprite.modulate = Color(
+			1.0,
+			0.25,
+			0.0,
+			1.0
+		)
 
+		await get_tree().create_timer(0.12).timeout
+
+		nav_left_sprite.modulate =  Color(
+			1.0,
+			0.667,
+			0.0,
+			1.0
+		)
+
+		await rotate_counterclockwise()
 
 func _on_nav_right_input(
 	_viewport: Node,
@@ -1005,9 +1028,24 @@ func _on_nav_right_input(
 		if purchase_popup_state != PurchasePopupState.CLOSED:
 			return
 
+		# Click feedback
+		nav_right_sprite.modulate = Color(
+			1.0,
+			0.25,
+			0.0,
+			1.0
+		)
+
+		await get_tree().create_timer(0.12).timeout
+
+		nav_right_sprite.modulate =  Color(
+			1.0,
+			0.667,
+			0.0,
+			1.0
+		)
+
 		await rotate_clockwise()
-
-
 
 
 func _on_nav_left_area_mouse_entered() -> void:

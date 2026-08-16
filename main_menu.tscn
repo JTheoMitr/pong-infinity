@@ -1,4 +1,4 @@
-[gd_scene load_steps=3030 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=3033 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -2983,6 +2983,7 @@
 [ext_resource type="Texture2D" uid="uid://do2x15uvlkl0h" path="res://Assets/Anims/red_pyramid_anim/frame_312_delay-0.02s.png" id="1807_xrkbt"]
 [ext_resource type="Texture2D" uid="uid://d0yw3bf5bq4yu" path="res://Assets/Anims/red_pyramid_anim/frame_313_delay-0.02s.png" id="1808_o7pp7"]
 [ext_resource type="Texture2D" uid="uid://dynv35fhltuhp" path="res://Assets/Anims/red_pyramid_anim/frame_314_delay-0.02s.png" id="1809_grql7"]
+[ext_resource type="AudioStream" uid="uid://bthf30ru2fct4" path="res://Assets/SFX/crystal_hit_1.mp3" id="2984_3lhhj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jix8l"]
 bg_color = Color(0, 0, 0, 1)
@@ -9824,6 +9825,12 @@ animations = [{
 "speed": 35.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3lhhj"]
+bg_color = Color(0.5215223, 0.098766156, 0.5213191, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7x4l"]
+bg_color = Color(0.26666668, 0.7254902, 0.9843137, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_re55l"]
 bg_color = Color(0.2901961, 0.84313726, 0.8627451, 1)
 
@@ -15841,8 +15848,11 @@ offset_left = 1006.0
 offset_top = 597.0
 offset_right = 1124.0
 offset_bottom = 625.0
+theme_override_colors/font_color = Color(0.0627451, 0.8745098, 0.8745098, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3lhhj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_b7x4l")
 theme_override_styles/focus = SubResource("StyleBoxFlat_re55l")
 text = "START"
 
@@ -16163,6 +16173,11 @@ offset_right = 83.0
 offset_bottom = 42.0
 theme_override_fonts/font = ExtResource("6_qe12f")
 text = "Return"
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2984_3lhhj")
+volume_db = -5.0
+pitch_scale = 1.9
 
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button2" to="." method="_on_button_2_pressed"]

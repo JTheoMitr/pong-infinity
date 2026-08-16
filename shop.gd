@@ -39,7 +39,7 @@ enum CameraZone {
 var nav_left_default_position: Vector2
 
 @onready var fade_cover: ColorRect = $CanvasLayer/FadeCover
-@onready var loading_icon: RichTextLabel = $CanvasLayer/LoadingIcon
+@onready var loading_icon: Sprite2D = $CanvasLayer/LoadingIcon
 
 @onready var button_1: Label = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer/Label
 @onready var button_2: Label = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer2/Label
@@ -560,6 +560,11 @@ func exit_cabinet_to_game_view() -> void:
 	set_screen_animation_active(false)
 
 	await tween_camera_to_marker(camera_game_view, 5.0)
+	
+	nav_left.show()
+	nav_right.show()
+	nav_left_label.text = "Patio"
+	nav_right_label.text = "Shop"
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false

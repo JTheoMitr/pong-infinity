@@ -210,16 +210,9 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.08825765, 0.006367548, 0.12201973, 1)
 
-[node name="LoadingIcon" type="RichTextLabel" parent="CanvasLayer"]
-custom_minimum_size = Vector2(300, 100)
-offset_left = 448.0
-offset_top = 300.0
-offset_right = 748.0
-offset_bottom = 400.0
-theme_override_fonts/normal_font = ExtResource("10_xqmyw")
-theme_override_font_sizes/normal_font_size = 42
-bbcode_enabled = true
-text = "[center]Loading..."
+[node name="LoadingIcon" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(577, 323)
+texture = ExtResource("620_xww5d")
 
 [node name="DialogueUI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -710,7 +703,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("37_3fyhu")
 volume_db = -9.0
-pitch_scale = 1.8
+pitch_scale = 2.5
 
 [connection signal="mouse_entered" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_exited"]

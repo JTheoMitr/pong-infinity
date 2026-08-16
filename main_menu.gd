@@ -43,6 +43,7 @@ extends Node2D
 @onready var keyboard_text4 = $ControlsPopup/RichTextLabel11
 @onready var keyboard_text5 = $ControlsPopup/RichTextLabel12
 
+@onready var audio_click = $AudioStreamPlayer2
 # ball and table select
 
 @onready var loadout_overlay: Control = $CanvasLayer/LoadoutOverlay
@@ -438,6 +439,7 @@ func _move_loadout_focus(direction: int) -> void:
 	_refresh_loadout_focus()
 	
 func _move_active_carousel(direction: int) -> void:
+	audio_click.play()
 	match loadout_focus:
 		LoadoutFocus.BALL:
 			if owned_ball_ids.is_empty():
@@ -603,7 +605,12 @@ func _refresh_loadout_focus() -> void:
 			1.0
 		)
 	else:
-		start_loadout_button.modulate = inactive_color
+		start_loadout_button.modulate = Color(
+			1.0,
+			0.667,
+			0.0,
+			1.0
+		)
 
 	ball_left_arrow.visible = (
 		loadout_focus == LoadoutFocus.BALL

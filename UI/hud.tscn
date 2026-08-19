@@ -1,13 +1,48 @@
-[gd_scene load_steps=20 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=19 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="3_2o5uh"]
-[ext_resource type="Texture2D" uid="uid://c2v6pykkgv2al" path="res://Assets/Sprites/ps4_gamepad isolated.png" id="4_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://bbjbohphpmd6m" path="res://Assets/Anims/gdb-playstation-2 x pressed.png" id="5_1ui3w"]
 [ext_resource type="Texture2D" uid="uid://2bce5x0pnarm" path="res://UI/neuro_crosshair.png" id="6_1ui3w"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bytes"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rnl6m"]
+atlas = ExtResource("5_1ui3w")
+region = Rect2(2, 0, 15, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ui3w"]
+atlas = ExtResource("5_1ui3w")
+region = Rect2(18, 0, 15, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0j753"]
+atlas = ExtResource("5_1ui3w")
+region = Rect2(34, 0, 15, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0a73"]
+atlas = ExtResource("5_1ui3w")
+region = Rect2(50, 0, 15, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pf7ph"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rnl6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ui3w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0j753")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0a73")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bytes"]
 bg_color = Color(0.03137255, 0.03137255, 0.03137255, 0.84313726)
@@ -39,42 +74,6 @@ bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0j753"]
 bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0j753"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(1, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i0a73"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(17, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pf7ph"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(33, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vs5gg"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(49, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_23s3h"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0j753")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_i0a73")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pf7ph")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vs5gg")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [node name="hud" type="CanvasLayer"]
 script = ExtResource("1_37p78")
@@ -109,7 +108,14 @@ theme_override_colors/font_color = Color(0.24291259, 1, 0.9147585, 1)
 theme_override_fonts/font = ExtResource("2_bytes")
 theme_override_font_sizes/font_size = 21
 theme_override_styles/normal = SubResource("StyleBoxEmpty_bytes")
-text = "Press Enter"
+text = "Press Enter or    "
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/VBoxContainer/StartButton"]
+position = Vector2(192, 18)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_pf7ph")
+autoplay = "default"
+frame_progress = 0.445401
 
 [node name="CountdownLabel" type="Label" parent="."]
 anchors_preset = 8
@@ -310,17 +316,25 @@ theme_override_font_sizes/normal_font_size = 19
 bbcode_enabled = true
 text = "[shake][center]Submitting Score..."
 
-[node name="ControllerSprite" type="Sprite2D" parent="."]
-position = Vector2(574, 344)
+[node name="ControllerSprite" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(1200, 200)
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -100.0
+offset_right = 1152.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("4_rnl6m")
+theme_override_colors/default_color = Color(0.25490198, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_bytes")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]Use Mouse or Joystick to move crosshair. 
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ControllerSprite"]
-position = Vector2(171.42856, -19.999998)
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_23s3h")
-autoplay = "default"
-frame_progress = 0.87903553
+Rotate Paddles with shoulder buttons or [A] and [D]"
 
 [node name="CustomCursor" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=54 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=61 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
+[ext_resource type="Texture2D" uid="uid://cs8hevh6bccqm" path="res://Assets/Sprites/neuro_main_menu_1.png" id="2_110pr"]
 [ext_resource type="Texture2D" uid="uid://brapxoty7otp6" path="res://anims/mina_talking_helmet_1.png" id="3_myf4l"]
 [ext_resource type="Texture2D" uid="uid://cn71m1ir6w6oy" path="res://Assets/Sprites/green_arrow_1.png" id="4_aixl6"]
 [ext_resource type="Texture2D" uid="uid://c86x46k0rvtml" path="res://anims/mina_talking_helmet_2.png" id="4_p5a0g"]
@@ -15,22 +16,28 @@
 [ext_resource type="SpriteFrames" uid="uid://s5m1u1lhivuy" path="res://models/burger/burger.tres" id="12_aixl6"]
 [ext_resource type="SpriteFrames" uid="uid://blvu7mc35xsih" path="res://models/saturn/saturn.tres" id="13_3fyhu"]
 [ext_resource type="SpriteFrames" uid="uid://bp2rf1a1gk6tb" path="res://models/eyeball/eyeball.tres" id="14_110pr"]
+[ext_resource type="Texture2D" uid="uid://12i72ii86y80" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_001.png" id="22_bda38"]
+[ext_resource type="Texture2D" uid="uid://cglwiv25svwxd" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_002.png" id="23_511ah"]
+[ext_resource type="Texture2D" uid="uid://ceopkyry12lhc" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_011.png" id="24_6qct6"]
+[ext_resource type="Texture2D" uid="uid://curbosbl3dxs2" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_012.png" id="25_yqgv3"]
+[ext_resource type="Texture2D" uid="uid://bqdklyxnmj560" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_013.png" id="26_tu2u2"]
+[ext_resource type="Texture2D" uid="uid://d1toukpyc36cm" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_014.png" id="27_3aflo"]
+[ext_resource type="Texture2D" uid="uid://nn7ibd3eb35h" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_015.png" id="28_83t3s"]
+[ext_resource type="Texture2D" uid="uid://chipiq828ks86" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_016.png" id="29_nxxc5"]
+[ext_resource type="Texture2D" uid="uid://bwm45oxhbombw" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_003.png" id="30_s4e2r"]
+[ext_resource type="Texture2D" uid="uid://dhtrk11qf2tkr" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_004.png" id="31_bke4b"]
+[ext_resource type="Texture2D" uid="uid://dxt5stdfr4yb1" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_005.png" id="32_4fhph"]
+[ext_resource type="Texture2D" uid="uid://bmhmkn7krfsc3" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_006.png" id="33_v6a7d"]
+[ext_resource type="Texture2D" uid="uid://bqpp8htym6ry5" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_007.png" id="34_vhut5"]
+[ext_resource type="Texture2D" uid="uid://c241mk3e1ukd8" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_008.png" id="35_sxc6c"]
+[ext_resource type="Texture2D" uid="uid://w3q8eqhyvemq" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_009.png" id="36_5obn0"]
 [ext_resource type="AudioStream" uid="uid://bthf30ru2fct4" path="res://Assets/SFX/crystal_hit_1.mp3" id="37_3fyhu"]
+[ext_resource type="Texture2D" uid="uid://dyhmcjum0u5um" path="res://Assets/Sprites/nball_menu_frames/Screen_Recording_2026-08-18_at_10_54_49_PM_010.png" id="37_o5siu"]
 [ext_resource type="AudioStream" uid="uid://bruhwe3tnusk4" path="res://Assets/SFX/shop_vendor_voice_intro.mp3" id="467_a3mke"]
 [ext_resource type="AudioStream" uid="uid://rla7kqb8v0by" path="res://Assets/Music/neuroshop1-1.mp3" id="616_jx570"]
 [ext_resource type="Texture2D" uid="uid://62hhwlmlescx" path="res://Assets/Bgnd/alley_1_purp.jpg" id="618_gyovd"]
 [ext_resource type="Texture2D" uid="uid://sgr273tyiuiy" path="res://Assets/Sprites/neurotitle.png" id="619_2nmvk"]
 [ext_resource type="PackedScene" uid="uid://h0yqkiyjg1bg" path="res://models/old-metal-door/door___old___metal_-_14mb.glb" id="620_2nmvk"]
-[ext_resource type="Texture2D" uid="uid://cr7ry2puaelno" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_001.png" id="620_xww5d"]
-[ext_resource type="Texture2D" uid="uid://dwrptnaub0lwn" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_002.png" id="621_0glof"]
-[ext_resource type="Texture2D" uid="uid://bn2juhbv4sl0o" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_003.png" id="622_5bqu3"]
-[ext_resource type="Texture2D" uid="uid://cffgwybic1vgr" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_009.png" id="622_bfdc3"]
-[ext_resource type="Texture2D" uid="uid://di12gmblpq71v" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_008.png" id="623_sjfe1"]
-[ext_resource type="Texture2D" uid="uid://w0xbn35vgu78" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_004.png" id="623_vw4ot"]
-[ext_resource type="Texture2D" uid="uid://cooiugir20drd" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_007.png" id="624_sa7fn"]
-[ext_resource type="Texture2D" uid="uid://cn3nvmxq43afa" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_005.png" id="624_ybqo6"]
-[ext_resource type="Texture2D" uid="uid://b3mdbovheov3s" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_006.png" id="625_k57ne"]
-[ext_resource type="Texture2D" uid="uid://dwgm716ow1di4" path="res://Assets/Anims/neurotitle_anim/neurotitle_anim_010.png" id="629_cc6t8"]
 [ext_resource type="Texture2D" uid="uid://bhk8sapelptn2" path="res://Assets/Anims/smoke_fx/sprite_0.png" id="630_gyovd"]
 [ext_resource type="Texture2D" uid="uid://d0ugrevp5pwb3" path="res://Assets/Anims/smoke_fx/sprite_1.png" id="631_nyply"]
 [ext_resource type="Texture2D" uid="uid://xldgimsotnbo" path="res://Assets/Anims/smoke_fx/sprite_2.png" id="632_v6owh"]
@@ -112,43 +119,39 @@ albedo_color = Color(0.91228896, 0.9122889, 0.91228884, 1)
 albedo_texture = ExtResource("618_gyovd")
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_bfdc3"]
-frames = 18
+frames = 16
 speed_scale = 3.0
-frame_0/texture = ExtResource("620_xww5d")
-frame_1/texture = ExtResource("621_0glof")
+frame_0/texture = ExtResource("22_bda38")
+frame_1/texture = ExtResource("23_511ah")
 frame_1/duration = 1.0
-frame_2/texture = ExtResource("622_5bqu3")
+frame_2/texture = ExtResource("30_s4e2r")
 frame_2/duration = 1.0
-frame_3/texture = ExtResource("623_vw4ot")
+frame_3/texture = ExtResource("31_bke4b")
 frame_3/duration = 1.0
-frame_4/texture = ExtResource("624_ybqo6")
+frame_4/texture = ExtResource("32_4fhph")
 frame_4/duration = 1.0
-frame_5/texture = ExtResource("625_k57ne")
+frame_5/texture = ExtResource("33_v6a7d")
 frame_5/duration = 1.0
-frame_6/texture = ExtResource("624_sa7fn")
+frame_6/texture = ExtResource("34_vhut5")
 frame_6/duration = 1.0
-frame_7/texture = ExtResource("623_sjfe1")
+frame_7/texture = ExtResource("35_sxc6c")
 frame_7/duration = 1.0
-frame_8/texture = ExtResource("622_bfdc3")
+frame_8/texture = ExtResource("36_5obn0")
 frame_8/duration = 1.0
-frame_9/texture = ExtResource("629_cc6t8")
+frame_9/texture = ExtResource("37_o5siu")
 frame_9/duration = 1.0
-frame_10/texture = ExtResource("622_bfdc3")
+frame_10/texture = ExtResource("24_6qct6")
 frame_10/duration = 1.0
-frame_11/texture = ExtResource("623_sjfe1")
+frame_11/texture = ExtResource("25_yqgv3")
 frame_11/duration = 1.0
-frame_12/texture = ExtResource("624_sa7fn")
+frame_12/texture = ExtResource("26_tu2u2")
 frame_12/duration = 1.0
-frame_13/texture = ExtResource("625_k57ne")
+frame_13/texture = ExtResource("27_3aflo")
 frame_13/duration = 1.0
-frame_14/texture = ExtResource("624_ybqo6")
+frame_14/texture = ExtResource("28_83t3s")
 frame_14/duration = 1.0
-frame_15/texture = ExtResource("623_vw4ot")
+frame_15/texture = ExtResource("29_nxxc5")
 frame_15/duration = 1.0
-frame_16/texture = ExtResource("622_5bqu3")
-frame_16/duration = 1.0
-frame_17/texture = ExtResource("621_0glof")
-frame_17/duration = 1.0
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_sjfe1"]
 frames = 4
@@ -194,7 +197,7 @@ transform = Transform3D(-0.08715577, 0, 0.9961947, 0, 1, 0, -0.9961947, 0, -0.08
 transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.281, 2.735, -3.179)
 
 [node name="CameraCabinet" type="Marker3D" parent="."]
-transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.53, 2.68, -3.38)
+transform = Transform3D(0.64278764, 0, 0.76604444, 0, 1, 0, -0.76604444, 0, 0.64278764, -5.523908, 2.68, -3.3735127)
 
 [node name="CameraSmoker" type="Marker3D" parent="."]
 transform = Transform3D(-0.44330594, 0, -0.8963704, 0, 1, 0, 0.8963704, 0, -0.44330594, -6.8672557, 2.836391, -2.1679792)
@@ -212,7 +215,7 @@ color = Color(0.08825765, 0.006367548, 0.12201973, 1)
 
 [node name="LoadingIcon" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(577, 323)
-texture = ExtResource("620_xww5d")
+texture = ExtResource("2_110pr")
 
 [node name="DialogueUI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -336,6 +339,23 @@ bbcode_enabled = true
 text = "Arcade"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="PressEnter" type="RichTextLabel" parent="CanvasLayer"]
+custom_minimum_size = Vector2(300, 50)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/default_color = Color(0.21568628, 1, 0.32156864, 1)
+theme_override_fonts/normal_font = ExtResource("10_xqmyw")
+bbcode_enabled = true
+text = "[center]Press Enter to Play"
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4693542, 2.9115815, -0.7794397)

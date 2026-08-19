@@ -8,6 +8,7 @@ const SHOP_BALL_IDS: Array[String] = [
 ]
 
 var pending_equip_ball_id: String = ""
+var shop_seen = false
 
 enum CameraZone {
 	SHOP,
@@ -33,6 +34,8 @@ enum CameraZone {
 @onready var camera_game_view: Marker3D = $CameraGameView
 @onready var camera_cabinet: Marker3D = $CameraCabinet
 @onready var camera_smoker: Marker3D = $CameraSmoker
+
+@onready var press_enter: RichTextLabel = $CanvasLayer/PressEnter
 
 @export var patio_nav_left_x_offset: float = 90.0
 
@@ -120,6 +123,7 @@ var price_labels: Array[RichTextLabel] = []
 
 
 func _ready() -> void:
+	press_enter.hide()
 	nav_left_default_position = nav_left.position
 	
 	nav_left_area.input_event.connect(_on_nav_left_input)
@@ -340,10 +344,12 @@ func move_to_game_view() -> void:
 	set_screen_animation_active(false)
 	nb_lbl.visible = false
 	ding.play()
+	
 		
 
 	await tween_camera_to_marker(camera_corner, 1.4)
 	await tween_camera_to_marker(camera_game_view, 2.5)
+	press_enter.show()
 
 	camera_zone = CameraZone.GAME
 	camera_moving = false
@@ -355,6 +361,7 @@ func move_to_game_view() -> void:
 func move_to_patio() -> void:
 	camera_moving = true
 	ding.play()
+	press_enter.hide()
 
 	await tween_camera_to_marker(camera_smoker, 3.0)
 
@@ -381,13 +388,16 @@ func move_back_to_game_view_from_patio() -> void:
 	nav_right.visible = true
 	nav_right_label.text = "Shop"
 	nav_left_label.text = "Patio"
+	press_enter.show()
 
 
 func move_back_to_shop() -> void:
 	camera_moving = true
 	ding.play()
+	press_enter.hide()
 	await tween_camera_to_marker(camera_corner, 2.5)
 	await tween_camera_to_marker(camera_shop_view, 1.4)
+	
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
@@ -397,6 +407,9 @@ func move_back_to_shop() -> void:
 	nb_lbl.text = "Neurobits: " + str(nbits)
 	nb_lbl.visible = true
 	nav_left.visible = false
+	
+	if shop_seen == false:
+		await play_vendor_intro()
 
 	set_screen_animation_active(true)
 
@@ -405,6 +418,7 @@ func move_into_cabinet() -> void:
 	camera_moving = true
 	nav_left.hide()
 	nav_right.hide()
+	press_enter.hide()
 
 	await tween_camera_to_marker(camera_cabinet, 5.0)
 
@@ -452,6 +466,7 @@ func _update_selection() -> void:
 
 
 func play_vendor_intro() -> void:
+	shop_seen = true
 	await get_tree().create_timer(0.2).timeout
 
 	vendor_anim.current_frame = 3
@@ -558,8 +573,10 @@ func exit_cabinet_to_game_view() -> void:
 	nb_lbl.visible = false
 	dialogue_ui.hide()
 	set_screen_animation_active(false)
+	
 
 	await tween_camera_to_marker(camera_game_view, 5.0)
+	press_enter.show()
 	
 	nav_left.show()
 	nav_right.show()

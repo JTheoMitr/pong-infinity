@@ -15607,8 +15607,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 6.78
 theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
+theme_override_colors/font_hover_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
-theme_override_styles/focus = SubResource("StyleBoxFlat_j5v2v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_j5v2v")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Start"
 
 [node name="Button2" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
@@ -15616,7 +15618,9 @@ custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
+theme_override_colors/font_hover_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iotk1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Controls"
 
@@ -15625,7 +15629,9 @@ custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
+theme_override_colors/font_hover_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iotk1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Codex"
 
@@ -15634,7 +15640,9 @@ custom_minimum_size = Vector2(250, 25)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
+theme_override_colors/font_hover_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iotk1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Return to Neon Alley"
 

@@ -134,7 +134,8 @@ func _ready() -> void:
 	level_music_2.volume_db = 5
 	level_music_3.volume_db = 0
 	
-	_restore_normal_cursor()
+	#_restore_normal_cursor()
+	_activate_custom_cursor()
 	
 
 	# local test for leaderboard:

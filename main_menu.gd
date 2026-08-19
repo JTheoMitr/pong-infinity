@@ -110,6 +110,13 @@ enum LoadoutFocus {
 	START
 }
 
+enum MenuInputMode {
+	MOUSE,
+	CONTROLLER
+}
+
+var menu_input_mode: MenuInputMode = MenuInputMode.MOUSE
+
 const BOARD_IDS: Array[String] = [
 	"classic"
 ]
@@ -117,6 +124,8 @@ const BOARD_IDS: Array[String] = [
 const BOARD_NAMES: Dictionary = {
 	"classic": "NEUROBALL CLASSIC"
 }
+
+
 
 var loadout_is_open: bool = false
 var loadout_focus: LoadoutFocus = LoadoutFocus.BALL
@@ -136,6 +145,8 @@ var texture = load("res://Assets/Sprites/gdb-playstation-2 triangle flat.png")
 var panel_sliding: bool = false
 var cyborg_head_zoom: bool = false
 var cyborg_head_fade: bool = false
+
+var menu_buttons: Array[Button] = []
 
 func _process(_delta: float) -> void:
 	if panel_sliding:
@@ -174,7 +185,8 @@ func _ready() -> void:
 	)
 	get_tree().paused = false
 	
-	start_button.grab_focus()
+	menu_input_mode = MenuInputMode.MOUSE
+	_enable_mouse_menu_mode()
 	start_title_glow()
 	cyborg_head.play("normal")
 	v_box_1.show()
@@ -191,6 +203,18 @@ func _ready() -> void:
 	
 	await get_tree().create_timer(1.0).timeout
 	speak.play()
+	
+	menu_buttons = [
+		start_button,
+		button_2,
+		return_button,
+		keyboard_button,
+		easy_button,
+		normal_button,
+		hard_button,
+		back_button,
+		start_loadout_button
+	]
 	
 	
 
@@ -429,6 +453,26 @@ func _unhandled_input(event: InputEvent) -> void:
 #
 	#loadout_focus = next_focus as LoadoutFocus
 	#_refresh_loadout_focus()
+	
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if event.relative.length_squared() > 0.0:
+			_set_menu_input_mode(MenuInputMode.MOUSE)
+			var focused_control := get_viewport().gui_get_focus_owner()
+
+			if focused_control != null:
+				focused_control.release_focus()
+
+	elif event is InputEventMouseButton:
+		_set_menu_input_mode(MenuInputMode.MOUSE)
+
+	elif event is InputEventJoypadButton:
+		if event.pressed:
+			_set_menu_input_mode(MenuInputMode.CONTROLLER)
+
+	elif event is InputEventJoypadMotion:
+		if abs(event.axis_value) > 0.5:
+			_set_menu_input_mode(MenuInputMode.CONTROLLER)
 	
 func _move_loadout_focus(direction: int) -> void:
 	if direction > 0:
@@ -712,3 +756,48 @@ func _on_ball_right_arrow_input(
 		loadout_focus = LoadoutFocus.BALL
 		_move_active_carousel(1)
 		_refresh_loadout_focus()
+
+func _set_menu_input_mode(new_mode: MenuInputMode) -> void:
+	if menu_input_mode == new_mode:
+		return
+
+	menu_input_mode = new_mode
+
+	match menu_input_mode:
+		MenuInputMode.MOUSE:
+			_enable_mouse_menu_mode()
+
+		MenuInputMode.CONTROLLER:
+			_enable_controller_menu_mode()
+			
+func _enable_mouse_menu_mode() -> void:
+	var focus_owner := get_viewport().gui_get_focus_owner()
+
+	if focus_owner != null:
+		focus_owner.release_focus()
+
+	for button in menu_buttons:
+		if is_instance_valid(button):
+			button.focus_mode = Control.FOCUS_NONE
+			
+			
+func _enable_controller_menu_mode() -> void:
+	for button in menu_buttons:
+		if is_instance_valid(button):
+			button.focus_mode = Control.FOCUS_ALL
+
+	_grab_contextual_menu_focus()
+	
+	
+func _grab_contextual_menu_focus() -> void:
+	if controls_pop.visible:
+		return_button.grab_focus()
+
+	elif codex_popup.visible:
+		back_button.grab_focus()
+
+	elif difficulty_select.visible:
+		normal_button.grab_focus()
+
+	elif v_box_1.visible:
+		start_button.grab_focus()

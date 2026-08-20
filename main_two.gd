@@ -70,7 +70,7 @@ const points_500 = preload("res://Buffs/point_pop_up_500.tscn")
 @onready var custom_cursor_sprite: Sprite2D = $HUD/CustomCursor
 @onready var laser_armed_sound: AudioStreamPlayer = $LaserArmedSound
 
-const CRYSTALS_TO_ARM: int = 5
+const CRYSTALS_TO_ARM: int = 3
 const ARMED_CURSOR_ROTATION_SPEED: float = 3.5
 
 var laser_crystal_charge: int = 0
@@ -114,7 +114,7 @@ const LASER_STRIKE_SCENE: PackedScene = preload(
 func _ready() -> void:
 	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
-	hud.show_start_message("Get Ready") # controller anim will show here
+	hud.show_start_message("Ready?") # controller anim will show here
 	hud.start_button_pressed.connect(_on_start_button_pressed)
 	hud.resume_button_pressed.connect(toggle_pause)
 	hud.music_button_pressed.connect(_on_music_button_pressed)
@@ -339,7 +339,7 @@ func game_over() -> void:
 	ball_is_on_fire = false
 	ball_is_frozen = false
 	hud.show_score()
-	_restore_normal_cursor()
+	#_restore_normal_cursor()
 	
 	await get_tree().create_timer(3.0).timeout
 	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
@@ -1010,3 +1010,6 @@ func _destroy_laser_target(target: Node2D) -> void:
 		return
 
 	target.call("destroy_by_laser")
+
+func _exit_tree() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

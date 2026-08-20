@@ -39,7 +39,7 @@ signal music_button_pressed
 
 
 func _ready() -> void:
-	label.text = "RICOCHET"
+	label.text = "Neuroball"
 	label.visible = true
 	countdown_label.visible = false
 	start_button.visible = true

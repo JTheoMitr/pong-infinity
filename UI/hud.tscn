@@ -1,47 +1,55 @@
-[gd_scene load_steps=19 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=18 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="3_2o5uh"]
-[ext_resource type="Texture2D" uid="uid://bbjbohphpmd6m" path="res://Assets/Anims/gdb-playstation-2 x pressed.png" id="5_1ui3w"]
+[ext_resource type="Texture2D" uid="uid://dnodqvi3mval0" path="res://Assets/Anims/mouse_anims.png" id="3_rnl6m"]
 [ext_resource type="Texture2D" uid="uid://2bce5x0pnarm" path="res://UI/neuro_crosshair.png" id="6_1ui3w"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bytes"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pf7ph"]
+bg_color = Color(0.13776866, 0.31961387, 0.2051597, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(2.5990605e-06, 0.96463627, 0.24635872, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rnl6m"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(2, 0, 15, 16)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vs5gg"]
+bg_color = Color(0.6418044, 0.14051607, 0.8463293, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.9449109, 0.55471337, 0.93252474, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1ui3w"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(18, 0, 15, 16)
+atlas = ExtResource("3_rnl6m")
+region = Rect2(114, 0, 111, 157)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0j753"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(34, 0, 15, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i0a73"]
-atlas = ExtResource("5_1ui3w")
-region = Rect2(50, 0, 15, 16)
+atlas = ExtResource("3_rnl6m")
+region = Rect2(228, 1, 114, 158)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pf7ph"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rnl6m")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_1ui3w")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0j753")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_i0a73")
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 2.0
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bytes"]
@@ -99,23 +107,25 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.4117647, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_bytes")
 theme_override_font_sizes/font_size = 32
-text = "PONG ∞"
+text = "Ready?"
 horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.24291259, 1, 0.9147585, 1)
 theme_override_fonts/font = ExtResource("2_bytes")
-theme_override_font_sizes/font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxEmpty_bytes")
-text = "Press Enter or    "
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_pf7ph")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vs5gg")
+text = "Launch"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CenterContainer/VBoxContainer/StartButton"]
-position = Vector2(192, 18)
-scale = Vector2(1.5, 1.5)
+visible = false
+position = Vector2(213, 1)
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_pf7ph")
 autoplay = "default"
-frame_progress = 0.445401
+frame_progress = 0.33870408
 
 [node name="CountdownLabel" type="Label" parent="."]
 anchors_preset = 8
@@ -317,14 +327,14 @@ bbcode_enabled = true
 text = "[shake][center]Submitting Score..."
 
 [node name="ControllerSprite" type="RichTextLabel" parent="."]
-custom_minimum_size = Vector2(1200, 200)
+custom_minimum_size = Vector2(1200, 500)
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -100.0
+offset_top = -152.0
 offset_right = 1152.0
-offset_bottom = 100.0
+offset_bottom = 444.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
@@ -332,9 +342,11 @@ theme_override_colors/default_color = Color(0.25490198, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("2_bytes")
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "[center]Use Mouse or Joystick to move crosshair. 
+text = "[center]Use Mouse to move crosshair and paddles
 
-Rotate Paddles with shoulder buttons or [A] and [D]"
+Rotate Paddles with [A] and [D]
+
+Re-Center Paddles with [W]"
 
 [node name="CustomCursor" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)

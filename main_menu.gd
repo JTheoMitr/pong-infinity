@@ -175,6 +175,8 @@ func _process(_delta: float) -> void:
 
 func _ready() -> void:
 	board_carousel.hide()
+	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 	ball_left_arrow_area.input_event.connect(
 		_on_ball_left_arrow_input

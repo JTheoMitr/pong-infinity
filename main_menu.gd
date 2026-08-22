@@ -15,6 +15,7 @@ extends Node2D
 @onready var controls_pop = $ControlsPopup
 @onready var cyborg_head = $CanvasLayer/AnimatedSprite2D
 @onready var difficulty_select = $CanvasLayer/CenterContainer/DifficultySelect
+@onready var difficulty_select_title = $CanvasLayer/CenterContainer/DifficultySelect/RichTextLabel
 @onready var v_box_1 = $CanvasLayer/CenterContainer/VBoxContainer
 @onready var easy_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button
 @onready var normal_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button2
@@ -35,6 +36,8 @@ extends Node2D
 @onready var controller_text5 = $ControlsPopup/RichTextLabel5
 @onready var controller_text6 = $ControlsPopup/RichTextLabel6
 @onready var controller_text7 = $ControlsPopup/RichTextLabel7
+
+@onready var click_sound = $AudioStreamPlayer3
 
 @onready var keyboard_pic = $ControlsPopup/Sprite2D2
 @onready var keyboard_text1 = $ControlsPopup/RichTextLabel8
@@ -104,6 +107,35 @@ extends Node2D
 	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/RightArrow/Area2D
 )
 
+# HOW TO PLAY
+
+@onready var how_to_play: Control = $CanvasLayer/HowToPlay
+@onready var htp_video: AnimatedSprite2D = $CanvasLayer/HowToPlay/Video
+
+@onready var htp_step_title: RichTextLabel = (
+	$CanvasLayer/HowToPlay/StepTitle
+)
+
+@onready var htp_step_title_2: RichTextLabel = (
+	$CanvasLayer/HowToPlay/StepTitle2
+)
+
+@onready var htp_step_description: RichTextLabel = (
+	$CanvasLayer/HowToPlay/StepDescription
+)
+
+@onready var htp_return_button: Button = (
+	$CanvasLayer/HowToPlay/ReturnButton
+)
+
+@onready var htp_next_button: Button = (
+	$CanvasLayer/HowToPlay/NextButton
+)
+
+@onready var htp_back_button: Button = (
+	$CanvasLayer/HowToPlay/BackButton
+)
+
 enum LoadoutFocus {
 	BALL,
 	BOARD,
@@ -125,6 +157,54 @@ const BOARD_NAMES: Dictionary = {
 	"classic": "NEUROBALL CLASSIC"
 }
 
+const HTP_STEP_COUNT: int = 5
+
+var htp_current_step: int = 0
+
+const HTP_STEPS: Array[Dictionary] = [
+	{
+		"title": "1. KEEP IT ALIVE",
+		"subtitle": "Keep the Neuroball inside the arena.",
+		"description":
+			"Move the paddles with the mouse/crosshair. "
+			+ "Opposite paddles move together. Every bounce keeps "
+			+ "the run alive — but the Neuroball gets faster as "
+			+ "the round continues."
+	},
+	{
+		"title": "2. CONTROL THE ANGLE",
+		"subtitle": "Rotate the paddles to control the ricochet.",
+		"description":
+			"Use A / D to rotate all four paddles. "
+			+ "Change the angle of impact to redirect the Neuroball "
+			+ "and line up your next target."
+	},
+	{
+		"title": "3. CHARGE THE LASER",
+		"subtitle": "Every 3 crystals arms your crosshair.",
+		"description":
+			"When charged, the crosshair changes appearance and "
+			+ "begins spinning. Left-click to fire four lasers "
+			+ "at the crosshair position."
+	},
+	{
+		"title": "4. GRAB BUFFS",
+		"subtitle": "Hit power-ups to change the odds.",
+		"description":
+			"Special objects can temporarily alter the Neuroball "
+			+ "or boost your run. Buffs can increase your score "
+			+ "multiplier, slow the Neuroball down, and more."
+	},
+	{
+		"title": "5. DESTROY. SURVIVE. SCORE.",
+		"subtitle": "Turn every ricochet into points.",
+		"description":
+			"Floating heads and silver panels can be destroyed by "
+			+ "hitting them twice with the Neuroball, or instantly "
+			+ "with a charged laser. Survive, collect crystals, "
+			+ "destroy enemies, and push the high score."
+	}
+]
 
 
 var loadout_is_open: bool = false
@@ -176,6 +256,12 @@ func _process(_delta: float) -> void:
 func _ready() -> void:
 	board_carousel.hide()
 	
+	how_to_play.hide()
+
+	htp_next_button.pressed.connect(_on_htp_next_pressed)
+	htp_back_button.pressed.connect(_on_htp_back_pressed)
+	htp_return_button.pressed.connect(_on_htp_return_pressed)
+	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 	ball_left_arrow_area.input_event.connect(
@@ -224,6 +310,7 @@ func _on_button_pressed() -> void:
 	v_box_1.hide()
 	difficulty_select.show()
 	normal_button.grab_focus()
+	audio_click.play()
 
 func start_title_glow() -> void:
 	var tween := create_tween()
@@ -257,11 +344,13 @@ func _on_audio_stream_player_finished() -> void:
 func _on_button_2_pressed() -> void:
 	controls_pop.popup()
 	return_button.grab_focus()
+	audio_click.play()
 	#print_debug("controls")
 
 
 func _on_return_button_pressed() -> void:
 	controls_pop.hide()
+	audio_click.play()
 	
 func _initiate_visor() -> void:
 	var clicked = ButtonClick.instantiate()
@@ -298,7 +387,8 @@ func _on_button_3_focus_entered() -> void:
 
 
 func _on_easybutton_pressed() -> void:
-	pass
+	audio_click.play()
+	open_how_to_play()
 	
 
 
@@ -368,10 +458,12 @@ func _on_keyboard_button_pressed() -> void:
 func _on_codex_button_pressed() -> void:
 	codex_popup.show()
 	back_button.grab_focus()
+	audio_click.play()
 
 
 func _on_back_button_pressed() -> void:
 	codex_popup.hide()
+	audio_click.play()
 	
 func open_loadout_menu(difficulty_id: String) -> void:
 	selected_difficulty = difficulty_id
@@ -643,20 +735,20 @@ func _refresh_loadout_focus() -> void:
 
 	board_carousel.hide()
 
-	if loadout_focus == LoadoutFocus.START:
-		start_loadout_button.modulate = Color(
-			1.0,
-			0.667,
-			0.0,
-			1.0
-		)
-	else:
-		start_loadout_button.modulate = Color(
-			1.0,
-			0.667,
-			0.0,
-			1.0
-		)
+	#if loadout_focus == LoadoutFocus.START:
+		#start_loadout_button.modulate = Color(
+			#1.0,
+			#0.667,
+			#0.0,
+			#1.0
+		#)
+	#else:
+		#start_loadout_button.modulate = Color(
+			#1.0,
+			#0.667,
+			#0.0,
+			#1.0
+		#)
 
 	ball_left_arrow.visible = (
 		loadout_focus == LoadoutFocus.BALL
@@ -722,6 +814,7 @@ func close_loadout_menu() -> void:
 
 func _on_neon_alley_pressed() -> void:
 	SaveManager.enter_shop_from_arcade = true
+	audio_click.play()
 	get_tree().change_scene_to_file("res://shop.tscn")
 	
 func _on_ball_left_arrow_input(
@@ -803,3 +896,107 @@ func _grab_contextual_menu_focus() -> void:
 
 	elif v_box_1.visible:
 		start_button.grab_focus()
+
+
+func _on_button_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_button_2_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_codex_button_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_neon_alley_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_boot_timer_timeout() -> void:
+	if difficulty_select_title.text == "[center]Booting Up...":
+		difficulty_select_title.text = "[center]Booting Up.."
+	else:
+		difficulty_select_title.text = "[center]Booting Up..."
+
+func open_how_to_play() -> void:
+	htp_current_step = 0
+
+	difficulty_select.hide()
+	how_to_play.show()
+
+	_refresh_how_to_play_step()
+	
+func _refresh_how_to_play_step() -> void:
+	if htp_current_step < 0:
+		htp_current_step = 0
+
+	if htp_current_step >= HTP_STEP_COUNT:
+		htp_current_step = HTP_STEP_COUNT - 1
+
+	var step_data: Dictionary = HTP_STEPS[htp_current_step]
+
+	htp_step_title.text = str(
+		step_data.get("title", "")
+	)
+
+	htp_step_title_2.text = str(
+		step_data.get("subtitle", "")
+	)
+
+	htp_step_description.text = str(
+		step_data.get("description", "")
+	)
+
+	var animation_name := "step_%d" % (
+		htp_current_step + 1
+	)
+
+	if htp_video.sprite_frames.has_animation(animation_name):
+		htp_video.play(animation_name)
+	else:
+		push_warning(
+			"Missing How To Play animation: %s"
+			% animation_name
+		)
+
+	# Back unavailable on step 1.
+	htp_back_button.disabled = (
+		htp_current_step == 0
+	)
+
+	# Step 5 changes NEXT to DONE.
+	if htp_current_step == HTP_STEP_COUNT - 1:
+		htp_next_button.text = "DONE"
+	else:
+		htp_next_button.text = "NEXT"
+		
+func _on_htp_next_pressed() -> void:
+	audio_click.play()
+
+	if htp_current_step >= HTP_STEP_COUNT - 1:
+		close_how_to_play()
+		return
+
+	htp_current_step += 1
+	_refresh_how_to_play_step()
+	
+func _on_htp_back_pressed() -> void:
+	audio_click.play()
+
+	if htp_current_step <= 0:
+		return
+
+	htp_current_step -= 1
+	_refresh_how_to_play_step()
+	
+func _on_htp_return_pressed() -> void:
+	audio_click.play()
+	close_how_to_play()
+	
+func close_how_to_play() -> void:
+	htp_video.stop()
+	how_to_play.hide()
+
+	difficulty_select.show()

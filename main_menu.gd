@@ -17,9 +17,9 @@ extends Node2D
 @onready var difficulty_select = $CanvasLayer/CenterContainer/DifficultySelect
 @onready var difficulty_select_title = $CanvasLayer/CenterContainer/DifficultySelect/RichTextLabel
 @onready var v_box_1 = $CanvasLayer/CenterContainer/VBoxContainer
-@onready var easy_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button
-@onready var normal_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button2
-@onready var hard_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3
+@onready var how_to_play_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/HowToPlayButton
+@onready var start_game_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/StartGameButton
+@onready var close_htp_button = $CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton
 @onready var bgnd = $CityBgnd
 @onready var wires = $CanvasLayer/Sprite2D2
 @onready var speak = $NeuroballSpoken
@@ -163,47 +163,44 @@ var htp_current_step: int = 0
 
 const HTP_STEPS: Array[Dictionary] = [
 	{
-		"title": "1. KEEP IT ALIVE",
-		"subtitle": "Keep the Neuroball inside the arena.",
+		"title": "[center]Keep the Neuroball inside the arena.",
+		"subtitle": "",
 		"description":
-			"Move the paddles with the mouse/crosshair. "
-			+ "Opposite paddles move together. Every bounce keeps "
-			+ "the run alive — but the Neuroball gets faster as "
-			+ "the round continues."
+			"[center]Move the paddles with the mouse/crosshair.\n"
+			+ "[center]Opposite paddles move together.\n"
+			+ "[center]The Neuroball gets faster as the round continues"
+			
 	},
 	{
-		"title": "2. CONTROL THE ANGLE",
-		"subtitle": "Rotate the paddles to control the ricochet.",
+		"title": "[center]Rotate the paddles to control the ricochet",
+		"subtitle": "",
 		"description":
-			"Use A / D to rotate all four paddles. "
-			+ "Change the angle of impact to redirect the Neuroball "
-			+ "and line up your next target."
+			"[center]Use A / D keys to rotate all four paddles.\n"
+			+ "[center]Change the angle of impact to redirect the Neuroball\n"
+			+ "[center]and line up your next target."
 	},
 	{
-		"title": "3. CHARGE THE LASER",
-		"subtitle": "Every 3 crystals arms your crosshair.",
+		"title": "[center]Every 3 crystals charges your LASER",
+		"subtitle": "",
 		"description":
-			"When charged, the crosshair changes appearance and "
-			+ "begins spinning. Left-click to fire four lasers "
-			+ "at the crosshair position."
+			"[center]When charged, the crosshair glows and begins spinning.\n"
+			+ "[center]Left-click to fire a laser blast at the crosshair position.\n"
 	},
 	{
-		"title": "4. GRAB BUFFS",
-		"subtitle": "Hit power-ups to change the odds.",
+		"title": "[center]Destroy Enemy Objects",
+		"subtitle": "",
 		"description":
-			"Special objects can temporarily alter the Neuroball "
-			+ "or boost your run. Buffs can increase your score "
-			+ "multiplier, slow the Neuroball down, and more."
+			"[center]Floating 'enemy' objects can be destroyed for extra points.\n"
+			+ "[center]Hit them twice with the Neuroball, or once with your laser."
 	},
 	{
-		"title": "5. DESTROY. SURVIVE. SCORE.",
-		"subtitle": "Turn every ricochet into points.",
+		"title": "[center]Grab power-ups to change the odds",
+		"subtitle": "",
 		"description":
-			"Floating heads and silver panels can be destroyed by "
-			+ "hitting them twice with the Neuroball, or instantly "
-			+ "with a charged laser. Survive, collect crystals, "
-			+ "destroy enemies, and push the high score."
-	}
+			"[center]Special Objects will temporarily alter the Neuroball and\n"
+			+ "[center]boost your run. These Buffs can increase your score\n"
+			+ "[center]multiplier, slow the Neuroball down, and more."
+	},
 ]
 
 
@@ -297,9 +294,9 @@ func _ready() -> void:
 		button_2,
 		return_button,
 		keyboard_button,
-		easy_button,
-		normal_button,
-		hard_button,
+		how_to_play_button,
+		start_game_button,
+		close_htp_button,
 		back_button,
 		start_loadout_button
 	]
@@ -309,7 +306,7 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	v_box_1.hide()
 	difficulty_select.show()
-	normal_button.grab_focus()
+	#normal_button.grab_focus()
 	audio_click.play()
 
 func start_title_glow() -> void:
@@ -370,20 +367,6 @@ func _initiate_visor() -> void:
 	
 	await get_tree().create_timer(2.5).timeout
 	cyborg_head_fade = true
-	
-
-
-func _on_button_focus_entered() -> void:
-	cyborg_head.play("easy")
-	#these buttons will emit the signal that sets base diffulty serttings (ball base speed, enemy spawn times, etc)
-
-
-func _on_button_2_focus_entered() -> void:
-	cyborg_head.play("normal")
-
-
-func _on_button_3_focus_entered() -> void:
-	cyborg_head.play("hard")
 
 
 func _on_easybutton_pressed() -> void:
@@ -391,12 +374,12 @@ func _on_easybutton_pressed() -> void:
 	open_how_to_play()
 	
 
-
 func _on_normalbutton_pressed() -> void:
 	open_loadout_menu("normal")
 
 func _on_hardbutton_pressed() -> void:
-	pass
+	difficulty_select.hide()
+	v_box_1.show()
 
 
 	
@@ -809,7 +792,7 @@ func close_loadout_menu() -> void:
 	loadout_overlay.hide()
 
 	difficulty_select.show()
-	normal_button.grab_focus()
+	#normal_button.grab_focus()
 
 
 func _on_neon_alley_pressed() -> void:
@@ -892,7 +875,7 @@ func _grab_contextual_menu_focus() -> void:
 		back_button.grab_focus()
 
 	elif difficulty_select.visible:
-		normal_button.grab_focus()
+		start_game_button.grab_focus()
 
 	elif v_box_1.visible:
 		start_button.grab_focus()
@@ -1000,3 +983,29 @@ func close_how_to_play() -> void:
 	how_to_play.hide()
 
 	difficulty_select.show()
+
+
+func _on_how_to_play_button_pressed() -> void:
+	audio_click.play()
+	open_how_to_play()
+
+
+func _on_start_game_button_pressed() -> void:
+	open_loadout_menu("normal")
+
+
+func _on_close_htp_button_pressed() -> void:
+	difficulty_select.hide()
+	v_box_1.show()
+
+
+func _on_how_to_play_button_mouse_entered() -> void:
+	cyborg_head.play("easy")
+
+
+func _on_start_game_button_mouse_entered() -> void:
+	cyborg_head.play("normal")
+
+
+func _on_close_htp_button_mouse_entered() -> void:
+	cyborg_head.play("hard")

@@ -92,7 +92,7 @@ var ball_is_on_fire: bool = false
 var ball_is_frozen: bool = false
 var awaiting_score_submit: bool = false
 var musicOn = true
-
+var round_recorded: bool = false
 
 # --- Camera Effects ---
 var shake_strength := 0.0
@@ -303,6 +303,7 @@ func start_game() -> void:
 	ball.base_speed = 350.0
 	game_started = true
 	start_pressed = false
+	round_recorded = false
 	ball.launch()
 	mine_timer.start()
 	crystal1_timer.start()
@@ -321,6 +322,9 @@ func game_over() -> void:
 	_restore_normal_cursor()
 	game_started = false
 	game_over_state = true
+	if not round_recorded:
+		round_recorded = true
+		SaveManager.record_completed_round()
 	#Engine.time_scale = 1.0
 	reset_game_time_scale()
 	awaiting_score_submit = true

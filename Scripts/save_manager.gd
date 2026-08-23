@@ -9,6 +9,7 @@ const SAVE_PATH: String = "user://player_save.cfg"
 var neurobits: int = 0
 var xp_toward_next_neurobit: int = 0
 var enter_shop_from_arcade: bool = false
+var rounds_played: int = 0
 
 var owned_balls: Array[String] = [
 	BallCatalog.DEFAULT_BALL_ID
@@ -24,6 +25,14 @@ func _ready() -> void:
 func load_save() -> void:
 	var config := ConfigFile.new()
 	var error: Error = config.load(SAVE_PATH)
+	
+	rounds_played = int(
+		config.get_value(
+			"stats",
+			"rounds_played",
+			0
+		)
+	)
 
 	if error != OK:
 		create_default_save()
@@ -101,6 +110,12 @@ func save() -> bool:
 		"equipped_ball_id",
 		equipped_ball_id
 	)
+	
+	config.set_value(
+		"stats",
+		"rounds_played",
+		rounds_played
+	)
 
 	var error: Error = config.save(SAVE_PATH)
 
@@ -116,6 +131,7 @@ func save() -> bool:
 
 func create_default_save() -> void:
 	neurobits = 0
+	rounds_played = 0
 	xp_toward_next_neurobit = 0
 	owned_balls = [BallCatalog.DEFAULT_BALL_ID]
 	equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
@@ -210,3 +226,9 @@ func add_xp(amount: int) -> int:
 	)
 
 	return earned_neurobits
+
+func record_completed_round() -> void:
+	rounds_played += 1
+	save()
+
+	print("Rounds played: ", rounds_played)

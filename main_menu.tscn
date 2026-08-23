@@ -1,4 +1,4 @@
-[gd_scene load_steps=3744 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=3745 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://hjm4k5372ddo" path="res://Assets/Sprites/difficulty_face_set_actions_male_all.png" id="7_qe12f"]
 [ext_resource type="Texture2D" uid="uid://d2ea4103p231o" path="res://Assets/Sprites/Small Sturdy Padlock - GREY - 0000.png" id="8_6p4wg"]
 [ext_resource type="Shader" uid="uid://ccqnlmjyp04r" path="res://cyborg_head.gdshader" id="8_ql5ya"]
+[ext_resource type="Texture2D" uid="uid://3rtotqocdmed" path="res://UI/Arrows_Left_West.png" id="10_eyso4"]
 [ext_resource type="Texture2D" uid="uid://b7p4u7qler38f" path="res://Assets/Anims/redarrownew1/frame_000_delay-0.02s.png" id="11_p3ekk"]
 [ext_resource type="Texture2D" uid="uid://7tmio0l45ijq" path="res://Assets/Sprites/Single keyboard (dark).png" id="12_iotk1"]
 [ext_resource type="AudioStream" uid="uid://dgdwssm4byiqs" path="res://Assets/SFX/neuroball_intro_spoken.wav" id="12_j5v2v"]
@@ -3760,6 +3761,10 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ka3nr"]
 bg_color = Color(0.6, 0.6, 0.6, 0.5803922)
@@ -18594,7 +18599,7 @@ layout_mode = 2
 theme_override_constants/separation = 45
 alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
+[node name="HowToPlayButton" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9281232, 0.44826436, 0.9216327, 1)
@@ -18607,13 +18612,13 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_su7bx")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ka3nr")
 text = "How to Play"
 
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button"]
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/HowToPlayButton"]
 visible = false
 position = Vector2(48, 13)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("8_6p4wg")
 
-[node name="Button2" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
+[node name="StartGameButton" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.4679864, 0.88494885, 1)
@@ -18626,17 +18631,21 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_su7bx")
 theme_override_styles/focus = SubResource("StyleBoxFlat_48knj")
 text = "Start Game"
 
-[node name="Button3" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
-visible = false
+[node name="CloseHTPButton" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
+self_modulate = Color(1, 0.5529412, 1, 1)
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_styles/normal = SubResource("StyleBoxFlat_e2c8h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_su7bx")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ql5ya")
-text = "Hard
-"
+icon = ExtResource("10_eyso4")
+icon_alignment = 1
+expand_icon = true
 
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3"]
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton"]
+visible = false
 position = Vector2(49, 13)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("8_6p4wg")
@@ -18850,9 +18859,9 @@ offset_top = 488.0
 offset_right = 1154.0
 offset_bottom = 558.0
 theme_override_fonts/normal_font = ExtResource("6_qe12f")
-theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/normal_font_size = 26
 bbcode_enabled = true
-text = "[center]1. KEEP IT ALIVE"
+text = "[center]Keep the Neuroball inside the arena"
 
 [node name="StepTitle2" type="RichTextLabel" parent="CanvasLayer/HowToPlay"]
 layout_mode = 0
@@ -18863,19 +18872,20 @@ offset_bottom = 587.0
 theme_override_fonts/normal_font = ExtResource("6_qe12f")
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "[center]Keep the Neuroball inside the arena."
 
 [node name="StepDescription" type="RichTextLabel" parent="CanvasLayer/HowToPlay"]
 layout_mode = 0
 offset_left = 172.0
-offset_top = 562.0
+offset_top = 540.0
 offset_right = 974.0
 offset_bottom = 648.0
 theme_override_colors/default_color = Color(0, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("6_qe12f")
-theme_override_font_sizes/normal_font_size = 18
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
-text = "[center]Move the paddles with the mouse/crosshair. Opposite paddles move together. The Neuroball gets faster as the round continues."
+text = "[center]Move the paddles with the mouse/crosshair. 
+Opposite paddles move together. 
+The Neuroball gets faster as the round continues."
 
 [node name="ReturnButton" type="Button" parent="CanvasLayer/HowToPlay"]
 layout_mode = 0
@@ -19255,12 +19265,12 @@ autostart = true
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/CodexButton" to="." method="_on_codex_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/CenterContainer/VBoxContainer/NeonAlley" to="." method="_on_neon_alley_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/NeonAlley" to="." method="_on_neon_alley_pressed"]
-[connection signal="focus_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button" to="." method="_on_button_focus_entered"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button" to="." method="_on_easybutton_pressed"]
-[connection signal="focus_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button2" to="." method="_on_button_2_focus_entered"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button2" to="." method="_on_normalbutton_pressed"]
-[connection signal="focus_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3" to="." method="_on_button_3_focus_entered"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/Button3" to="." method="_on_hardbutton_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/HowToPlayButton" to="." method="_on_how_to_play_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/HowToPlayButton" to="." method="_on_how_to_play_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/StartGameButton" to="." method="_on_start_game_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton" to="." method="_on_close_htp_button_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton" to="." method="_on_close_htp_button_pressed"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="ControlsPopup/VBoxContainer/ReturnButton" to="." method="_on_return_button_pressed"]

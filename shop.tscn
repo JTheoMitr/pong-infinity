@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=63 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="Texture2D" uid="uid://cs8hevh6bccqm" path="res://Assets/Sprites/neuro_main_menu_1.png" id="2_110pr"]
@@ -59,6 +59,22 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.86240643, 0.00040776373, 0.8222656, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bda38"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8148395, 0.031831753, 0.8148057, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_511ah"]
+bg_color = Color(0.20152655, 0.20152661, 0.20152646, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.8, 0.8, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ib21s"]
 size = Vector2(82.76465, 55.29419)
@@ -255,7 +271,7 @@ theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 text = "[center]what do you want noob? cant you see im aura farming?"
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/DialogueUI"]
+[node name="NameLabel" type="RichTextLabel" parent="CanvasLayer/DialogueUI"]
 layout_mode = 0
 offset_left = 68.0
 offset_top = 485.0
@@ -267,6 +283,18 @@ theme_override_fonts/normal_font = ExtResource("11_msgp6")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[center]zed"
+
+[node name="ContinueButton" type="Button" parent="CanvasLayer/DialogueUI"]
+layout_mode = 0
+offset_left = 977.0
+offset_top = 592.0
+offset_right = 1068.0
+offset_bottom = 633.0
+theme_override_fonts/font = ExtResource("11_msgp6")
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_bda38")
+theme_override_styles/hover = SubResource("StyleBoxFlat_511ah")
+text = "Next"
 
 [node name="NBLabel" type="Label" parent="CanvasLayer"]
 anchors_preset = 2
@@ -354,6 +382,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/default_color = Color(0.21568628, 1, 0.32156864, 1)
 theme_override_fonts/normal_font = ExtResource("10_xqmyw")
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "[center]Press Enter to Play"
 
@@ -725,6 +754,7 @@ stream = ExtResource("37_3fyhu")
 volume_db = -9.0
 pitch_scale = 2.5
 
+[connection signal="pressed" from="CanvasLayer/DialogueUI/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/NavRight/NavRightArea" to="." method="_on_nav_right_area_mouse_entered"]

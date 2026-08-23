@@ -6,6 +6,54 @@ const SHOP_BALL_IDS: Array[String] = [
 	"saturn",
 	"eyeball"
 ]
+const ZED_DIALOGUE: Array[Dictionary] = [
+	{
+		"min_rounds": 0,
+		"pages": [
+			"[center]what do you want noob? cant you see im aura farming?",
+			"[center]I'm Zed. I know ball. Keep playing and I'll share some tricks."
+		]
+	},
+	{
+		"min_rounds": 3,
+		"pages": [
+			"[center]Oh, you're still playing, huh?",
+			"[center]Then maybe you could use a tip...",
+			"[center]I mean, do you even corner trap, bro?",
+			"[center]Fully rotate those paddles and keep the Neuroball",
+			"[center]bouncing in a corner for max pointage.",
+			"[center]On fire? Even better, broheim."
+		]
+	},
+	{
+		"min_rounds": 5,
+		"pages": [
+			"[center]Okay, you're starting to get it.",
+			"[center]Always Set up the angle first. A clean ricochet",
+			"[center]is worth way more than panic-flailing at the walls.",
+			"[center]set yourself up to grab crystals and charge your laser."
+		]
+	},
+	{
+		"min_rounds": 10,
+		"pages": [
+			"[center]I saw that last round! Damn.",
+			"[center]Alright, pro tip: an armed laser doesn't expire...",
+			"[center]Don't waste it just because it's ready.",
+			"[center]Hold the shot until something expensive drifts into position."
+		]
+	},
+	{
+		"min_rounds": 15,
+		"pages": [
+			"[center]Don't be afraid to drag those paddles a bit",
+			"[center]What do I mean by that? Ha",
+			"[center]Rotate first and then slide your panel across",
+			"[center]To 'catch' the neuroball and knock it into a corner...",
+			"[center]Gotta use some finesse...thank me later."
+		]
+	}
+]
 
 var pending_equip_ball_id: String = ""
 var shop_seen = false
@@ -59,6 +107,14 @@ var nav_left_default_position: Vector2
 @onready var shop_screen_hitbox: Area3D = $ScreenQuad/ShopScreenHitbox
 
 @onready var ding: AudioStreamPlayer = $AudioStreamPlayer2
+
+@onready var zed_dialogue_text: RichTextLabel = (
+	$CanvasLayer/DialogueUI/RichTextLabel
+)
+
+@onready var zed_continue_button: Button = (
+	$CanvasLayer/DialogueUI/ContinueButton
+)
 
 @onready var purchase_popup: Control = (
 	$ScreenQuad/ScreenViewport/PurchasePopup
@@ -120,6 +176,9 @@ var camera_zone: CameraZone = CameraZone.SHOP
 var selected_index := 0
 var row_labels: Array[Label] = []
 var price_labels: Array[RichTextLabel] = []
+
+var zed_current_pages: Array = []
+var zed_page_index: int = 0
 
 
 func _ready() -> void:
@@ -523,7 +582,18 @@ func hide_loading_cover() -> void:
 
 
 func show_patio_dialogue() -> void:
-	dialogue_ui.visible = true
+	zed_current_pages = _get_zed_dialogue_for_rounds(
+		SaveManager.rounds_played
+	)
+
+	zed_page_index = 0
+
+	if zed_current_pages.is_empty():
+		dialogue_ui.hide()
+		return
+
+	dialogue_ui.show()
+	_refresh_zed_dialogue()
 
 
 func handle_shop_accept() -> void:
@@ -1102,3 +1172,44 @@ func _update_nav_left_position() -> void:
 		)
 	else:
 		nav_left.position = nav_left_default_position
+		
+		
+func _get_zed_dialogue_for_rounds(rounds: int) -> Array:
+	var selected_pages: Array = []
+
+	for dialogue: Dictionary in ZED_DIALOGUE:
+		var minimum: int = int(
+			dialogue.get("min_rounds", 0)
+		)
+
+		if rounds >= minimum:
+			selected_pages = dialogue.get("pages", [])
+
+	return selected_pages
+
+func _refresh_zed_dialogue() -> void:
+	if zed_current_pages.is_empty():
+		return
+
+	zed_dialogue_text.text = str(
+		zed_current_pages[zed_page_index]
+	)
+
+	if zed_page_index >= zed_current_pages.size() - 1:
+		zed_continue_button.text = "DONE"
+	else:
+		zed_continue_button.text = "NEXT"
+
+func _on_continue_button_pressed() -> void:
+	if zed_current_pages.is_empty():
+		#dialogue_ui.hide()
+		zed_dialogue_text.text = "[center]*Farms Aura*"
+		return
+
+	if zed_page_index >= zed_current_pages.size() - 1:
+		#dialogue_ui.hide()
+		zed_dialogue_text.text = "[center]*Farms Aura*"
+		return
+
+	zed_page_index += 1
+	_refresh_zed_dialogue()

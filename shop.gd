@@ -11,7 +11,7 @@ const ZED_DIALOGUE: Array[Dictionary] = [
 		"min_rounds": 0,
 		"pages": [
 			"[center]what do you want noob? cant you see im aura farming?",
-			"[center]I'm Zed. I know ball. Keep playing and I'll share some tricks."
+			"[center]I'm Zed. I know ball. Keep playing and I'll share some tips."
 		]
 	},
 	{
@@ -82,6 +82,9 @@ enum CameraZone {
 @onready var camera_game_view: Marker3D = $CameraGameView
 @onready var camera_cabinet: Marker3D = $CameraCabinet
 @onready var camera_smoker: Marker3D = $CameraSmoker
+@onready var camera_return_turn: Marker3D = $CameraReturnTurn
+@onready var camera_return_corner: Marker3D = $CameraReturnCorner
+@onready var camera_return_turn_2: Marker3D = $CameraReturnTurn2
 
 @onready var press_enter: RichTextLabel = $CanvasLayer/PressEnter
 
@@ -422,7 +425,7 @@ func move_to_patio() -> void:
 	ding.play()
 	press_enter.hide()
 
-	await tween_camera_to_marker(camera_smoker, 3.0)
+	await tween_camera_to_marker_forced_yaw(camera_smoker, 3.0, false)
 
 	camera_zone = CameraZone.PATIO
 	camera_moving = false
@@ -454,25 +457,47 @@ func move_back_to_shop() -> void:
 	camera_moving = true
 	ding.play()
 	press_enter.hide()
-	await tween_camera_to_marker(camera_corner, 2.5)
-	await tween_camera_to_marker(camera_shop_view, 1.4)
-	
+
+	# Turn right and begin moving away from arcade.
+	await tween_camera_to_marker(
+		camera_return_turn,
+		1.8
+	)
+
+	# Walk toward the corner.
+	await tween_camera_to_marker(
+		camera_return_corner,
+		1.8
+	)
+
+	# Continue the RIGHT turn around the corner.
+	#await tween_camera_to_marker_forced_yaw(
+		#camera_return_turn_2,
+		#1.0,
+		#true
+	#)
+
+	# Walk into the shop view.
+	await tween_camera_to_marker_forced_yaw(
+		camera_shop_view,
+		1.8
+	)
 
 	camera_zone = CameraZone.SHOP
 	camera_moving = false
+
 	nav_right_label.text = "Arcade"
 
 	var nbits = SaveManager.neurobits
 	nb_lbl.text = "Neurobits: " + str(nbits)
 	nb_lbl.visible = true
+
 	nav_left.visible = false
-	
-	if shop_seen == false:
+
+	if not shop_seen:
 		await play_vendor_intro()
 
 	set_screen_animation_active(true)
-
-
 func move_into_cabinet() -> void:
 	camera_moving = true
 	nav_left.hide()
@@ -1213,3 +1238,50 @@ func _on_continue_button_pressed() -> void:
 
 	zed_page_index += 1
 	_refresh_zed_dialogue()
+
+func tween_camera_to_marker_forced_yaw(
+	marker: Marker3D,
+	duration: float,
+	turn_right: bool = true
+) -> void:
+	var start_position: Vector3 = camera.global_position
+	var target_position: Vector3 = marker.global_position
+
+	var start_rotation: Vector3 = camera.global_rotation
+	var target_rotation: Vector3 = marker.global_rotation
+
+	var start_y: float = start_rotation.y
+	var target_y: float = target_rotation.y
+
+	# Force the target angle onto the desired rotational path.
+	if turn_right:
+		while target_y > start_y:
+			target_y -= TAU
+	else:
+		while target_y < start_y:
+			target_y += TAU
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_IN_OUT)
+
+	tween.tween_method(
+		func(weight: float) -> void:
+			camera.global_position = start_position.lerp(
+				target_position,
+				weight
+			)
+
+			var new_rotation := Vector3(
+				lerp(start_rotation.x, target_rotation.x, weight),
+				lerp(start_y, target_y, weight),
+				lerp(start_rotation.z, target_rotation.z, weight)
+			)
+
+			camera.global_rotation = new_rotation,
+		0.0,
+		1.0,
+		duration
+	)
+
+	await tween.finished

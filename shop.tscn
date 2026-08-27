@@ -1,10 +1,11 @@
-[gd_scene load_steps=72 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=75 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="Texture2D" uid="uid://cs8hevh6bccqm" path="res://Assets/Sprites/neuro_main_menu_1.png" id="2_110pr"]
 [ext_resource type="Texture2D" uid="uid://brapxoty7otp6" path="res://anims/mina_talking_helmet_1.png" id="3_myf4l"]
 [ext_resource type="Texture2D" uid="uid://cn71m1ir6w6oy" path="res://Assets/Sprites/green_arrow_1.png" id="4_aixl6"]
 [ext_resource type="Texture2D" uid="uid://c86x46k0rvtml" path="res://anims/mina_talking_helmet_2.png" id="4_p5a0g"]
+[ext_resource type="Shader" uid="uid://4dqaowgbicv4" path="res://nbit_label.gdshader" id="4_s4e2r"]
 [ext_resource type="Shader" uid="uid://d1f5urjlscutw" path="res://vendor_crt_screen_3d.gdshader" id="5_mvg5f"]
 [ext_resource type="Texture2D" uid="uid://bi52i6wnv47ls" path="res://anims/mina_talking_helmet_3.png" id="5_xqmyw"]
 [ext_resource type="Texture2D" uid="uid://bdc1rwatdpqgg" path="res://anims/mina_talking_helmet_4.png" id="6_sw5c6"]
@@ -82,6 +83,28 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0, 0.8, 0.8, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bke4b"]
+shader = ExtResource("4_s4e2r")
+shader_parameter/flicker_strength = 0.38
+shader_parameter/flicker_speed = 13.0
+shader_parameter/rgb_shift = 1.0
+shader_parameter/glitch_intensity = 0.108
+shader_parameter/glitch_speed = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4fhph"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.003921569, 0.8, 0.8, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 5.0
+expand_margin_right = 5.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ib21s"]
 size = Vector2(82.76465, 55.29419)
@@ -320,9 +343,9 @@ text = "[center]zed"
 [node name="ContinueButton" type="Button" parent="CanvasLayer/DialogueUI"]
 layout_mode = 0
 offset_left = 977.0
-offset_top = 592.0
+offset_top = 596.0
 offset_right = 1068.0
-offset_bottom = 633.0
+offset_bottom = 637.0
 theme_override_fonts/font = ExtResource("11_msgp6")
 theme_override_font_sizes/font_size = 21
 theme_override_styles/normal = SubResource("StyleBoxFlat_bda38")
@@ -330,6 +353,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_511ah")
 text = "Next"
 
 [node name="NBLabel" type="Label" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_bke4b")
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -341,6 +365,7 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(0.57254905, 0.93333334, 1, 1)
 theme_override_fonts/font = ExtResource("10_xqmyw")
 theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_4fhph")
 text = "NEUROBITS: 0"
 
 [node name="NavLeft" type="Node2D" parent="CanvasLayer"]

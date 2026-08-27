@@ -26,6 +26,9 @@ extends Node2D
 @onready var codex_popup = $CodexPopup
 @onready var back_button = $CodexPopup/BackButton
 
+@onready var loading_cover: ColorRect = $CanvasLayer/LoadingCover
+@onready var loading_icon: AnimatedSprite2D = $CanvasLayer/LoadingIcon
+
 #controls panel sub-items
 
 @onready var controller_pic = $ControlsPopup/Sprite2D
@@ -251,6 +254,8 @@ func _process(_delta: float) -> void:
 		
 
 func _ready() -> void:
+	show_loading_screen()
+	
 	board_carousel.hide()
 	
 	how_to_play.hide()
@@ -258,6 +263,9 @@ func _ready() -> void:
 	htp_next_button.pressed.connect(_on_htp_next_pressed)
 	htp_back_button.pressed.connect(_on_htp_back_pressed)
 	htp_return_button.pressed.connect(_on_htp_return_pressed)
+	htp_return_button.mouse_entered.connect(_play_click_sound)
+	#htp_next_button.mouse_entered.connect(_play_click_sound)
+	#htp_back_button.mouse_entered.connect(_play_click_sound)
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -285,6 +293,11 @@ func _ready() -> void:
 	start_loadout_button.pressed.connect(_confirm_loadout_and_start)
 	
 	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
+	
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+
+	await hide_loading_screen()
 	
 	await get_tree().create_timer(1.0).timeout
 	speak.play()
@@ -816,6 +829,7 @@ func _on_ball_left_arrow_input(
 		loadout_focus = LoadoutFocus.BALL
 		_move_active_carousel(-1)
 		_refresh_loadout_focus()
+		_flash_loadout_arrow(ball_left_arrow)
 
 
 func _on_ball_right_arrow_input(
@@ -834,6 +848,7 @@ func _on_ball_right_arrow_input(
 		loadout_focus = LoadoutFocus.BALL
 		_move_active_carousel(1)
 		_refresh_loadout_focus()
+		_flash_loadout_arrow(ball_right_arrow)
 
 func _set_menu_input_mode(new_mode: MenuInputMode) -> void:
 	if menu_input_mode == new_mode:
@@ -1001,11 +1016,86 @@ func _on_close_htp_button_pressed() -> void:
 
 func _on_how_to_play_button_mouse_entered() -> void:
 	cyborg_head.play("easy")
+	click_sound.play()
 
 
 func _on_start_game_button_mouse_entered() -> void:
 	cyborg_head.play("normal")
+	click_sound.play()
 
 
 func _on_close_htp_button_mouse_entered() -> void:
 	cyborg_head.play("hard")
+	click_sound.play()
+
+
+func _on_back_button_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_return_button_mouse_entered() -> void:
+	click_sound.play()
+
+func _play_click_sound() -> void:
+	click_sound.play()
+	
+func show_loading_screen() -> void:
+	loading_cover.show()
+	loading_cover.modulate.a = 1.0
+
+	loading_icon.show()
+	loading_icon.modulate.a = 1.0
+	loading_icon.play("loading")
+
+
+func hide_loading_screen() -> void:
+	# Ensures the loading image isn't just a one-frame flash.
+	await get_tree().create_timer(
+		1.4,
+		false,
+		false,
+		true
+	).timeout
+
+	var tween := create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.set_parallel(true)
+
+	tween.tween_property(
+		loading_cover,
+		"modulate:a",
+		0.0,
+		1.5
+	)
+
+	tween.tween_property(
+		loading_icon,
+		"modulate:a",
+		0.0,
+		1.5
+	)
+
+	await tween.finished
+
+	loading_icon.stop()
+	loading_icon.hide()
+	loading_cover.hide()
+
+func _flash_loadout_arrow(
+	arrow: AnimatedSprite2D
+) -> void:
+	arrow.modulate = Color(
+		0.35,
+		0.75,
+		1.0,
+		1.0
+	)
+
+	var tween := create_tween()
+
+	tween.tween_property(
+		arrow,
+		"modulate",
+		Color.WHITE,
+		0.18
+	)

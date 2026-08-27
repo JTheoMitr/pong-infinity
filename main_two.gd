@@ -20,7 +20,7 @@ const points_50 = preload("res://Buffs/point_pop_up_50.tscn")
 const points_250 = preload("res://Buffs/point_pop_up_250.tscn")
 const points_500 = preload("res://Buffs/point_pop_up_500.tscn")
 
-
+const DEFAULT_BALL_SPEED: float = 350.0
 
 @onready var ball: CharacterBody2D = $Ball
 @onready var paddle_left: StaticBody2D = $PaddleLeft
@@ -270,22 +270,25 @@ func toggle_pause() -> void:
 
 func _on_start_button_pressed() -> void:
 	if game_over_state:
-		#print("game over")
 		game_over_state = false
-		#clear_all_buffs() #need to switch this to game over?
+
 	if start_pressed == false:
 		hud.hide_start_message()
 		hud.hide_score()
+
+		clear_all_buffs()
+		reset_ball_for_new_round()
+
 		ball.visible = true
 		reset_score()
-		#multi1_timer.start()
-		#crystal1_timer.start()
-		#mine_timer.start()
+
 		var screen_size := get_viewport_rect().size
 		var screen_center := screen_size * 0.5
 		reset_positions(screen_center)
+
 		start_pressed = true
 		hud.hide_leaderboard()
+
 		await countdown_and_start()
 
 
@@ -300,17 +303,19 @@ func countdown_and_start() -> void:
 
 	
 func start_game() -> void:
-	ball.base_speed = 350.0
+	# Safety reset immediately before launch.
+	ball.base_speed = DEFAULT_BALL_SPEED
+
 	game_started = true
 	start_pressed = false
 	round_recorded = false
+	print("ROUND START BASE SPEED: ", ball.base_speed)
 	ball.launch()
+
 	mine_timer.start()
 	crystal1_timer.start()
 	panel_timer_1.start()
-	#Engine.time_scale = 1.0
-	#hud.hide_leaderboard()
-	#ice_mine_timer.start()
+
 	reset_game_time_scale()
 	_activate_custom_cursor()
 	_reset_laser_charge()
@@ -357,6 +362,7 @@ func _on_paddle_hit(paddle: Node) -> void:
 	#score += 15
 	#hud.update_score(score)
 	ball.base_speed *= 1.005 #was 1.03
+	print(ball.base_speed)
 	#print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
@@ -1017,3 +1023,16 @@ func _destroy_laser_target(target: Node2D) -> void:
 
 func _exit_tree() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func reset_ball_for_new_round() -> void:
+	ball.base_speed = DEFAULT_BALL_SPEED
+	ball.velocity = Vector2.ZERO
+	ball.direction = Vector2.ZERO
+
+	ball_is_on_fire = false
+	ball_is_frozen = false
+
+	ball.disable_on_fire()
+	ball.disable_ice_cube()
+
+	reset_game_time_scale()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=77 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="Texture2D" uid="uid://cs8hevh6bccqm" path="res://Assets/Sprites/neuro_main_menu_1.png" id="2_110pr"]
@@ -41,6 +41,8 @@
 [ext_resource type="Texture2D" uid="uid://b0ic8hgb3jjj3" path="res://Assets/Sprites/nball_menu_frames_new/Screen_Recording_2026-08-24_at_8_16_06_PM_009.png" id="42_mtw32"]
 [ext_resource type="Texture2D" uid="uid://bw0ofs347jyvt" path="res://Assets/Sprites/nball_menu_frames_new/Screen_Recording_2026-08-24_at_8_16_06_PM_010.png" id="43_c2mul"]
 [ext_resource type="Texture2D" uid="uid://blbcetrky5uyb" path="res://Assets/Bgnd/tokyo_bgnd_1.jpg" id="45_511ah"]
+[ext_resource type="AudioStream" uid="uid://dsahbnk7xqg2t" path="res://Assets/SFX/new_high_score.wav" id="53_bke4b"]
+[ext_resource type="AudioStream" uid="uid://blqmytmjktlxu" path="res://Assets/SFX/not_enough_creds.mp3" id="54_4fhph"]
 [ext_resource type="AudioStream" uid="uid://bruhwe3tnusk4" path="res://Assets/SFX/shop_vendor_voice_intro.mp3" id="467_a3mke"]
 [ext_resource type="AudioStream" uid="uid://rla7kqb8v0by" path="res://Assets/Music/neuroshop1-1.mp3" id="616_jx570"]
 [ext_resource type="Texture2D" uid="uid://62hhwlmlescx" path="res://Assets/Bgnd/alley_1_purp.jpg" id="618_gyovd"]
@@ -717,15 +719,17 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_m1vja")
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 0
 offset_top = 10.0
-offset_right = 600.0
-offset_bottom = 619.0
+offset_right = 650.0
+offset_bottom = 745.0
+theme_override_constants/separation = -6
 
 [node name="MessageLabel" type="RichTextLabel" parent="ScreenQuad/ScreenViewport/PurchasePopup/Panel/VBoxContainer"]
 custom_minimum_size = Vector2(600, 500)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.8758733, 3.946722e-06, 0.5569111, 1)
 theme_override_fonts/normal_font = ExtResource("10_xqmyw")
-theme_override_font_sizes/normal_font_size = 60
+theme_override_font_sizes/normal_font_size = 56
+bbcode_enabled = true
 text = "burger 
 
 Already Owned"
@@ -827,8 +831,16 @@ transform = Transform3D(-0.20042446, 0, -11.998326, 0, 12, 0, 11.998326, 0, -0.2
 material_override = SubResource("StandardMaterial3D_511ah")
 mesh = SubResource("QuadMesh_6qct6")
 
+[node name="PurchasedSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("53_bke4b")
+pitch_scale = 1.5
+
+[node name="PurchaseDenied" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("54_4fhph")
+
 [connection signal="pressed" from="CanvasLayer/DialogueUI/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/NavLeft/NavLeftArea" to="." method="_on_nav_left_area_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/NavRight/NavRightArea" to="." method="_on_nav_right_area_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/NavRight/NavRightArea" to="." method="_on_nav_right_area_mouse_exited"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

@@ -254,6 +254,17 @@ func _process(_delta: float) -> void:
 		
 
 func _ready() -> void:
+	SaveManager.owned_balls = [
+		BallCatalog.DEFAULT_BALL_ID
+	]
+
+	SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
+	SaveManager.rounds_played = 0
+	SaveManager.neurobits = 200
+	SaveManager.xp_toward_next_neurobit = 0
+
+	SaveManager.save()
+	
 	show_loading_screen()
 	
 	board_carousel.hide()
@@ -1051,7 +1062,7 @@ func show_loading_screen() -> void:
 func hide_loading_screen() -> void:
 	# Ensures the loading image isn't just a one-frame flash.
 	await get_tree().create_timer(
-		1.4,
+		1.9,
 		false,
 		false,
 		true
@@ -1065,14 +1076,14 @@ func hide_loading_screen() -> void:
 		loading_cover,
 		"modulate:a",
 		0.0,
-		1.5
+		2.0
 	)
 
 	tween.tween_property(
 		loading_icon,
 		"modulate:a",
 		0.0,
-		1.5
+		2.0
 	)
 
 	await tween.finished

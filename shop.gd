@@ -85,7 +85,8 @@ enum CameraZone {
 @onready var camera_return_turn: Marker3D = $CameraReturnTurn
 @onready var camera_return_corner: Marker3D = $CameraReturnCorner
 @onready var camera_return_turn_2: Marker3D = $CameraReturnTurn2
-
+@onready var purchase_sound: AudioStreamPlayer = $PurchasedSFX
+@onready var purchase_denied: AudioStreamPlayer = $PurchaseDenied
 @onready var press_enter: RichTextLabel = $CanvasLayer/PressEnter
 
 @export var patio_nav_left_x_offset: float = 90.0
@@ -109,6 +110,7 @@ var nav_left_default_position: Vector2
 
 @onready var shop_screen_hitbox: Area3D = $ScreenQuad/ShopScreenHitbox
 
+@onready var shop_theme: AudioStreamPlayer = $AudioStreamPlayer
 @onready var ding: AudioStreamPlayer = $AudioStreamPlayer2
 
 @onready var zed_dialogue_text: RichTextLabel = (
@@ -652,11 +654,12 @@ func refresh_shop_labels() -> void:
 		price_labels[index].visible = !SaveManager.owns_ball(ball_id)
 
 		var status_text: String
+		var short_name: String = display_name.split("-")[0].strip_edges()
 
 		if SaveManager.owns_ball(ball_id):
 			status_text = "..............[OWNED]"
 		else:
-			status_text = ".............." + display_name
+			status_text = ".............." + short_name
 
 		row_labels[index].text = status_text
 
@@ -798,7 +801,7 @@ func _show_purchase_confirmation(ball_id: String) -> void:
 		"ARE YOU SURE YOU WANT TO PURCHASE\n"
 		+ display_name
 		+ "?\n\n"
-		+ "COST: %d NEUROBITS" % price
+		+ "[center]COST: %d NEUROBITS" % price
 	)
 
 	purchase_yes.text = "YES"
@@ -906,9 +909,10 @@ func _attempt_pending_purchase() -> void:
 	)
 
 	if not purchased:
-		purchase_message.text = "NOT ENOUGH NEUROBITS"
+		purchase_message.text = "[center]NOT ENOUGH\n[center]NEUROBITS"
 		purchase_yes.text = "OK"
 		purchase_no.hide()
+		purchase_denied.play()
 
 		purchase_popup_state = PurchasePopupState.PURCHASED
 		purchase_popup_index = 0
@@ -929,6 +933,7 @@ func _attempt_pending_purchase() -> void:
 	)
 
 	purchase_yes.text = "OK"
+	purchase_sound.play()
 	purchase_no.hide()
 
 	purchase_popup_state = PurchasePopupState.PURCHASED
@@ -1288,3 +1293,7 @@ func tween_camera_to_marker_forced_yaw(
 	)
 
 	await tween.finished
+
+
+func _on_audio_stream_player_finished() -> void:
+	shop_theme.play()

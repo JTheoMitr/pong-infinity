@@ -10,6 +10,7 @@ var neurobits: int = 0
 var xp_toward_next_neurobit: int = 0
 var enter_shop_from_arcade: bool = false
 var rounds_played: int = 0
+var returning_to_main_menu_from_shop: bool = false
 
 var owned_balls: Array[String] = [
 	BallCatalog.DEFAULT_BALL_ID

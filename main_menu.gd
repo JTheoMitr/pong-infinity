@@ -265,7 +265,19 @@ func _ready() -> void:
 
 	SaveManager.save()
 	
-	show_loading_screen()
+	var returning_from_shop: bool = (
+		SaveManager.returning_to_main_menu_from_shop
+	)
+
+	SaveManager.returning_to_main_menu_from_shop = false
+
+	if returning_from_shop:
+		loading_cover.hide()
+		loading_icon.hide()
+	else:
+		show_loading_screen()
+	
+	#show_loading_screen()
 	
 	board_carousel.hide()
 	
@@ -305,10 +317,10 @@ func _ready() -> void:
 	
 	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
 	
-	await RenderingServer.frame_post_draw
-	await RenderingServer.frame_post_draw
-
-	await hide_loading_screen()
+	if not returning_from_shop:
+		await RenderingServer.frame_post_draw
+		await RenderingServer.frame_post_draw
+		await hide_loading_screen()
 	
 	await get_tree().create_timer(1.0).timeout
 	speak.play()

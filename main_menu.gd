@@ -255,7 +255,7 @@ func _process(_delta: float) -> void:
 
 func _ready() -> void:
 	SaveManager.owned_balls = [
-		BallCatalog.DEFAULT_BALL_ID
+		BallCatalog.DEFAULT_BALL_ID, "saturn"
 	]
 
 	SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID

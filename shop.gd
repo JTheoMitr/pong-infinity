@@ -1234,13 +1234,13 @@ func _refresh_zed_dialogue() -> void:
 func _on_continue_button_pressed() -> void:
 	if zed_current_pages.is_empty():
 		#dialogue_ui.hide()
-		zed_dialogue_text.text = "[center]*Farms Aura*"
+		zed_dialogue_text.text = "[center][wave]*Farms Aura*"
 		zed_continue_button.hide()
 		return
 
 	if zed_page_index >= zed_current_pages.size() - 1:
 		#dialogue_ui.hide()
-		zed_dialogue_text.text = "[center]*Farms Aura*"
+		zed_dialogue_text.text = "[center][wave]*Farms Aura*"
 		zed_continue_button.hide()
 		return
 

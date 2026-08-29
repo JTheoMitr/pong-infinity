@@ -255,7 +255,7 @@ func _process(_delta: float) -> void:
 
 func _ready() -> void:
 	SaveManager.owned_balls = [
-		BallCatalog.DEFAULT_BALL_ID, "saturn"
+		BallCatalog.DEFAULT_BALL_ID, "saturn", "burger_ball"
 	]
 
 	SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
@@ -935,11 +935,11 @@ func _on_neon_alley_mouse_entered() -> void:
 	click_sound.play()
 
 
-func _on_boot_timer_timeout() -> void:
-	if difficulty_select_title.text == "[center]Booting Up...":
-		difficulty_select_title.text = "[center]Booting Up.."
-	else:
-		difficulty_select_title.text = "[center]Booting Up..."
+#func _on_boot_timer_timeout() -> void:
+	#if difficulty_select_title.text == "[center]Booting Up...":
+		#difficulty_select_title.text = "[center]Booting Up.."
+	#else:
+		#difficulty_select_title.text = "[center]Booting Up..."
 
 func open_how_to_play() -> void:
 	htp_current_step = 0
@@ -1039,16 +1039,19 @@ func _on_close_htp_button_pressed() -> void:
 
 func _on_how_to_play_button_mouse_entered() -> void:
 	cyborg_head.play("easy")
+	difficulty_select_title.text = "[center]Learn the basics"
 	click_sound.play()
 
 
 func _on_start_game_button_mouse_entered() -> void:
 	cyborg_head.play("normal")
+	difficulty_select_title.text = "[center]Start Playing..."
 	click_sound.play()
 
 
 func _on_close_htp_button_mouse_entered() -> void:
 	cyborg_head.play("hard")
+	difficulty_select_title.text = "[center]Go back..."
 	click_sound.play()
 
 
@@ -1122,3 +1125,9 @@ func _flash_loadout_arrow(
 		Color.WHITE,
 		0.18
 	)
+
+
+func _on_loadout_back_button_pressed() -> void:
+	difficulty_select.show()
+	loadout_overlay.hide()
+	loadout_is_open = false

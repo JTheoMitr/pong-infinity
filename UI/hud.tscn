@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=19 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
@@ -82,6 +82,9 @@ bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0j753"]
 bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23s3h"]
+bg_color = Color(0.13725491, 0.13725491, 0.13725491, 0.7607843)
 
 [node name="hud" type="CanvasLayer"]
 script = ExtResource("1_37p78")
@@ -328,19 +331,22 @@ text = "[shake][center]Submitting Score..."
 
 [node name="ControllerSprite" type="RichTextLabel" parent="."]
 custom_minimum_size = Vector2(1200, 500)
-anchors_preset = 14
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = -135.0
-offset_right = 1152.0
-offset_bottom = 427.0
+offset_left = -306.0
+offset_top = -149.0
+offset_right = 894.0
+offset_bottom = 351.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 theme_override_colors/default_color = Color(0.25490198, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("2_bytes")
 theme_override_font_sizes/normal_font_size = 54
+theme_override_styles/normal = SubResource("StyleBoxFlat_23s3h")
 bbcode_enabled = true
 text = "[center]Use Mouse to move crosshair and paddles
 

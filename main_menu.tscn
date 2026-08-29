@@ -1,4 +1,4 @@
-[gd_scene load_steps=3751 format=3 uid="uid://bvsrkd2lk0v1l"]
+[gd_scene load_steps=3750 format=3 uid="uid://bvsrkd2lk0v1l"]
 
 [ext_resource type="Script" uid="uid://bc0crjq6g4vpm" path="res://main_menu.gd" id="1_7vrkn"]
 [ext_resource type="FontFile" uid="uid://ctqrfd8iciivm" path="res://Assets/Fonts/Sddystopiandemo-GO7xa.otf" id="2_7vrkn"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://hjm4k5372ddo" path="res://Assets/Sprites/difficulty_face_set_actions_male_all.png" id="7_qe12f"]
 [ext_resource type="Texture2D" uid="uid://d2ea4103p231o" path="res://Assets/Sprites/Small Sturdy Padlock - GREY - 0000.png" id="8_6p4wg"]
 [ext_resource type="Shader" uid="uid://ccqnlmjyp04r" path="res://cyborg_head.gdshader" id="8_ql5ya"]
-[ext_resource type="Texture2D" uid="uid://3rtotqocdmed" path="res://UI/Arrows_Left_West.png" id="10_eyso4"]
 [ext_resource type="Texture2D" uid="uid://b7p4u7qler38f" path="res://Assets/Anims/redarrownew1/frame_000_delay-0.02s.png" id="11_p3ekk"]
 [ext_resource type="Texture2D" uid="uid://7tmio0l45ijq" path="res://Assets/Sprites/Single keyboard (dark).png" id="12_iotk1"]
 [ext_resource type="AudioStream" uid="uid://dgdwssm4byiqs" path="res://Assets/SFX/neuroball_intro_spoken.wav" id="12_j5v2v"]
@@ -19867,7 +19866,6 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
 text = "Return to Neon Alley"
 
 [node name="DifficultySelect" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 13
 alignment = 1
@@ -19923,15 +19921,16 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_48knj")
 text = "Start Game"
 
 [node name="CloseHTPButton" type="Button" parent="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer"]
-self_modulate = Color(1, 0.5529412, 1, 1)
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.46666667, 0.8862745, 1)
 theme_override_colors/font_focus_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_e2c8h")
 theme_override_styles/hover = SubResource("StyleBoxFlat_su7bx")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ql5ya")
-icon = ExtResource("10_eyso4")
+text = "<<<"
 icon_alignment = 1
 expand_icon = true
 
@@ -19950,7 +19949,6 @@ animation = &"hard"
 frame_progress = 0.7882696
 
 [node name="LoadoutOverlay" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19971,10 +19969,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -315.0
-offset_top = 158.0
-offset_right = 315.0
-offset_bottom = 490.0
+offset_left = -500.0
+offset_top = 130.0
+offset_right = 500.0
+offset_bottom = 462.0
 grow_horizontal = 2
 alignment = 1
 
@@ -20103,7 +20101,29 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -59.0
-offset_top = -58.0
+offset_top = -138.0
+offset_right = 59.0
+offset_bottom = -89.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.0627451, 0.8745098, 0.8745098, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_qe12f")
+theme_override_font_sizes/font_size = 31
+theme_override_styles/normal = SubResource("StyleBoxFlat_3lhhj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_b7x4l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_re55l")
+text = "START"
+
+[node name="LoadoutBackButton" type="Button" parent="CanvasLayer/LoadoutOverlay"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -59.0
+offset_top = -79.0
 offset_right = 59.0
 offset_bottom = -30.0
 grow_horizontal = 2
@@ -20115,7 +20135,7 @@ theme_override_font_sizes/font_size = 31
 theme_override_styles/normal = SubResource("StyleBoxFlat_3lhhj")
 theme_override_styles/hover = SubResource("StyleBoxFlat_b7x4l")
 theme_override_styles/focus = SubResource("StyleBoxFlat_re55l")
-text = "START"
+text = "<<<"
 
 [node name="HowToPlay" type="Control" parent="CanvasLayer"]
 visible = false
@@ -20594,6 +20614,7 @@ autostart = true
 [connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton" to="." method="_on_close_htp_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton" to="." method="_on_close_htp_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/LoadoutOverlay/LoadoutBackButton" to="." method="_on_loadout_back_button_pressed"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="mouse_entered" from="ControlsPopup/VBoxContainer/ReturnButton" to="." method="_on_return_button_mouse_entered"]

@@ -206,7 +206,8 @@ func add_xp(amount: int) -> int:
 		return 0
 
 	xp_toward_next_neurobit += amount
-
+	
+	@warning_ignore("integer_division")
 	var earned_neurobits: int = xp_toward_next_neurobit / 100
 	xp_toward_next_neurobit %= 100
 

@@ -145,17 +145,17 @@ func _wait_for_animation_or_timeout(
 		await get_tree().create_timer(maximum_time).timeout
 		return
 
-	var finished := false
+	var finished: Array[bool] = [false]
 
 	sprite.animation_finished.connect(
 		func() -> void:
-			finished = true,
+			finished[0] = true,
 		CONNECT_ONE_SHOT
 	)
 
 	var elapsed := 0.0
 
-	while not finished and elapsed < maximum_time:
+	while not finished[0] and elapsed < maximum_time:
 		var delta := get_process_delta_time()
 		elapsed += delta
 		await get_tree().process_frame

@@ -412,10 +412,12 @@ func _on_easybutton_pressed() -> void:
 
 func _on_normalbutton_pressed() -> void:
 	open_loadout_menu("normal")
+	audio_click.play()
 
 func _on_hardbutton_pressed() -> void:
 	difficulty_select.hide()
 	v_box_1.show()
+	audio_click.play()
 
 
 	
@@ -1027,6 +1029,7 @@ func _on_how_to_play_button_pressed() -> void:
 
 func _on_start_game_button_pressed() -> void:
 	open_loadout_menu("normal")
+	audio_click.play()
 
 
 func _on_close_htp_button_pressed() -> void:
@@ -1128,3 +1131,12 @@ func _on_loadout_back_button_pressed() -> void:
 	difficulty_select.show()
 	loadout_overlay.hide()
 	loadout_is_open = false
+	audio_click.play()
+
+
+func _on_start_loadout_button_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_loadout_back_button_mouse_entered() -> void:
+	click_sound.play()

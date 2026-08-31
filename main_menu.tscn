@@ -20614,6 +20614,8 @@ autostart = true
 [connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton" to="." method="_on_close_htp_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/DifficultySelect/HBoxContainer/CloseHTPButton" to="." method="_on_close_htp_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/LoadoutOverlay/StartLoadoutButton" to="." method="_on_start_loadout_button_mouse_entered"]
+[connection signal="mouse_entered" from="CanvasLayer/LoadoutOverlay/LoadoutBackButton" to="." method="_on_loadout_back_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/LoadoutOverlay/LoadoutBackButton" to="." method="_on_loadout_back_button_pressed"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -20622,4 +20622,3 @@ autostart = true
 [connection signal="pressed" from="ControlsPopup/VBoxContainer/KeyboardButton" to="." method="_on_keyboard_button_pressed"]
 [connection signal="mouse_entered" from="CodexPopup/BackButton" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="CodexPopup/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="timeout" from="BootTimer" to="." method="_on_boot_timer_timeout"]

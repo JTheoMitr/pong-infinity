@@ -84,7 +84,17 @@ bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
 bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23s3h"]
-bg_color = Color(0.13725491, 0.13725491, 0.13725491, 0.7607843)
+content_margin_top = 30.0
+bg_color = Color(0.072842635, 0.072842635, 0.072842635, 0.7607843)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0.8901961, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="hud" type="CanvasLayer"]
 script = ExtResource("1_37p78")

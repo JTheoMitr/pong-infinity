@@ -936,11 +936,8 @@ func _on_neon_alley_mouse_entered() -> void:
 
 
 #func _on_boot_timer_timeout() -> void:
-	#if difficulty_select_title.text == "[center]Booting Up...":
-		#difficulty_select_title.text = "[center]Booting Up.."
-	#else:
-		#difficulty_select_title.text = "[center]Booting Up..."
-
+	#pass
+	
 func open_how_to_play() -> void:
 	htp_current_step = 0
 

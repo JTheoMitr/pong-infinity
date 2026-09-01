@@ -40,6 +40,7 @@ signal music_button_pressed
 
 func _ready() -> void:
 	label.text = "Neuroball"
+	
 	label.visible = true
 	countdown_label.visible = false
 	start_button.visible = true
@@ -49,6 +50,12 @@ func _ready() -> void:
 	start_button.pressed.connect(_on_start_button_pressed)
 	submit_message.visible = false
 	submit_panel.visible = false
+	
+	score_submit_button.disabled = true
+
+	name_entry.text_changed.connect(
+		_on_name_entry_text_changed
+)
 	
 
 
@@ -163,9 +170,14 @@ func hide_leaderboard() -> void:
 	
 func show_score_submit() -> void:
 	submit_panel.show()
+
+	name_entry.text = ""
 	name_entry.show()
 	name_entry.grab_focus()
+
+	score_submit_button.disabled = true
 	score_submit_button.show()
+
 	no_submit_button.show()
 	quit_button.show()
 	
@@ -176,10 +188,20 @@ func hide_score_submit() -> void:
 	quit_button.hide()
 
 func _on_submit_button_pressed() -> void:
-	if name_entry.text != "":
-		emit_signal("submit_score_button_pressed", name_entry.text.strip_edges())
+	var player_name: String = name_entry.text.strip_edges()
+
+	if player_name.is_empty():
+		return
+
+	emit_signal(
+		"submit_score_button_pressed",
+		player_name
+	)
+
 	submit_message.show()
+
 	await get_tree().create_timer(2.0).timeout
+
 	submit_message.hide()
 	submit_panel.hide()
 
@@ -201,3 +223,8 @@ func _on_music_button_pressed() -> void:
 
 func music_button_text(text: String) -> void:
 	music_button.text = text
+
+func _on_name_entry_text_changed(new_text: String) -> void:
+	score_submit_button.disabled = (
+		new_text.strip_edges().is_empty()
+	)

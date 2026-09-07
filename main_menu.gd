@@ -265,6 +265,8 @@ func _ready() -> void:
 
 	SaveManager.save()
 	
+	menu_music.volume_db = 0.0
+	
 	var returning_from_shop: bool = (
 		SaveManager.returning_to_main_menu_from_shop
 	)
@@ -836,6 +838,17 @@ func close_loadout_menu() -> void:
 func _on_neon_alley_pressed() -> void:
 	SaveManager.enter_shop_from_arcade = true
 	audio_click.play()
+	
+	var tween := create_tween()
+	tween.tween_property(
+		menu_music,
+		"volume_db",
+		-40.0,
+		0.3
+	)
+	
+	#await tween.finished
+
 	get_tree().change_scene_to_file("res://shop.tscn")
 	
 func _on_ball_left_arrow_input(
@@ -1139,4 +1152,8 @@ func _on_start_loadout_button_mouse_entered() -> void:
 
 
 func _on_loadout_back_button_mouse_entered() -> void:
+	click_sound.play()
+
+
+func _on_next_button_mouse_entered() -> void:
 	click_sound.play()

@@ -17,6 +17,7 @@
 [ext_resource type="SpriteFrames" uid="uid://s5m1u1lhivuy" path="res://models/burger/burger.tres" id="12_aixl6"]
 [ext_resource type="SpriteFrames" uid="uid://blvu7mc35xsih" path="res://models/saturn/saturn.tres" id="13_3fyhu"]
 [ext_resource type="SpriteFrames" uid="uid://bp2rf1a1gk6tb" path="res://models/eyeball/eyeball.tres" id="14_110pr"]
+[ext_resource type="AudioStream" uid="uid://bj8ffoc5lckuh" path="res://Assets/Music/neuroshop1-2.mp3" id="18_4fhph"]
 [ext_resource type="Texture2D" uid="uid://dbckmwr0xj8xg" path="res://Assets/Sprites/nball_menu_frames_new/Screen_Recording_2026-08-24_at_8_16_06_PM_001.png" id="22_nxxc5"]
 [ext_resource type="Texture2D" uid="uid://c5jn74df878kq" path="res://Assets/Sprites/nball_menu_frames_new/Screen_Recording_2026-08-24_at_8_16_06_PM_002.png" id="23_s4e2r"]
 [ext_resource type="Texture2D" uid="uid://bfwdxrfxmvg53" path="res://Assets/Sprites/nball_menu_frames_new/Screen_Recording_2026-08-24_at_8_16_06_PM_011.png" id="24_bke4b"]
@@ -44,7 +45,6 @@
 [ext_resource type="AudioStream" uid="uid://dsahbnk7xqg2t" path="res://Assets/SFX/new_high_score.wav" id="53_bke4b"]
 [ext_resource type="AudioStream" uid="uid://blqmytmjktlxu" path="res://Assets/SFX/not_enough_creds.mp3" id="54_4fhph"]
 [ext_resource type="AudioStream" uid="uid://bruhwe3tnusk4" path="res://Assets/SFX/shop_vendor_voice_intro.mp3" id="467_a3mke"]
-[ext_resource type="AudioStream" uid="uid://rla7kqb8v0by" path="res://Assets/Music/neuroshop1-1.mp3" id="616_jx570"]
 [ext_resource type="Texture2D" uid="uid://62hhwlmlescx" path="res://Assets/Bgnd/alley_1_purp.jpg" id="618_gyovd"]
 [ext_resource type="Texture2D" uid="uid://sgr273tyiuiy" path="res://Assets/Sprites/neurotitle.png" id="619_2nmvk"]
 [ext_resource type="PackedScene" uid="uid://h0yqkiyjg1bg" path="res://models/old-metal-door/door___old___metal_-_14mb.glb" id="620_2nmvk"]
@@ -762,7 +762,7 @@ shape = SubResource("BoxShape3D_m1vja")
 debug_color = Color(0.93333334, 0, 0.6431373, 1)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("616_jx570")
+stream = ExtResource("18_4fhph")
 volume_db = -5.0
 autoplay = true
 

@@ -49,6 +49,7 @@ const DEFAULT_BALL_SPEED: float = 350.0
 @onready var level_music: AudioStreamPlayer = $LevelMusic
 @onready var level_music_2: AudioStreamPlayer = $LevelMusic2
 @onready var level_music_3: AudioStreamPlayer = $LevelMusic3
+@onready var level_music_4: AudioStreamPlayer = $LevelMusic4
 
 
 @export var impact_particles_scene: PackedScene
@@ -130,9 +131,10 @@ func _ready() -> void:
 	ball.visible = false
 	original_cam_position = cam.position
 	
-	level_music.volume_db = -13
-	level_music_2.volume_db = 5
-	level_music_3.volume_db = 0
+	level_music.volume_db = -13.0
+	level_music_2.volume_db = 4.0
+	level_music_3.volume_db = -4.5
+	level_music_3.volume_db = 0.0
 	
 	#_restore_normal_cursor()
 	_activate_custom_cursor()
@@ -832,7 +834,7 @@ func _on_level_music_2_finished() -> void:
 
 
 func _on_level_music_3_finished() -> void:
-	level_music.play()
+	level_music_4.play()
 
 func _no_submit_play_again() -> void:
 	hud.hide_score_submit()
@@ -851,12 +853,14 @@ func _on_music_button_pressed() -> void:
 		level_music.volume_db = -100
 		level_music_2.volume_db = -100
 		level_music_3.volume_db = -100
+		level_music_4.volume_db = -100
 		hud.music_button_text("Music: Off")
 	else:
 		musicOn = true
-		level_music.volume_db = -11
-		level_music_2.volume_db = -3
-		level_music_3.volume_db = -3
+		level_music.volume_db = -13.0
+		level_music_2.volume_db = 4.0
+		level_music_3.volume_db = -4.5
+		level_music_4.volume_db = 0.0
 		hud.music_button_text("Music: On")
 		
 func _pause_all_timers() -> void:
@@ -1036,3 +1040,7 @@ func reset_ball_for_new_round() -> void:
 	ball.disable_ice_cube()
 
 	reset_game_time_scale()
+
+
+func _on_level_music_4_finished() -> void:
+	level_music.play()

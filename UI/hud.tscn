@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bcfu1lpreepam"]
+[gd_scene load_steps=17 format=3 uid="uid://bcfu1lpreepam"]
 
 [ext_resource type="Script" uid="uid://bgbsjyder8qor" path="res://UI/hud.gd" id="1_37p78"]
 [ext_resource type="FontFile" uid="uid://cg1m57s02fmql" path="res://Assets/Fonts/PixelTandysoft-0rJG.ttf" id="2_bytes"]
@@ -75,13 +75,7 @@ border_width_bottom = 2
 border_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnl6m"]
-bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ui3w"]
-bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0j753"]
-bg_color = Color(0.92941177, 0.078431375, 0.9490196, 1)
+bg_color = Color(0.07082722, 0.07082721, 0.07082722, 0.6627451)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23s3h"]
 content_margin_top = 30.0
@@ -316,7 +310,7 @@ size_flags_stretch_ratio = 0.0
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_2o5uh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
-theme_override_styles/focus = SubResource("StyleBoxFlat_1ui3w")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rnl6m")
 text = "Play Again"
 
 [node name="QuitButton" type="Button" parent="LeaderboardPanel/VBoxContainer"]
@@ -328,7 +322,7 @@ size_flags_stretch_ratio = 0.0
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_2o5uh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
-theme_override_styles/focus = SubResource("StyleBoxFlat_0j753")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rnl6m")
 text = "QUIT"
 
 [node name="SubmitMessage" type="RichTextLabel" parent="LeaderboardPanel"]

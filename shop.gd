@@ -514,7 +514,7 @@ func move_into_cabinet() -> void:
 
 func launch_game_from_cabinet() -> void:
 	var scene_path := "res://main_menu.tscn"
-	
+
 	SaveManager.returning_to_main_menu_from_shop = true
 
 	ResourceLoader.load_threaded_request(scene_path)
@@ -522,6 +522,10 @@ func launch_game_from_cabinet() -> void:
 	await move_into_cabinet()
 
 	set_screen_animation_active(false)
+
+	show_loading_cover()
+
+	await RenderingServer.frame_post_draw
 
 	var status := ResourceLoader.load_threaded_get_status(scene_path)
 

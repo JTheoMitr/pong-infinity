@@ -26,14 +26,6 @@ func _ready() -> void:
 func load_save() -> void:
 	var config := ConfigFile.new()
 	var error: Error = config.load(SAVE_PATH)
-	
-	rounds_played = int(
-		config.get_value(
-			"stats",
-			"rounds_played",
-			0
-		)
-	)
 
 	if error != OK:
 		create_default_save()
@@ -43,11 +35,19 @@ func load_save() -> void:
 	neurobits = int(
 		config.get_value("currency", "neurobits", 0)
 	)
-	
+
 	xp_toward_next_neurobit = int(
 		config.get_value(
 			"currency",
 			"xp_toward_next_neurobit",
+			0
+		)
+	)
+
+	rounds_played = int(
+		config.get_value(
+			"stats",
+			"rounds_played",
 			0
 		)
 	)
@@ -83,7 +83,6 @@ func load_save() -> void:
 
 	if not owns_ball(equipped_ball_id):
 		equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
-
 
 func save() -> bool:
 	var config := ConfigFile.new()

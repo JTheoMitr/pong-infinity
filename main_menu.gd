@@ -254,16 +254,16 @@ func _process(_delta: float) -> void:
 		
 
 func _ready() -> void:
-	SaveManager.owned_balls = [
-		BallCatalog.DEFAULT_BALL_ID, "saturn", "burger_ball"
-	]
-
-	SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
-	SaveManager.rounds_played = 0
-	SaveManager.neurobits = 200
-	SaveManager.xp_toward_next_neurobit = 0
-
-	SaveManager.save()
+	#SaveManager.owned_balls = [
+		#BallCatalog.DEFAULT_BALL_ID, "saturn", "burger_ball"
+	#]
+#
+	#SaveManager.equipped_ball_id = BallCatalog.DEFAULT_BALL_ID
+	#SaveManager.rounds_played = 0
+	#SaveManager.neurobits = 200
+	#SaveManager.xp_toward_next_neurobit = 0
+#
+	#SaveManager.save()
 	
 	menu_music.volume_db = 0.0
 	

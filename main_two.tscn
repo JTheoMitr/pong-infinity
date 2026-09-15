@@ -116,8 +116,8 @@ wait_time = 35.0
 one_shot = true
 
 [node name="LevelMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("13_0wljb")
-volume_db = -13.0
+stream = ExtResource("27_6s5jd")
+volume_db = -4.5
 autoplay = true
 
 [node name="LevelMusic2" type="AudioStreamPlayer" parent="."]
@@ -125,8 +125,8 @@ stream = ExtResource("24_ltw2n")
 volume_db = 4.0
 
 [node name="LevelMusic3" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("27_6s5jd")
-volume_db = -4.5
+stream = ExtResource("13_0wljb")
+volume_db = -20.0
 
 [node name="LevelMusic4" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("25_ggdio")

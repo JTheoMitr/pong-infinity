@@ -131,9 +131,9 @@ func _ready() -> void:
 	ball.visible = false
 	original_cam_position = cam.position
 	
-	level_music.volume_db = -13.0
-	level_music_2.volume_db = 4.0
-	level_music_3.volume_db = -4.5
+	level_music.volume_db = -4.5
+	level_music_2.volume_db = 5.0
+	level_music_3.volume_db = -20.0
 	level_music_3.volume_db = 0.0
 	
 	#_restore_normal_cursor()
@@ -363,9 +363,9 @@ func _on_paddle_hit(paddle: Node) -> void:
 	get_parent().add_child(paddle_bonk)
 	#score += 15
 	#hud.update_score(score)
-	ball.base_speed *= 1.005 #was 1.03
+	ball.base_speed *= 1.006 #was 1.03 then 1.005
 	print(ball.base_speed)
-	#print("paddle hit")
+	print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
 	spawn_impact_particles(ball.global_position, hit_dir)
@@ -547,7 +547,7 @@ func _on_ice_zone_entered() -> void:
 	ball_is_frozen = true
 	ball_ice_timer.start()
 	ball.enable_ice_cube()
-	ball.base_speed *= .90
+	ball.base_speed *= 0.85
 	
 func reset_score() -> void:
 	score = 0
@@ -857,9 +857,9 @@ func _on_music_button_pressed() -> void:
 		hud.music_button_text("Music: Off")
 	else:
 		musicOn = true
-		level_music.volume_db = -13.0
-		level_music_2.volume_db = 4.0
-		level_music_3.volume_db = -4.5
+		level_music.volume_db = -4.5
+		level_music_2.volume_db = 5.0
+		level_music_3.volume_db = -20.0
 		level_music_4.volume_db = 0.0
 		hud.music_button_text("Music: On")
 		

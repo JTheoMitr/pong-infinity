@@ -136,13 +136,10 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 		score_submit_button.hide()
 		quit_button.hide()
 		name_entry.hide()
-		await get_tree().create_timer(3.0).timeout
-		show_start_message("Play Again?")
-		start_button.grab_focus()
-		
 	else:
 		leaderboard_status.visible = false
 		leaderboard_status.text = ""
+		
 
 	if records.is_empty():
 		leaderboard_status.visible = true
@@ -169,6 +166,7 @@ func hide_leaderboard() -> void:
 	leaderboard_panel.visible = false
 	
 func show_score_submit() -> void:
+	leaderboard_panel.show()
 	submit_panel.show()
 
 	name_entry.text = ""

@@ -353,9 +353,11 @@ func game_over() -> void:
 	#_restore_normal_cursor()
 	
 	await get_tree().create_timer(3.0).timeout
-	LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
-		hud.show_leaderboard(records, ok, err)
-	);
+	#LeaderboardService.fetch_top_best_effort(func(records: Array, ok: bool, err: String) -> void:
+		#hud.show_leaderboard(records, ok, err)
+	#);
+	hud.hide_score()
+	
 	hud.show_score_submit()
 
 func _on_paddle_hit(paddle: Node) -> void:
@@ -810,18 +812,49 @@ func _on_ice_mine_timer_timeout() -> void:
 func _on_panel_timer_1_timeout() -> void:
 	spawn_silver_panel()
 	
+#func _on_score_button_pressed(player_name: String) -> void:
+	#print("Submitting final score:", final_score_to_submit, "as", player_name)
+	#hud.hide_score_submit()
+#
+	#var ok = await LeaderboardService.submit_score_with_name_best_effort(player_name, final_score_to_submit)
+	#print("Submit finished:", ok)
+#
+	#LeaderboardService.fetch_top_best_effort(func(records: Array, ok_fetch: bool, err: String) -> void:
+		#hud.show_leaderboard(records, ok_fetch, err)
+	#)
+#
+	#_play_again()
 func _on_score_button_pressed(player_name: String) -> void:
-	print("Submitting final score:", final_score_to_submit, "as", player_name)
-	hud.hide_score_submit()
-
-	var ok = await LeaderboardService.submit_score_with_name_best_effort(player_name, final_score_to_submit)
-	print("Submit finished:", ok)
-
-	LeaderboardService.fetch_top_best_effort(func(records: Array, ok_fetch: bool, err: String) -> void:
-		hud.show_leaderboard(records, ok_fetch, err)
+	print(
+		"Submitting final score:",
+		final_score_to_submit,
+		" as ",
+		player_name
 	)
 
-	_play_again()
+	hud.hide_score_submit()
+
+	var ok = await LeaderboardService.submit_score_with_name_best_effort(
+		player_name,
+		final_score_to_submit
+	)
+
+	print("Submit finished:", ok)
+
+	LeaderboardService.fetch_top_best_effort(
+		func(
+			records: Array,
+			ok_fetch: bool,
+			err: String
+		) -> void:
+			hud.show_leaderboard(
+				records,
+				ok_fetch,
+				err
+			)
+
+			_play_again()
+	)
 	
 func _play_again() -> void:
 	await get_tree().create_timer(1.0).timeout

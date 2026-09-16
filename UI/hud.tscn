@@ -254,6 +254,7 @@ text = "asdasdasdasdasd"
 horizontal_alignment = 1
 
 [node name="Status" type="Label" parent="LeaderboardPanel/VBox"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="RowsHBox" type="HBoxContainer" parent="LeaderboardPanel/VBox"]

@@ -61,13 +61,13 @@ border_width_bottom = 4
 border_color = Color(0, 0.95615023, 0.46149242, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0a73"]
-bg_color = Color(0.72156864, 0.5803922, 0.21176471, 0.7921569)
+bg_color = Color(0.72156864, 0.5803922, 0.21176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2o5uh"]
 bg_color = Color(0.3647059, 1, 0.30588236, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b1lf8"]
-bg_color = Color(0.31534028, 0.02749604, 0.5487479, 1)
+bg_color = Color(0.3166156, 0.028015658, 0.5537459, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -273,7 +273,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_i0a73")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LeaderboardPanel"]
 layout_mode = 2
-theme_override_constants/separation = 11
+theme_override_constants/separation = 15
 alignment = 1
 
 [node name="NameEntry" type="LineEdit" parent="LeaderboardPanel/VBoxContainer"]
@@ -290,37 +290,40 @@ placeholder_text = "Enter Name"
 alignment = 1
 
 [node name="SubmitButton" type="Button" parent="LeaderboardPanel/VBoxContainer"]
-custom_minimum_size = Vector2(135, 25)
+custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_2o5uh")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
 theme_override_styles/focus = SubResource("StyleBoxFlat_rnl6m")
 text = "SUBMIT SCORE"
 
 [node name="SubmitButton2" type="Button" parent="LeaderboardPanel/VBoxContainer"]
-custom_minimum_size = Vector2(135, 25)
+custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_2o5uh")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_rnl6m")
 text = "Play Again"
 
 [node name="QuitButton" type="Button" parent="LeaderboardPanel/VBoxContainer"]
-custom_minimum_size = Vector2(135, 25)
+custom_minimum_size = Vector2(180, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_2o5uh")
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_rnl6m")
 text = "QUIT"

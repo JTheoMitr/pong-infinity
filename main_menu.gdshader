@@ -28,7 +28,7 @@ void fragment() {
 	// --- Grain variation ---
 	float grain = random(uv * noise_scale * 1.5 + time);
 
-	float static_value = mix(noise, grain, 215.7) * static_intensity;
+	float static_value = mix(noise, grain, 0.5) * static_intensity;
 
 	COLOR = vec4(vec3(static_value), opacity);
 }

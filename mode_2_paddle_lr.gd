@@ -2,7 +2,7 @@
 extends StaticBody2D
 
 @export var is_left: bool = true
-@export var speed: float = 1000.0
+@export var speed: float = 1300.0
 @export var base_rotation: float = 0.0
 @export var rotate_speed: float = 2.5
 @export var rotate_return_speed: float = 6.0
@@ -58,11 +58,12 @@ func _process(delta: float) -> void:
 				screen.y - 170.0
 			)
 
-			position.y = move_toward(
-				position.y,
-				target_y,
-				speed * delta
-			)
+			#position.y = move_toward(
+				#position.y,
+				#target_y,
+				#speed * delta
+			#)
+			position.y = target_y
 
 	last_mouse_position = mouse_position
 

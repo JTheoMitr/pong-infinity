@@ -32,6 +32,7 @@ const DEFAULT_BALL_SPEED: float = 350.0
 @onready var corner_br: StaticBody2D = $Corners/CornerBR
 @onready var corner_bl: StaticBody2D = $Corners/CornerBL
 
+
 @onready var multi1_timer: Timer = $Multi1Timer
 @onready var crystal1_timer: Timer = $CrystalTimer
 @onready var mine_timer: Timer = $MineTimer
@@ -358,7 +359,7 @@ func game_over() -> void:
 	#);
 	hud.hide_score()
 	
-	hud.show_score_submit()
+	hud.show_score_submit(final_score_to_submit)
 
 func _on_paddle_hit(paddle: Node) -> void:
 	var paddle_bonk = paddle_hit_sfx.instantiate()

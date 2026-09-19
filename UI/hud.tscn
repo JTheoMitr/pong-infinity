@@ -250,7 +250,7 @@ theme_override_constants/line_spacing = 3
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("2_bytes")
 theme_override_font_sizes/font_size = 25
-text = "asdasdasdasdasd"
+text = "loading scores..."
 horizontal_alignment = 1
 
 [node name="Status" type="Label" parent="LeaderboardPanel/VBox"]
@@ -328,6 +328,13 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_b1lf8")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_rnl6m")
 text = "QUIT"
+
+[node name="FinalScoreLabel" type="Label" parent="LeaderboardPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.15686275, 1, 0.23921569, 1)
+theme_override_fonts/font = ExtResource("2_bytes")
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
 
 [node name="SubmitMessage" type="RichTextLabel" parent="LeaderboardPanel"]
 custom_minimum_size = Vector2(0, 50)

@@ -25,7 +25,7 @@ extends CanvasLayer
 @onready var quit_button = $LeaderboardPanel/VBoxContainer/QuitButton
 @onready var music_button = $PauseLabel/MusicButton
 
-
+@onready var final_score_label: Label = $LeaderboardPanel/VBoxContainer/FinalScoreLabel
 
 var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
 var musicOn = true
@@ -165,9 +165,12 @@ func show_leaderboard(records: Array, ok: bool, _err: String) -> void:
 func hide_leaderboard() -> void:
 	leaderboard_panel.visible = false
 	
-func show_score_submit() -> void:
+func show_score_submit(final_score: int) -> void:
 	leaderboard_panel.show()
 	submit_panel.show()
+
+	final_score_label.text = "Score: " + str(final_score)
+	final_score_label.show()
 
 	name_entry.text = ""
 	name_entry.show()
@@ -184,6 +187,7 @@ func hide_score_submit() -> void:
 	score_submit_button.hide() #make sure to call this properly and check flow, start button never shows offline
 	no_submit_button.hide()
 	quit_button.hide()
+	final_score_label.hide()
 
 func _on_submit_button_pressed() -> void:
 	var player_name: String = name_entry.text.strip_edges()

@@ -15,7 +15,7 @@ const ZED_DIALOGUE: Array[Dictionary] = [
 		]
 	},
 	{
-		"min_rounds": 3,
+		"min_rounds": 10,
 		"pages": [
 			"[center]Oh, you're still playing, huh?",
 			"[center]Then maybe you could use a tip...",
@@ -26,7 +26,7 @@ const ZED_DIALOGUE: Array[Dictionary] = [
 		]
 	},
 	{
-		"min_rounds": 5,
+		"min_rounds": 20,
 		"pages": [
 			"[center]Okay, you're starting to get it.",
 			"[center]Always Set up the angle first. A clean ricochet",
@@ -35,16 +35,16 @@ const ZED_DIALOGUE: Array[Dictionary] = [
 		]
 	},
 	{
-		"min_rounds": 10,
+		"min_rounds": 30,
 		"pages": [
 			"[center]I saw that last round! Damn.",
 			"[center]Alright, pro tip: an armed laser doesn't expire...",
 			"[center]Don't waste it just because it's ready.",
-			"[center]Hold the shot until something expensive drifts into position."
+			"[center]Hold the shot until something heavy drifts into position."
 		]
 	},
 	{
-		"min_rounds": 15,
+		"min_rounds": 40,
 		"pages": [
 			"[center]Don't be afraid to drag those paddles a bit",
 			"[center]What do I mean by that? Ha",

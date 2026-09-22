@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="pong_infinity"
+config/name="Neuroball"
 run/main_scene="uid://bvsrkd2lk0v1l"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://cx4ialwgv10xc"

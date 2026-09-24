@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://de6bsxlo14sa6"]
+[gd_scene load_steps=76 format=3 uid="uid://de6bsxlo14sa6"]
 
 [ext_resource type="Script" uid="uid://cb5861th34w7j" path="res://shop.gd" id="1_e7rdd"]
 [ext_resource type="Texture2D" uid="uid://cs8hevh6bccqm" path="res://Assets/Sprites/neuro_main_menu_1.png" id="2_110pr"]
@@ -52,7 +52,6 @@
 [ext_resource type="Texture2D" uid="uid://d0ugrevp5pwb3" path="res://Assets/Anims/smoke_fx/sprite_1.png" id="631_nyply"]
 [ext_resource type="Texture2D" uid="uid://xldgimsotnbo" path="res://Assets/Anims/smoke_fx/sprite_2.png" id="632_v6owh"]
 [ext_resource type="Texture2D" uid="uid://cnmjjsbbepywk" path="res://Assets/Anims/smoke_fx/sprite_3.png" id="633_wgmdg"]
-[ext_resource type="PackedScene" uid="uid://c6awdq1cl01a" path="res://models/shop-bucket/shop-reboot-bucket.glb" id="640_v6owh"]
 [ext_resource type="PackedScene" uid="uid://blid0kj5wnd87" path="res://models/shop-bucket-2/shop-reboot-bucket2.glb" id="640_wgmdg"]
 
 [sub_resource type="Environment" id="Environment_viryw"]
@@ -813,10 +812,6 @@ texture = SubResource("AnimatedTexture_sjfe1")
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -6.3809524, 3.1, -0.953)
 modulate = Color(1, 1, 1, 0.4)
 texture = SubResource("AnimatedTexture_sjfe1")
-
-[node name="shop-reboot-bucket" parent="." instance=ExtResource("640_v6owh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)
-visible = false
 
 [node name="shop-reboot-bucket2" parent="." instance=ExtResource("640_wgmdg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.465, 0.997, 0.726)

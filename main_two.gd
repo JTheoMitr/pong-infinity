@@ -550,7 +550,7 @@ func _on_ice_zone_entered() -> void:
 	ball_is_frozen = true
 	ball_ice_timer.start()
 	ball.enable_ice_cube()
-	ball.base_speed *= 0.75
+	ball.base_speed *= 0.9
 	
 func reset_score() -> void:
 	score = 0

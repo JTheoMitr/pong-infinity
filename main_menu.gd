@@ -110,6 +110,10 @@ extends Node2D
 	$CanvasLayer/LoadoutOverlay/BallCarousel/PreviewRow/RightArrow/Area2D
 )
 
+@onready var neon_alley_button: Button = (
+	$CanvasLayer/CenterContainer/VBoxContainer/NeonAlley
+)
+
 # HOW TO PLAY
 
 @onready var how_to_play: Control = $CanvasLayer/HowToPlay
@@ -264,6 +268,10 @@ func _ready() -> void:
 	#SaveManager.xp_toward_next_neurobit = 0
 #
 	#SaveManager.save()
+	
+	if OS.has_feature("web"):
+		neon_alley_button.disabled = true
+		neon_alley_button.text = "NEON ALLEY - DESKTOP ONLY"
 	
 	menu_music.volume_db = 0.0
 	
@@ -835,10 +843,29 @@ func close_loadout_menu() -> void:
 	#normal_button.grab_focus()
 
 
+#func _on_neon_alley_pressed() -> void:
+	#SaveManager.enter_shop_from_arcade = true
+	#audio_click.play()
+	#
+	#var tween := create_tween()
+	#tween.tween_property(
+		#menu_music,
+		#"volume_db",
+		#-40.0,
+		#0.3
+	#)
+	#
+	##await tween.finished
+#
+	#get_tree().change_scene_to_file("res://shop.tscn")
+	
 func _on_neon_alley_pressed() -> void:
+	if OS.has_feature("web"):
+		return
+
 	SaveManager.enter_shop_from_arcade = true
 	audio_click.play()
-	
+
 	var tween := create_tween()
 	tween.tween_property(
 		menu_music,
@@ -846,8 +873,6 @@ func _on_neon_alley_pressed() -> void:
 		-40.0,
 		0.3
 	)
-	
-	#await tween.finished
 
 	get_tree().change_scene_to_file("res://shop.tscn")
 	
@@ -1058,13 +1083,13 @@ func _on_how_to_play_button_mouse_entered() -> void:
 
 func _on_start_game_button_mouse_entered() -> void:
 	cyborg_head.play("normal")
-	difficulty_select_title.text = "[center]Start Playing..."
+	difficulty_select_title.text = "[center]Start Playing"
 	click_sound.play()
 
 
 func _on_close_htp_button_mouse_entered() -> void:
 	cyborg_head.play("hard")
-	difficulty_select_title.text = "[center]Go back..."
+	difficulty_select_title.text = "[center]Go back"
 	click_sound.play()
 
 

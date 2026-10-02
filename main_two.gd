@@ -123,6 +123,7 @@ func _ready() -> void:
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
 	hud.no_submit_play_again_pressed.connect(_no_submit_play_again)
 	start_background_glow()
+	await _prewarm_particles()
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	#print_debug(screen_size)
@@ -131,6 +132,7 @@ func _ready() -> void:
 	reset_positions(screen_center)
 	ball.visible = false
 	original_cam_position = cam.position
+	
 	
 	level_music.volume_db = -4.5
 	level_music_2.volume_db = 5.0
@@ -154,9 +156,9 @@ func _ready() -> void:
 
 	
 	await get_tree().create_timer(1.0).timeout
-	spawn_impact_particles(get_viewport_rect().size * 2.5, Vector2.RIGHT)
-	spawn_impact_particles_crystal1(get_viewport_rect().size * 2.5)
-	spawn_impact_particles_multiplier1(get_viewport_rect().size * 2.5)
+	#spawn_impact_particles(get_viewport_rect().size * 2.5, Vector2.RIGHT)
+	#spawn_impact_particles_crystal1(get_viewport_rect().size * 2.5)
+	#spawn_impact_particles_multiplier1(get_viewport_rect().size * 2.5)
 	paddle_left.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_right.ball_hit_paddle.connect(_on_paddle_hit)
 	paddle_top.ball_hit_paddle.connect(_on_paddle_hit)
@@ -1078,3 +1080,29 @@ func reset_ball_for_new_round() -> void:
 
 func _on_level_music_4_finished() -> void:
 	level_music.play()
+
+func _prewarm_particles() -> void:
+	var warmup_position := get_viewport_rect().size * 0.5
+
+	var scenes: Array[PackedScene] = [
+		impact_particles_scene,
+		impact_particles_multiplier_1,
+		impact_particles_panel_pop,
+		impact_particles_crystal_1,
+		impact_particles_white,
+		impact_particles_red,
+	]
+
+	for scene: PackedScene in scenes:
+		var p := scene.instantiate() as GPUParticles2D
+		particles_root.add_child(p)
+
+		p.global_position = warmup_position
+		p.z_index = -1000
+		p.emitting = false
+		p.emitting = true
+
+	# Give the renderer several actual frames to process them.
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw

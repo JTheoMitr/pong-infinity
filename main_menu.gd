@@ -149,13 +149,6 @@ enum LoadoutFocus {
 	START
 }
 
-enum MenuInputMode {
-	MOUSE,
-	CONTROLLER
-}
-
-var menu_input_mode: MenuInputMode = MenuInputMode.MOUSE
-
 const BOARD_IDS: Array[String] = [
 	"classic"
 ]
@@ -279,9 +272,19 @@ func _ready() -> void:
 		SaveManager.returning_to_main_menu_from_shop
 	)
 
-	SaveManager.returning_to_main_menu_from_shop = false
+	var returning_from_game: bool = (
+		SaveManager.returning_to_main_menu_from_game
+	)
 
-	if returning_from_shop:
+	SaveManager.returning_to_main_menu_from_shop = false
+	SaveManager.returning_to_main_menu_from_game = false
+
+	var skip_loading_screen: bool = (
+		returning_from_shop
+		or returning_from_game
+	)
+
+	if skip_loading_screen:
 		loading_cover.hide()
 		loading_icon.hide()
 	else:
@@ -311,7 +314,6 @@ func _ready() -> void:
 	)
 	get_tree().paused = false
 	
-	menu_input_mode = MenuInputMode.MOUSE
 	_enable_mouse_menu_mode()
 	start_title_glow()
 	cyborg_head.play("normal")
@@ -327,13 +329,13 @@ func _ready() -> void:
 	
 	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
 	
-	if not returning_from_shop:
+	if not skip_loading_screen:
 		await RenderingServer.frame_post_draw
 		await RenderingServer.frame_post_draw
 		await hide_loading_screen()
 	
-	await get_tree().create_timer(1.0).timeout
-	speak.play()
+		await get_tree().create_timer(1.0).timeout
+		speak.play()
 	
 	menu_buttons = [
 		start_button,
@@ -582,23 +584,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if event.relative.length_squared() > 0.0:
-			_set_menu_input_mode(MenuInputMode.MOUSE)
 			var focused_control := get_viewport().gui_get_focus_owner()
 
 			if focused_control != null:
 				focused_control.release_focus()
-
-	elif event is InputEventMouseButton:
-		_set_menu_input_mode(MenuInputMode.MOUSE)
-
-	elif event is InputEventJoypadButton:
-		if event.pressed:
-			_set_menu_input_mode(MenuInputMode.CONTROLLER)
-
-	elif event is InputEventJoypadMotion:
-		if abs(event.axis_value) > 0.5:
-			_set_menu_input_mode(MenuInputMode.CONTROLLER)
-	
+				
 func _move_loadout_focus(direction: int) -> void:
 	if direction > 0:
 		loadout_focus = LoadoutFocus.START
@@ -913,19 +903,7 @@ func _on_ball_right_arrow_input(
 		_refresh_loadout_focus()
 		_flash_loadout_arrow(ball_right_arrow)
 
-func _set_menu_input_mode(new_mode: MenuInputMode) -> void:
-	if menu_input_mode == new_mode:
-		return
 
-	menu_input_mode = new_mode
-
-	match menu_input_mode:
-		MenuInputMode.MOUSE:
-			_enable_mouse_menu_mode()
-
-		MenuInputMode.CONTROLLER:
-			_enable_controller_menu_mode()
-			
 func _enable_mouse_menu_mode() -> void:
 	var focus_owner := get_viewport().gui_get_focus_owner()
 
@@ -937,26 +915,6 @@ func _enable_mouse_menu_mode() -> void:
 			button.focus_mode = Control.FOCUS_NONE
 			
 			
-func _enable_controller_menu_mode() -> void:
-	for button in menu_buttons:
-		if is_instance_valid(button):
-			button.focus_mode = Control.FOCUS_ALL
-
-	_grab_contextual_menu_focus()
-	
-	
-func _grab_contextual_menu_focus() -> void:
-	if controls_pop.visible:
-		return_button.grab_focus()
-
-	elif codex_popup.visible:
-		back_button.grab_focus()
-
-	elif difficulty_select.visible:
-		start_game_button.grab_focus()
-
-	elif v_box_1.visible:
-		start_button.grab_focus()
 
 
 func _on_button_mouse_entered() -> void:

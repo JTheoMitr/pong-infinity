@@ -40,6 +40,11 @@ signal music_button_pressed
 
 func _ready() -> void:
 	label.text = "Neuroball"
+	controller_sprite.text = "[center]Use Mouse to move crosshair and paddles
+
+Rotate Paddles with [A] and [D]
+
+Re-Center Paddles with [W]"
 	
 	label.visible = true
 	countdown_label.visible = false
@@ -70,8 +75,8 @@ func show_pause_overlay(paused: bool) -> void:
 	pause_label.visible = paused
 	score_label.visible = paused
 	nb_label.visible = paused
-	if pause_label.visible:
-		resume_button.grab_focus()
+	#if pause_label.visible:
+		#resume_button.grab_focus()
 
 func show_start_message(text: String) -> void: #gives the start button back to player
 	label.text = text #customize for each call
@@ -213,9 +218,16 @@ func _on_resume_button_pressed() -> void:
 
 
 func _on_quit_button_pressed() -> void:
+	await show_menu_loading()
+	
+	print("QUIT CLICKED")
+	SaveManager.returning_to_main_menu_from_game = true
+	print("CHANGING SCENE NOW")
 	get_tree().change_scene_to_file("res://main_menu.tscn")
-
-
+	print("CHANGE SCENE RETURNED")
+	
+	
+	
 func _on_submit_button_2_pressed() -> void:
 	emit_signal("no_submit_play_again_pressed")
 
@@ -230,3 +242,11 @@ func _on_name_entry_text_changed(new_text: String) -> void:
 	score_submit_button.disabled = (
 		new_text.strip_edges().is_empty()
 	)
+
+func show_menu_loading() -> void:
+	controller_sprite.show()
+	controller_sprite.text = "\n\n[center]Loading Menu"
+
+	# Let the overlay actually reach the screen before
+	# main_menu.tscn starts its synchronous load.
+	await RenderingServer.frame_post_draw

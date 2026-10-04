@@ -18622,7 +18622,7 @@ theme_override_colors/font_hover_color = Color(0, 0.8666667, 0.99607843, 1)
 theme_override_fonts/font = ExtResource("2_7vrkn")
 theme_override_styles/hover = SubResource("StyleBoxFlat_iotk1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_iotk1")
-text = "Return to Neon Alley"
+text = "Neon Alley"
 
 [node name="DifficultySelect" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
 layout_mode = 2

@@ -117,7 +117,7 @@ func show_score() -> void:
 	score_label.visible = true
 	var neurobits = SaveManager.neurobits
 	nb_label.visible = true
-	nb_label.text = "You now have " + str(neurobits) + " neurobits"
+	nb_label.text = "You now have " + str(neurobits) + " neurobits \n  Spend them in Neon Alley"
 	
 func hide_score() -> void:
 	score_label.visible = false

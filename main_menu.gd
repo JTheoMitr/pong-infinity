@@ -285,7 +285,7 @@ func _ready() -> void:
 	)
 
 	if skip_loading_screen:
-		loading_cover.hide()
+		loading_cover.show()
 		loading_icon.hide()
 	else:
 		show_loading_screen()
@@ -329,7 +329,14 @@ func _ready() -> void:
 	
 	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
 	
-	if not skip_loading_screen:
+	if skip_loading_screen:
+		# Give the newly loaded menu/background shader time to render
+		# behind the cover before revealing it.
+		await RenderingServer.frame_post_draw
+		await RenderingServer.frame_post_draw
+
+		loading_cover.hide()
+	else:
 		await RenderingServer.frame_post_draw
 		await RenderingServer.frame_post_draw
 		await hide_loading_screen()

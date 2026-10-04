@@ -101,6 +101,18 @@ var shake_strength := 0.0
 var shake_decay := 5.0
 var original_cam_position := Vector2.ZERO
 
+const IMPACT_PARTICLE_POOL_SIZE: int = 16
+const SPECIAL_PARTICLE_POOL_SIZE: int = 4
+
+var impact_particle_pool: Array[GPUParticles2D] = []
+var impact_particle_pool_index: int = 0
+
+var crystal_particle_pool: Array[GPUParticles2D] = []
+var crystal_particle_pool_index: int = 0
+
+var multiplier_particle_pool: Array[GPUParticles2D] = []
+var multiplier_particle_pool_index: int = 0
+
 const CROSSHAIR_NORMAL: Texture2D = preload(
 	"res://UI/neuro_crosshair.png"
 )
@@ -122,8 +134,16 @@ func _ready() -> void:
 	hud.music_button_pressed.connect(_on_music_button_pressed)
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
 	hud.no_submit_play_again_pressed.connect(_no_submit_play_again)
+	#particle warming
 	start_background_glow()
+
+	_create_impact_particle_pool()
+	_create_special_particle_pools()
+
+	await _prewarm_impact_particle_pool()
+	await _prewarm_special_particle_pools()
 	await _prewarm_particles()
+	
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
 	#print_debug(screen_size)
@@ -343,7 +363,7 @@ func game_over() -> void:
 	SaveManager.add_xp(round_xp)
 	clear_all_buffs()
 	var game_over_chime = game_over_sfx.instantiate()
-	get_parent().add_child(game_over_chime)
+	add_child(game_over_chime)
 	stop_all_timers()
 	#create method to clear all buffs as well
 	ball.velocity = Vector2.ZERO
@@ -365,32 +385,34 @@ func game_over() -> void:
 
 func _on_paddle_hit(paddle: Node) -> void:
 	var paddle_bonk = paddle_hit_sfx.instantiate()
-	get_parent().add_child(paddle_bonk)
+	add_child(paddle_bonk)
 	#score += 15
 	#hud.update_score(score)
 	ball.base_speed *= 1.005 #was 1.03 then 1.005
-	print(ball.base_speed)
-	print("paddle hit")
+	#print(ball.base_speed)
+	#print("paddle hit")
 	# Spawn particles at impact
 	var hit_dir: Vector2 = (ball.global_position - paddle.global_position).normalized()
+	
+	#TEMPTEST
 	spawn_impact_particles(ball.global_position, hit_dir)
 	
 	if ball_is_on_fire:
 		score += 30
 		var popup_30 = points_30.instantiate()
-		get_parent().add_child(popup_30)
+		add_child(popup_30)
 		popup_30.global_position = ball.global_position
 	else:
 		score += 15
 		var popup_15 = points_15.instantiate()
-		get_parent().add_child(popup_15)
+		add_child(popup_15)
 		popup_15.global_position = ball.global_position
 	
 	hud.update_score(score)
 	
 func _on_silver_panel_hit(paddle: Node) -> void:
 	var panel_bonk = panel_hit_sfx.instantiate() 
-	get_parent().add_child(panel_bonk)
+	add_child(panel_bonk)
 	trigger_shake(12.0)
 	#print("silver panel hit")
 	# Spawn particles at impact
@@ -404,18 +426,18 @@ func _on_silver_panel_hit(paddle: Node) -> void:
 func _silver_panel_destroyed(panel: Node2D) -> void:
 	var impact_position: Vector2 = panel.global_position
 	var panel_pop = panel_destroyed_sfx.instantiate() 
-	get_parent().add_child(panel_pop)
+	add_child(panel_pop)
 	spawn_impact_particles_panel_pop(impact_position) #change to new color
 	trigger_shake(15.0)
 	if ball_is_on_fire:
 		score += 500
 		var popup_500 = points_500.instantiate()
-		get_parent().add_child(popup_500)
+		add_child(popup_500)
 		popup_500.global_position = impact_position
 	else:
 		score += 250
 		var popup_250 = points_250.instantiate()
-		get_parent().add_child(popup_250)
+		add_child(popup_250)
 		popup_250.global_position = impact_position
 	
 	hud.update_score(score)
@@ -423,7 +445,7 @@ func _silver_panel_destroyed(panel: Node2D) -> void:
 	
 func _on_spinning_head_hit(paddle: Node) -> void:
 	var panel_bonk = panel_hit_sfx.instantiate() 
-	get_parent().add_child(panel_bonk)
+	add_child(panel_bonk)
 	trigger_shake(12.0)
 	#print("spinning head hit")
 	# Spawn particles at impact
@@ -437,18 +459,18 @@ func _on_spinning_head_hit(paddle: Node) -> void:
 func _spinning_head_destroyed(spinning_head: Node2D) -> void:
 	var impact_position: Vector2 = spinning_head.global_position
 	var panel_pop = panel_destroyed_sfx.instantiate() 
-	get_parent().add_child(panel_pop)
+	add_child(panel_pop)
 	spawn_impact_particles_multiplier1(impact_position) #change to new color
 	trigger_shake(15.0)
 	if ball_is_on_fire:
 		score += 500
 		var popup_500 = points_500.instantiate()
-		get_parent().add_child(popup_500)
+		add_child(popup_500)
 		popup_500.global_position = impact_position
 	else:
 		score += 250
 		var popup_250 = points_250.instantiate()
-		get_parent().add_child(popup_250)
+		add_child(popup_250)
 		popup_250.global_position = impact_position
 	
 	hud.update_score(score)
@@ -458,7 +480,7 @@ func _spinning_head_destroyed(spinning_head: Node2D) -> void:
 		
 func _on_corner_hit(paddle: Node) -> void:
 	var corner_bonk = corner_hit_sfx.instantiate()
-	get_parent().add_child(corner_bonk)
+	add_child(corner_bonk)
 	
 	
 	ball.base_speed *= 1.003 #was 1.03
@@ -470,12 +492,12 @@ func _on_corner_hit(paddle: Node) -> void:
 	if ball_is_on_fire:
 		score += 10
 		var popup_10 = points_10.instantiate()
-		get_parent().add_child(popup_10)
+		add_child(popup_10)
 		popup_10.global_position = ball.global_position
 	else:
 		score += 5
 		var popup_5 = points_5.instantiate()
-		get_parent().add_child(popup_5)
+		add_child(popup_5)
 		popup_5.global_position = ball.global_position
 	
 	hud.update_score(score)
@@ -486,10 +508,10 @@ func _on_multiplier_hit(_multi: Node) -> void:
 	
 	score *= 2
 	var multi_1_bonk = multi_connect_sfx.instantiate()
-	get_parent().add_child(multi_1_bonk)
+	add_child(multi_1_bonk)
 	var score_pop = score_dbl_popup.instantiate()
 	
-	get_parent().add_child(score_pop)
+	add_child(score_pop)
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
 	#print("multi hit")
@@ -509,20 +531,20 @@ func _on_crystal_hit(crystal: Node2D) -> void:
 	if ball_is_on_fire:
 		score += 50
 		var popup_50 = points_50.instantiate()
-		get_parent().add_child(popup_50)
+		add_child(popup_50)
 		popup_50.global_position = impact_position
 	else:
 		score += 25
 		var popup_25 = points_25.instantiate()
-		get_parent().add_child(popup_25)
+		add_child(popup_25)
 		popup_25.global_position = impact_position
 	
 	var crystal_1_bonk = crystal_hit_sfx.instantiate()
-	get_parent().add_child(crystal_1_bonk)
+	add_child(crystal_1_bonk)
 	
 	#audio here, smash sfx and words (multiplier!)
 	hud.update_score(score)
-	print("crystal hit")
+	#print("crystal hit")
 	# Spawn particles at impact
 	spawn_impact_particles_crystal1(impact_position)
 	
@@ -596,20 +618,26 @@ func start_background_glow() -> void:
 	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.10, 2.0)
 
 func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
-	var p := impact_particles_scene.instantiate() as GPUParticles2D
-	particles_root.add_child(p)
+	if impact_particle_pool.is_empty():
+		return
+
+	var p: GPUParticles2D = impact_particle_pool[
+		impact_particle_pool_index
+	]
+
+	impact_particle_pool_index = (
+		impact_particle_pool_index + 1
+	) % impact_particle_pool.size()
 
 	var screen_center := get_viewport_rect().size * 0.5
-	var to_center: Vector2 = (screen_center - pos).normalized()
+	var to_center: Vector2 = (
+		screen_center - pos
+	).normalized()
 
 	p.global_position = pos
-
-	# 🔑 Godot 4 particles emit along -Y, so rotate by +90°
 	p.global_rotation = to_center.angle() + PI / 2.0
 
-	p.z_index = 100
-	p.emitting = false
-	p.emitting = true
+	p.restart()
 	
 func spawn_impact_particles_white(pos: Vector2, _dir_unused: Vector2) -> void:
 	var p := impact_particles_white.instantiate() as GPUParticles2D
@@ -646,10 +674,10 @@ func spawn_impact_particles_red(pos: Vector2, _dir_unused: Vector2) -> void:
 func spawn_multi_1() -> void:
 	var multi1 := multiplier_1.instantiate()
 	multi1.ball_hit_multiplier_1.connect(_on_multiplier_hit)
-	get_parent().add_child(multi1)
+	add_child(multi1)
 	buff_ids.append(multi1.get_instance_id())
 	var barrier := barriers.instantiate()
-	get_parent().add_child(barrier)
+	add_child(barrier)
 	buff_ids.append(barrier.get_instance_id())
 	barrier_id = barrier.get_instance_id()
 	#print_debug(barrier.get_instance_id())
@@ -663,7 +691,7 @@ func spawn_multi_1() -> void:
 func spawn_score_crystal_1() -> void:
 	var crystal1 := score_crystal_1.instantiate()
 	crystal1.ball_hit_crystal_1.connect(_on_crystal_hit)
-	get_parent().add_child(crystal1)
+	add_child(crystal1)
 	buff_ids.append(crystal1.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var rndX = randf_range(50, screen_size.x - 50)
@@ -673,7 +701,7 @@ func spawn_score_crystal_1() -> void:
 func spawn_fire_zone_1() -> void:
 	var fire_1 := fire_zone.instantiate()
 	fire_1.ball_on_fire.connect(_on_fire_zone_entered)
-	get_parent().call_deferred("add_child", fire_1)
+	call_deferred("add_child", fire_1)
 	buff_ids.append(fire_1.get_instance_id())
 	trigger_shake(30.0)
 	#trigger a zoom punch here too?
@@ -684,7 +712,7 @@ func spawn_fire_zone_1() -> void:
 func spawn_ice_zone_1() -> void:
 	var ice_1 := ice_zone.instantiate()
 	ice_1.ball_on_ice.connect(_on_ice_zone_entered)
-	get_parent().call_deferred("add_child", ice_1)
+	call_deferred("add_child", ice_1)
 	buff_ids.append(ice_1.get_instance_id())
 	trigger_shake(16.0)
 	#trigger a zoom punch here too?
@@ -696,7 +724,7 @@ func spawn_ice_zone_1() -> void:
 func spawn_mine_1() -> void:
 	var mine_inst_1 := mine_1.instantiate()
 	mine_inst_1.mine_exploded.connect(spawn_fire_zone_1)
-	get_parent().add_child(mine_inst_1)
+	add_child(mine_inst_1)
 	buff_ids.append(mine_inst_1.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -706,7 +734,7 @@ func spawn_mine_1() -> void:
 func spawn_ice_mine_1() -> void:
 	var ice_mine_inst_1 := ice_mine_1.instantiate()
 	ice_mine_inst_1.mine_exploded.connect(spawn_ice_zone_1)
-	get_parent().add_child(ice_mine_inst_1)
+	add_child(ice_mine_inst_1)
 	buff_ids.append(ice_mine_inst_1.get_instance_id())
 	var screen_size := get_viewport_rect().size
 	var screen_center := screen_size * 0.5
@@ -715,7 +743,7 @@ func spawn_ice_mine_1() -> void:
 	
 func spawn_silver_panel() -> void:
 	var panel_1 := silver_panel_1.instantiate()
-	get_parent().add_child(panel_1)
+	add_child(panel_1)
 	panel_1.ball_hit_silver_panel.connect(_on_silver_panel_hit)
 	panel_1.panel_pop.connect(_silver_panel_destroyed)
 	buff_ids.append(panel_1.get_instance_id())
@@ -726,7 +754,7 @@ func spawn_silver_panel() -> void:
 	
 func spawn_spinning_head() -> void:
 	var spinhead_1 := spinning_head_1.instantiate()
-	get_parent().add_child(spinhead_1)
+	add_child(spinhead_1)
 	spinhead_1.ball_hit_spinning_head.connect(_on_spinning_head_hit)
 	spinhead_1.panel_pop.connect(_spinning_head_destroyed)
 	buff_ids.append(spinhead_1.get_instance_id())
@@ -736,13 +764,19 @@ func spawn_spinning_head() -> void:
 	panel_timer_1.start()
 
 func spawn_impact_particles_multiplier1(pos: Vector2) -> void:
-	var p := impact_particles_multiplier_1.instantiate() as GPUParticles2D
-	particles_root.add_child(p)
-	p.global_position = pos
+	if multiplier_particle_pool.is_empty():
+		return
 
-	p.z_index = 100
-	p.emitting = false
-	p.emitting = true
+	var p: GPUParticles2D = multiplier_particle_pool[
+		multiplier_particle_pool_index
+	]
+
+	multiplier_particle_pool_index = (
+		multiplier_particle_pool_index + 1
+	) % multiplier_particle_pool.size()
+
+	p.global_position = pos
+	p.restart()
 	
 func spawn_impact_particles_panel_pop(pos: Vector2) -> void:
 	var p := impact_particles_panel_pop.instantiate() as GPUParticles2D
@@ -754,13 +788,19 @@ func spawn_impact_particles_panel_pop(pos: Vector2) -> void:
 	p.emitting = true
 	
 func spawn_impact_particles_crystal1(pos: Vector2) -> void:
-	var p := impact_particles_crystal_1.instantiate() as GPUParticles2D
-	particles_root.add_child(p)
-	p.global_position = pos
+	if crystal_particle_pool.is_empty():
+		return
 
-	p.z_index = 100
-	p.emitting = false
-	p.emitting = true
+	var p: GPUParticles2D = crystal_particle_pool[
+		crystal_particle_pool_index
+	]
+
+	crystal_particle_pool_index = (
+		crystal_particle_pool_index + 1
+	) % crystal_particle_pool.size()
+
+	p.global_position = pos
+	p.restart()
 
 
 func _on_timer_timeout() -> void:
@@ -1085,10 +1125,7 @@ func _prewarm_particles() -> void:
 	var warmup_position := get_viewport_rect().size * 0.5
 
 	var scenes: Array[PackedScene] = [
-		impact_particles_scene,
-		impact_particles_multiplier_1,
 		impact_particles_panel_pop,
-		impact_particles_crystal_1,
 		impact_particles_white,
 		impact_particles_red,
 	]
@@ -1102,7 +1139,90 @@ func _prewarm_particles() -> void:
 		p.emitting = false
 		p.emitting = true
 
-	# Give the renderer several actual frames to process them.
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
+
+
+func _create_impact_particle_pool() -> void:
+	impact_particle_pool.clear()
+	impact_particle_pool_index = 0
+
+	for i: int in range(IMPACT_PARTICLE_POOL_SIZE):
+		var p := impact_particles_scene.instantiate() as GPUParticles2D
+
+		particles_root.add_child(p)
+
+		p.emitting = false
+		p.z_index = 100
+
+		impact_particle_pool.append(p)
+		
+func _prewarm_impact_particle_pool() -> void:
+	var warmup_position := get_viewport_rect().size * 0.5
+
+	for p: GPUParticles2D in impact_particle_pool:
+		p.global_position = warmup_position
+		p.z_index = -1000
+		p.restart()
+
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+
+	for p: GPUParticles2D in impact_particle_pool:
+		p.emitting = false
+		p.z_index = 100
+
+func _create_special_particle_pools() -> void:
+	crystal_particle_pool.clear()
+	crystal_particle_pool_index = 0
+
+	multiplier_particle_pool.clear()
+	multiplier_particle_pool_index = 0
+
+	for i: int in range(SPECIAL_PARTICLE_POOL_SIZE):
+		var crystal := (
+			impact_particles_crystal_1.instantiate()
+			as GPUParticles2D
+		)
+
+		particles_root.add_child(crystal)
+		crystal.emitting = false
+		crystal.z_index = 100
+		crystal_particle_pool.append(crystal)
+
+		var multiplier := (
+			impact_particles_multiplier_1.instantiate()
+			as GPUParticles2D
+		)
+
+		particles_root.add_child(multiplier)
+		multiplier.emitting = false
+		multiplier.z_index = 100
+		multiplier_particle_pool.append(multiplier)
+		
+func _prewarm_special_particle_pools() -> void:
+	var warmup_position := get_viewport_rect().size * 0.5
+
+	for p: GPUParticles2D in crystal_particle_pool:
+		p.global_position = warmup_position
+		p.z_index = -1000
+		p.restart()
+
+	for p: GPUParticles2D in multiplier_particle_pool:
+		p.global_position = warmup_position
+		p.z_index = -1000
+		p.restart()
+
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+
+	for p: GPUParticles2D in crystal_particle_pool:
+		p.emitting = false
+		p.z_index = 100
+
+	for p: GPUParticles2D in multiplier_particle_pool:
+		p.emitting = false
+		p.z_index = 100

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dxvl21qqp0idg"]
+[gd_scene load_steps=32 format=3 uid="uid://dxvl21qqp0idg"]
 
 [ext_resource type="Script" uid="uid://cnhc8tncw0go8" path="res://main_two.gd" id="1_cg087"]
 [ext_resource type="PackedScene" uid="uid://bqf8bxs3ur3k3" path="res://impact_particles.tscn" id="2_pclk0"]
@@ -29,6 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://cc6v07yvoa4op" path="res://Assets/Music/arLow113.mp3" id="25_ggdio"]
 [ext_resource type="AudioStream" uid="uid://dvceqxketqp06" path="res://Assets/Music/conv_playlist_1-2.mp3" id="27_6s5jd"]
 [ext_resource type="AudioStream" uid="uid://b6cbbjsd0qsj6" path="res://Assets/SFX/DSGNTonl_Anime_Cartoon_Comedy_13_ROXY_SOUND_ACE-energy.mp3" id="28_5jw8s"]
+[ext_resource type="Script" uid="uid://ski80181va8l" path="res://trajectory_guide.gd" id="30_midqy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fokku"]
 bg_color = Color(0, 0, 0, 1)
@@ -161,6 +162,9 @@ one_shot = true
 [node name="LaserArmedSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("28_5jw8s")
 pitch_scale = 0.65
+
+[node name="TrajectoryGuide" type="Node2D" parent="."]
+script = ExtResource("30_midqy")
 
 [connection signal="timeout" from="Multi1Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="LevelMusic" to="." method="_on_level_music_finished"]

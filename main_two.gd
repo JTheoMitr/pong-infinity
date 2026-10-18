@@ -47,6 +47,8 @@ const DEFAULT_BALL_SPEED: float = 350.0
 @onready var bgnd_layer_2: Sprite2D = $Sprite2D2
 @onready var particles_root: Node2D = $Particles
 
+@onready var trajectory_guide: Node2D = $TrajectoryGuide
+
 @onready var level_music: AudioStreamPlayer = $LevelMusic
 @onready var level_music_2: AudioStreamPlayer = $LevelMusic2
 @onready var level_music_3: AudioStreamPlayer = $LevelMusic3
@@ -126,6 +128,12 @@ const LASER_STRIKE_SCENE: PackedScene = preload(
 )
 
 func _ready() -> void:
+	
+	hud.laser_sight_button_pressed.connect(
+		_on_laser_sight_button_pressed
+	)
+
+	_update_laser_sight_button()
 	#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Allow input when paused
 	hud.show_start_message("Ready?") # controller anim will show here
@@ -1226,3 +1234,20 @@ func _prewarm_special_particle_pools() -> void:
 	for p: GPUParticles2D in multiplier_particle_pool:
 		p.emitting = false
 		p.z_index = 100
+		
+func _on_laser_sight_button_pressed() -> void:
+	trajectory_guide.set_guide_enabled(
+		not trajectory_guide.guide_enabled
+	)
+
+	_update_laser_sight_button()
+
+
+func _update_laser_sight_button() -> void:
+	var text: String = (
+		"Laser Sight: ON"
+		if trajectory_guide.guide_enabled
+		else "Laser Sight: OFF"
+	)
+
+	hud.laser_sight_button_text(text)

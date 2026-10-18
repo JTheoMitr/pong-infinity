@@ -5,16 +5,16 @@ extends Node2D
 @export var guide_enabled: bool = true
 
 @export_group("Prediction")
-@export var activation_distance: float = 260.0
+@export var activation_distance: float = 280.0
 @export var full_visibility_distance: float = 90.0
 @export var ricochet_length: float = 180.0
 
 @export_group("Appearance")
 @export var guide_color: Color = Color(1.0, 0.15, 0.2)
-@export var line_width: float = 3.5
+@export var line_width: float = 2.5
 @export var glow_width: float = 14.0
-@export var maximum_opacity: float = 0.7
-@export var fade_speed: float = 9.0
+@export var maximum_opacity: float = 2.85
+@export var fade_speed: float = 3.5
 
 @onready var ball: CharacterBody2D = $"../Ball"
 

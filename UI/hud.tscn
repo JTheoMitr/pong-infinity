@@ -198,6 +198,16 @@ theme_override_fonts/font = ExtResource("2_bytes")
 text = "Music: On
 "
 
+[node name="LaserSightButton" type="Button" parent="PauseLabel"]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 180.0
+offset_right = 640.0
+offset_bottom = 210.0
+theme_override_fonts/font = ExtResource("2_bytes")
+text = "Laser Sight: On
+"
+
 [node name="ScoreLabel" type="Label" parent="."]
 offset_top = 50.0
 offset_right = 1152.0
@@ -377,6 +387,7 @@ texture = ExtResource("6_1ui3w")
 [connection signal="pressed" from="PauseLabel/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="PauseLabel/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="PauseLabel/MusicButton" to="." method="_on_music_button_pressed"]
+[connection signal="pressed" from="PauseLabel/LaserSightButton" to="." method="_on_laser_sight_button_pressed"]
 [connection signal="pressed" from="LeaderboardPanel/VBoxContainer/SubmitButton" to="." method="_on_submit_button_pressed"]
 [connection signal="pressed" from="LeaderboardPanel/VBoxContainer/SubmitButton2" to="." method="_on_submit_button_2_pressed"]
 [connection signal="pressed" from="LeaderboardPanel/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -27,6 +27,8 @@ extends CanvasLayer
 
 @onready var final_score_label: Label = $LeaderboardPanel/VBoxContainer/FinalScoreLabel
 
+@onready var laser_sight_button: Button = $PauseLabel/LaserSightButton
+
 var custom_font = load("res://Assets/Fonts/PixelTandysoft-0rJG.ttf")
 var musicOn = true
 
@@ -36,6 +38,7 @@ signal submit_score_button_pressed(player_name: String)
 signal resume_button_pressed
 signal no_submit_play_again_pressed
 signal music_button_pressed
+signal laser_sight_button_pressed
 
 
 func _ready() -> void:
@@ -115,10 +118,10 @@ func update_score(value: int) -> void:
 	
 func show_score() -> void:
 	score_label.visible = true
-	var neurobits = SaveManager.neurobits
+	#var neurobits = SaveManager.neurobits
 	nb_label.visible = true
-	nb_label.text = "You now have " + str(neurobits) + " neurobits \n  Spend them in Neon Alley"
-	
+	#nb_label.text = "You now have " + str(neurobits) + " neurobits \nSpend them in Neon Alley"
+	nb_label.text = "Nicely Done"
 func hide_score() -> void:
 	score_label.visible = false
 	nb_label.visible = false
@@ -173,8 +176,9 @@ func hide_leaderboard() -> void:
 func show_score_submit(final_score: int) -> void:
 	leaderboard_panel.show()
 	submit_panel.show()
+	var neurobits = SaveManager.neurobits
 
-	final_score_label.text = "Score: " + str(final_score)
+	final_score_label.text = "Score: " + str(final_score) + "\n\nYou now have " + str(neurobits) + " neurobits\nSpend them in Neon Alley"
 	final_score_label.show()
 
 	name_entry.text = ""
@@ -250,3 +254,10 @@ func show_menu_loading() -> void:
 	# Let the overlay actually reach the screen before
 	# main_menu.tscn starts its synchronous load.
 	await RenderingServer.frame_post_draw
+	
+func _on_laser_sight_button_pressed() -> void:
+	laser_sight_button_pressed.emit()
+
+
+func laser_sight_button_text(text: String) -> void:
+	laser_sight_button.text = text

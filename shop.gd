@@ -1,11 +1,22 @@
 extends Node3D
 
+const TABLE_PREVIEW_FRAMES: SpriteFrames = preload(
+	"res://tables/table_previews.tres"
+)
+
 const SHOP_BALL_IDS: Array[String] = [
 	"sushi",
 	"burger_ball",
 	"saturn",
 	"eyeball"
 ]
+
+const SHOP_TABLE_IDS: Array[String] = [
+	"classic_green",
+	"deep_space",
+	"sunset"
+]
+
 const ZED_DIALOGUE: Array[Dictionary] = [
 	{
 		"min_rounds": 0,
@@ -90,6 +101,7 @@ enum CameraZone {
 @onready var press_enter: RichTextLabel = $CanvasLayer/PressEnter
 
 @export var patio_nav_left_x_offset: float = 90.0
+@export var crt_click_offset: Vector2 = Vector2.ZERO
 
 var nav_left_default_position: Vector2
 
@@ -164,6 +176,16 @@ var nav_left_default_position: Vector2
 	$CanvasLayer/NavRight/NavRightArea
 )
 
+@onready var neuroballs_tab: Label = $ScreenQuad/ScreenViewport/NeuroballsTab
+@onready var tables_tab: Label = $ScreenQuad/ScreenViewport/TablesTab
+
+enum ShopCategory {
+	NEUROBALLS,
+	TABLES
+}
+
+var active_category: ShopCategory = ShopCategory.NEUROBALLS
+
 enum PurchasePopupState {
 	CLOSED,
 	CONFIRM_PURCHASE,
@@ -174,6 +196,7 @@ enum PurchasePopupState {
 var purchase_popup_state: PurchasePopupState = PurchasePopupState.CLOSED
 var purchase_popup_index: int = 0
 var pending_purchase_ball_id: String = ""
+var pending_purchase_category: ShopCategory = ShopCategory.NEUROBALLS
 
 var camera_moving: bool = false
 var camera_zone: CameraZone = CameraZone.SHOP
@@ -182,9 +205,20 @@ var selected_index := 0
 var row_labels: Array[Label] = []
 var price_labels: Array[RichTextLabel] = []
 
+@onready var preview_1: AnimatedSprite2D = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer/AnimatedSprite2D
+@onready var preview_2: AnimatedSprite2D = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer2/AnimatedSprite2D
+@onready var preview_3: AnimatedSprite2D = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer3/AnimatedSprite2D
+@onready var preview_4: AnimatedSprite2D = $ScreenQuad/ScreenViewport/VBoxContainer/HBoxContainer4/AnimatedSprite2D
+
+var preview_sprites: Array[AnimatedSprite2D] = []
+
+@export_range(0.05, 2.0, 0.05)
+var table_preview_scale_multiplier: float = 0.4
+
+var original_ball_preview_scales: Array[Vector2] = []
+
 var zed_current_pages: Array = []
 var zed_page_index: int = 0
-
 
 func _ready() -> void:
 	press_enter.hide()
@@ -223,8 +257,19 @@ func _ready() -> void:
 		price_3,
 		price_4
 	]
+	
+	preview_sprites = [
+	preview_1,
+	preview_2,
+	preview_3,
+	preview_4
+	]
+	
+	for preview: AnimatedSprite2D in preview_sprites:
+		original_ball_preview_scales.append(preview.scale)
 
 	refresh_shop_labels()
+	_update_shop_tabs()
 
 	print("Neurobits: ", SaveManager.neurobits)
 	print("Owned balls: ", SaveManager.owned_balls)
@@ -327,7 +372,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 	elif event.is_action_pressed("ui_down"):
-		selected_index = min(selected_index + 1, row_labels.size() - 1)
+		selected_index = min(
+			selected_index + 1,
+			_get_active_shop_ids().size() - 1
+		)
 		_update_selection()
 		get_viewport().set_input_as_handled()
 
@@ -630,48 +678,115 @@ func show_patio_dialogue() -> void:
 
 
 func handle_shop_accept() -> void:
-	if selected_index < 0 or selected_index >= SHOP_BALL_IDS.size():
+	var item_ids: Array[String] = _get_active_shop_ids()
+
+	if selected_index < 0 or selected_index >= item_ids.size():
 		return
 
-	var ball_id: String = SHOP_BALL_IDS[selected_index]
+	var item_id: String = item_ids[selected_index]
 
-	if SaveManager.owns_ball(ball_id):
-		_show_already_owned_popup(ball_id)
-		return
-
-	_show_purchase_confirmation(ball_id)
-
+	if _owns_shop_item(item_id):
+		_show_already_owned_popup(item_id)
+	else:
+		_show_purchase_confirmation(item_id)
 
 func refresh_shop_labels() -> void:
-	var nbits = SaveManager.neurobits
-	nb_lbl.text = "Neurobits: " + str(nbits)
+	nb_lbl.text = "Neurobits: " + str(SaveManager.neurobits)
+
+	var item_ids: Array[String] = _get_active_shop_ids()
 
 	for index in range(row_labels.size()):
-		if index >= SHOP_BALL_IDS.size():
+		var row: Label = row_labels[index]
+		var price_label: RichTextLabel = price_labels[index]
+
+		if index >= item_ids.size():
+			row.hide()
+			price_label.hide()
 			continue
 
-		var ball_id: String = SHOP_BALL_IDS[index]
-		var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
+		row.show()
+
+		var item_id: String = item_ids[index]
+		var item_data: Dictionary = _get_shop_item_data(item_id)
 
 		var display_name: String = str(
-			ball_data.get("display_name", "BALL")
+			item_data.get("display_name", item_id)
 		)
 
-		price_labels[index].visible = !SaveManager.owns_ball(ball_id)
+		var price: int = int(item_data.get("price", 0))
+		var owned: bool = _owns_shop_item(item_id)
 
-		var status_text: String
-		var short_name: String = display_name.split("-")[0].strip_edges()
+		row.text = "..........." + display_name.to_upper()
 
-		if SaveManager.owns_ball(ball_id):
-			status_text = "..............[OWNED]"
+		if owned:
+			price_label.text = "[right]OWNED[/right]"
 		else:
-			status_text = ".............." + short_name
+			price_label.text = "[right]%d NB[/right]" % price
 
-		row_labels[index].text = status_text
+		price_label.show()
+
+	selected_index = clampi(
+		selected_index,
+		0,
+		item_ids.size() - 1
+	)
 
 	_update_selection()
+	_refresh_shop_previews()
 
+	set_screen_animation_active(camera_zone == CameraZone.SHOP)
 
+func _refresh_shop_previews() -> void:
+	var item_ids: Array[String] = _get_active_shop_ids()
+
+	for index in range(preview_sprites.size()):
+		var preview: AnimatedSprite2D = preview_sprites[index]
+		if active_category == ShopCategory.TABLES:
+			preview.scale = (
+				original_ball_preview_scales[index]
+				* table_preview_scale_multiplier
+			)
+		else:
+			preview.scale = original_ball_preview_scales[index]
+		if index >= item_ids.size():
+			preview.stop()
+			preview.hide()
+			continue
+
+		var item_id: String = item_ids[index]
+		var item_data: Dictionary = _get_shop_item_data(item_id)
+
+		var frames: SpriteFrames
+		var animation_name: StringName = &"default"
+
+		if active_category == ShopCategory.NEUROBALLS:
+			frames = BallCatalog.get_shop_preview(item_id)
+
+			# Preserve each ball's existing animation name if
+			# its SpriteFrames resource doesn't use "default".
+			if frames != null and not frames.has_animation(animation_name):
+				var names: PackedStringArray = frames.get_animation_names()
+
+				if not names.is_empty():
+					animation_name = StringName(names[0])
+		else:
+			frames = TableCatalog.get_shop_preview(item_id)
+			animation_name = StringName(
+				str(item_data.get("preview_animation", item_id))
+			)
+
+		if frames == null or not frames.has_animation(animation_name):
+			preview.stop()
+			preview.hide()
+			push_warning("Missing shop preview for: " + item_id)
+			continue
+
+		if preview.sprite_frames != frames:
+			preview.sprite_frames = frames
+
+		preview.show()
+		preview.play(animation_name)
+		
 func exit_cabinet_to_game_view() -> void:
 	camera_moving = true
 	nb_lbl.visible = false
@@ -755,7 +870,7 @@ func _select_shop_row_from_world_position(
 	var viewport_position := Vector2(
 		uv.x * screen_viewport.size.x,
 		uv.y * screen_viewport.size.y
-	)
+	) + crt_click_offset
 
 	_select_shop_row_at_viewport_position(viewport_position)
 
@@ -763,21 +878,38 @@ func _select_shop_row_from_world_position(
 func _select_shop_row_at_viewport_position(
 	viewport_position: Vector2
 ) -> void:
+	print("CRT viewport click: ", viewport_position)
+	print("Neuroballs tab rect: ", neuroballs_tab.get_global_rect())
+	print("Tables tab rect: ", tables_tab.get_global_rect())
+	
+	# Check the entire tab rectangle, not just the text.
+	var neuroballs_rect: Rect2 = neuroballs_tab.get_global_rect()
+	var tables_rect: Rect2 = tables_tab.get_global_rect()
+
+	if neuroballs_rect.has_point(viewport_position):
+		print("NEUROBALLS TAB CLICKED")
+		_switch_shop_category(ShopCategory.NEUROBALLS)
+		return
+
+	if tables_rect.has_point(viewport_position):
+		print("TABLES TAB CLICKED")
+		_switch_shop_category(ShopCategory.TABLES)
+		return
+
+	# Preserve existing item selection and purchases.
 	for i in range(row_labels.size()):
 		var label: Label = row_labels[i]
 
-		var label_rect := Rect2(
-			label.global_position,
-			label.size
-		)
+		if not label.visible:
+			continue
 
-		if label_rect.has_point(viewport_position):
+		if label.get_global_rect().has_point(viewport_position):
 			selected_index = i
 			_update_selection()
 
 			print(
 				"Mouse selected shop item: ",
-				SHOP_BALL_IDS[selected_index]
+				_get_active_shop_ids()[selected_index]
 			)
 
 			screen_viewport.render_target_update_mode = (
@@ -786,20 +918,17 @@ func _select_shop_row_at_viewport_position(
 
 			handle_shop_accept()
 			return
-
-
-func _show_purchase_confirmation(ball_id: String) -> void:
-	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
-
+			
+func _show_purchase_confirmation(item_id: String) -> void:
+	var item_data: Dictionary = _get_shop_item_data(item_id)
 	var display_name: String = str(
-		ball_data.get("display_name", "NEUROBALL")
+		item_data.get("display_name", item_id)
 	)
+	var price: int = int(item_data.get("price", 0))
 
-	var price: int = int(
-		ball_data.get("price", 0)
-	)
+	pending_purchase_ball_id = item_id
+	pending_purchase_category = active_category
 
-	pending_purchase_ball_id = ball_id
 	purchase_popup_state = PurchasePopupState.CONFIRM_PURCHASE
 	purchase_popup_index = 0
 
@@ -812,7 +941,6 @@ func _show_purchase_confirmation(ball_id: String) -> void:
 
 	purchase_yes.text = "YES"
 	purchase_no.text = "NO"
-
 	purchase_yes.show()
 	purchase_no.show()
 	purchase_popup.show()
@@ -820,21 +948,17 @@ func _show_purchase_confirmation(ball_id: String) -> void:
 	_update_purchase_popup_selection()
 	set_screen_animation_active(true)
 
-
-func _show_already_owned_popup(ball_id: String) -> void:
-	var ball_data: Dictionary = BallCatalog.get_ball(ball_id)
-
+func _show_already_owned_popup(item_id: String) -> void:
+	var item_data: Dictionary = _get_shop_item_data(item_id)
 	var display_name: String = str(
-		ball_data.get("display_name", "NEUROBALL")
+		item_data.get("display_name", item_id)
 	)
 
 	purchase_popup_state = PurchasePopupState.ALREADY_OWNED
 	pending_purchase_ball_id = ""
+	pending_purchase_category = active_category
 
-	purchase_message.text = (
-		display_name
-		+ "\n\nALREADY OWNED"
-	)
+	purchase_message.text = display_name + "\n\nALREADY OWNED"
 
 	purchase_yes.text = "OK"
 	purchase_yes.show()
@@ -845,7 +969,6 @@ func _show_already_owned_popup(ball_id: String) -> void:
 
 	_update_purchase_popup_selection()
 	set_screen_animation_active(true)
-
 
 func _update_purchase_popup_selection() -> void:
 	var labels: Array[Label] = [
@@ -910,12 +1033,20 @@ func _attempt_pending_purchase() -> void:
 		_close_purchase_popup()
 		return
 
-	var purchased: bool = SaveManager.purchase_ball(
-		pending_purchase_ball_id
-	)
+	var item_id: String = pending_purchase_ball_id
+	var item_data: Dictionary
+
+	var purchased: bool = false
+
+	if pending_purchase_category == ShopCategory.TABLES:
+		item_data = TableCatalog.get_table(item_id)
+		purchased = SaveManager.purchase_table(item_id)
+	else:
+		item_data = BallCatalog.get_ball(item_id)
+		purchased = SaveManager.purchase_ball(item_id)
 
 	if not purchased:
-		purchase_message.text = "[center]NOT ENOUGH\n[center]NEUROBITS"
+		purchase_message.text = "[center]PURCHASE COULD NOT BE COMPLETED"
 		purchase_yes.text = "OK"
 		purchase_no.hide()
 		purchase_denied.play()
@@ -925,29 +1056,21 @@ func _attempt_pending_purchase() -> void:
 		_update_purchase_popup_selection()
 		return
 
-	var ball_data := BallCatalog.get_ball(
-		pending_purchase_ball_id
+	var display_name: String = str(
+		item_data.get("display_name", item_id)
 	)
 
-	var display_name := str(
-		ball_data.get("display_name", "NEUROBALL")
-	)
-
-	purchase_message.text = (
-		display_name
-		+ "\n\nPURCHASED!"
-	)
+	purchase_message.text = display_name + "\n\nPURCHASED!"
 
 	purchase_yes.text = "OK"
-	purchase_sound.play()
 	purchase_no.hide()
+	purchase_sound.play()
 
 	purchase_popup_state = PurchasePopupState.PURCHASED
 	purchase_popup_index = 0
 
 	refresh_shop_labels()
 	_update_purchase_popup_selection()
-
 
 func _close_purchase_popup() -> void:
 	purchase_popup.hide()
@@ -1014,7 +1137,7 @@ func _get_shop_viewport_mouse_position(mouse_position: Vector2) -> Variant:
 	return Vector2(
 		uv.x * screen_viewport.size.x,
 		uv.y * screen_viewport.size.y
-	)
+	) + crt_click_offset
 
 
 func _try_hover_shop_item(mouse_position: Vector2) -> void:
@@ -1027,6 +1150,9 @@ func _try_hover_shop_item(mouse_position: Vector2) -> void:
 
 	for i in range(row_labels.size()):
 		var label: Label = row_labels[i]
+		
+		if not label.visible:
+			continue
 
 		var label_rect := Rect2(
 			label.global_position,
@@ -1303,3 +1429,45 @@ func tween_camera_to_marker_forced_yaw(
 
 func _on_audio_stream_player_finished() -> void:
 	shop_theme.play()
+
+
+func _switch_shop_category(category: ShopCategory) -> void:
+	if active_category == category:
+		return
+
+	active_category = category
+	selected_index = 0
+
+	_update_shop_tabs()
+	refresh_shop_labels()
+
+func _update_shop_tabs() -> void:
+	var balls_active := active_category == ShopCategory.NEUROBALLS
+
+	neuroballs_tab.modulate = (
+		Color("#ffaa00") if balls_active else Color("#00eaff")
+	)
+
+	tables_tab.modulate = (
+		Color("#00eaff") if balls_active else Color("#ffaa00")
+	)
+
+func _get_active_shop_ids() -> Array[String]:
+	if active_category == ShopCategory.TABLES:
+		return SHOP_TABLE_IDS
+
+	return SHOP_BALL_IDS
+
+
+func _get_shop_item_data(item_id: String) -> Dictionary:
+	if active_category == ShopCategory.TABLES:
+		return TableCatalog.get_table(item_id)
+
+	return BallCatalog.get_ball(item_id)
+
+
+func _owns_shop_item(item_id: String) -> bool:
+	if active_category == ShopCategory.TABLES:
+		return SaveManager.owns_table(item_id)
+
+	return SaveManager.owns_ball(item_id)

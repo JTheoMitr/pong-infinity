@@ -21,7 +21,7 @@ const BALLS: Dictionary = {
 	},
 
 	"burger_ball": {
-		"display_name": "Burger-ball",
+		"display_name": "Burger",
 		"price": 150,
 		"sprite_frames": preload(
 			"res://models/burger/burger.tres"
@@ -29,7 +29,7 @@ const BALLS: Dictionary = {
 	},
 
 	"saturn": {
-		"display_name": "Saturn-ball",
+		"display_name": "Saturn",
 		"price": 100,
 		"sprite_frames": preload(
 			"res://models/saturn/saturn.tres"
@@ -37,7 +37,7 @@ const BALLS: Dictionary = {
 	},
 	
 	"sushi": {
-		"display_name": "Sushi-ball",
+		"display_name": "Sushi",
 		"price": 150,
 		"sprite_frames": preload(
 			"res://models/sushi/sushi.tres"
@@ -64,3 +64,7 @@ static func get_ball_ids() -> Array[String]:
 		result.append(str(ball_id))
 
 	return result
+
+static func get_shop_preview(ball_id: String) -> SpriteFrames:
+	var ball_data: Dictionary = get_ball(ball_id)
+	return ball_data.get("sprite_frames") as SpriteFrames

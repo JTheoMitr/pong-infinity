@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgjt07olmujhr"]
+
+[ext_resource type="Texture2D" uid="uid://c3en4el6vagxt" path="res://Assets/Bgnd/green_grid_background.png" id="1_4n63v"]
+[ext_resource type="Script" uid="uid://uo26c6evcfxu" path="res://tables/classic_green.gd" id="1_hyls6"]
+[ext_resource type="Texture2D" uid="uid://sf6jsjfxjd1k" path="res://Assets/Bgnd/green_grid_background_glow.png" id="2_hyls6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fokku"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="ClassicGreen" type="Node2D"]
+script = ExtResource("1_hyls6")
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = -111.0
+offset_top = -74.0
+offset_right = 1296.0
+offset_bottom = 667.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fokku")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(576, 325.00003)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_4n63v")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.59607846)
+position = Vector2(576, 325.00003)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_hyls6")

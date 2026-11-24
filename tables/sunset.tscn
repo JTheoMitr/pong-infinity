@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cak72wda72mon"]
+
+[ext_resource type="Shader" uid="uid://cn5x8snv334r1" path="res://tables/sunset.gdshader" id="1_54uxe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_28j1g"]
+shader = ExtResource("1_54uxe")
+shader_parameter/cycle_duration = 120.0
+shader_parameter/cloud_speed = 0.010000000475
+shader_parameter/cloud_opacity = 0.35
+shader_parameter/day_top = Color(0.08, 0.43, 0.83, 1)
+shader_parameter/day_bottom = Color(0.42, 0.76, 0.95, 1)
+shader_parameter/sunset_top = Color(0.4, 0.26, 0.65, 1)
+shader_parameter/sunset_bottom = Color(0.98, 0.43, 0.55, 1)
+shader_parameter/night_top = Color(0.035, 0.018, 0.12, 1)
+shader_parameter/night_bottom = Color(0.19, 0.08, 0.32, 1)
+
+[node name="Sunset" type="Node2D"]
+
+[node name="Sky" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_28j1g")
+custom_minimum_size = Vector2(1152, 648)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

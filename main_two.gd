@@ -44,7 +44,6 @@ const DEFAULT_BALL_SPEED: float = 350.0
 
 @onready var hud: CanvasLayer = $HUD
 @onready var cam: Camera2D = $Camera2D
-@onready var bgnd_layer_2: Sprite2D = $Sprite2D2
 @onready var particles_root: Node2D = $Particles
 
 @onready var trajectory_guide: Node2D = $TrajectoryGuide
@@ -53,7 +52,7 @@ const DEFAULT_BALL_SPEED: float = 350.0
 @onready var level_music_2: AudioStreamPlayer = $LevelMusic2
 @onready var level_music_3: AudioStreamPlayer = $LevelMusic3
 @onready var level_music_4: AudioStreamPlayer = $LevelMusic4
-
+@onready var table_background: Node2D = $TableBackground
 
 @export var impact_particles_scene: PackedScene
 @export var impact_particles_multiplier_1: PackedScene
@@ -129,6 +128,17 @@ const LASER_STRIKE_SCENE: PackedScene = preload(
 
 func _ready() -> void:
 	
+	load_equipped_table()
+	
+	var screen_size := get_viewport_rect().size
+	var screen_center := screen_size * 0.5
+
+	cam.enabled = true
+	cam.position = screen_center
+	reset_positions(screen_center)
+	ball.visible = false
+	original_cam_position = cam.position
+	
 	hud.laser_sight_button_pressed.connect(
 		_on_laser_sight_button_pressed
 	)
@@ -143,7 +153,6 @@ func _ready() -> void:
 	hud.submit_score_button_pressed.connect(_on_score_button_pressed)
 	hud.no_submit_play_again_pressed.connect(_no_submit_play_again)
 	#particle warming
-	start_background_glow()
 
 	_create_impact_particle_pool()
 	_create_special_particle_pools()
@@ -151,15 +160,6 @@ func _ready() -> void:
 	await _prewarm_impact_particle_pool()
 	await _prewarm_special_particle_pools()
 	await _prewarm_particles()
-	
-	var screen_size := get_viewport_rect().size
-	var screen_center := screen_size * 0.5
-	#print_debug(screen_size)
-	cam.enabled = true
-	cam.position = screen_center
-	reset_positions(screen_center)
-	ball.visible = false
-	original_cam_position = cam.position
 	
 	
 	level_music.volume_db = -4.5
@@ -619,11 +619,6 @@ func trigger_time_slowdown(slow_scale: float = 0.75, slow_duration: float = 0.35
 
 
 		
-func start_background_glow() -> void:
-	var tween := create_tween()
-	tween.set_loops()
-	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.95, 2.0)
-	tween.tween_property(bgnd_layer_2, "self_modulate:a", 0.10, 2.0)
 
 func spawn_impact_particles(pos: Vector2, _dir_unused: Vector2) -> void:
 	if impact_particle_pool.is_empty():
@@ -1251,3 +1246,36 @@ func _update_laser_sight_button() -> void:
 	)
 
 	hud.laser_sight_button_text(text)
+
+func load_equipped_table() -> void:
+	var table_id: String = SaveManager.equipped_table_id
+
+	var table_data: Dictionary = TableCatalog.get_table(table_id)
+	var table_scene: PackedScene = table_data["scene"]
+
+	for child in table_background.get_children():
+		table_background.remove_child(child)
+		child.queue_free()
+
+	var table_instance := table_scene.instantiate()
+	table_background.add_child(table_instance)
+
+	print("Table loaded: ", table_data["display_name"])
+
+
+#func _unhandled_key_input(event: InputEvent) -> void:
+	#if not OS.is_debug_build():
+		#return
+#
+	#if event is InputEventKey:
+		#if event.pressed and not event.echo:
+			#if event.keycode == KEY_K:
+				#var next_table_id: String = "deep_space"
+#
+				#if SaveManager.equipped_table_id == "deep_space":
+					#next_table_id = "classic_green"
+#
+				#SaveManager.equipped_table_id = next_table_id
+				#load_equipped_table()
+#
+				#print("Testing table: ", next_table_id)

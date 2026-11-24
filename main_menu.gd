@@ -98,6 +98,14 @@ extends Node2D
 	$CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow/RightArrow
 )
 
+@onready var board_left_arrow_area: Area2D = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow/LeftArrow/Area2D
+)
+
+@onready var board_right_arrow_area: Area2D = (
+	$CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow/RightArrow/Area2D
+)
+
 @onready var start_loadout_button: Button = (
 	$CanvasLayer/LoadoutOverlay/StartLoadoutButton
 )
@@ -146,15 +154,6 @@ extends Node2D
 enum LoadoutFocus {
 	BALL,
 	BOARD,
-	START
-}
-
-const BOARD_IDS: Array[String] = [
-	"classic"
-]
-
-const BOARD_NAMES: Dictionary = {
-	"classic": "NEUROBALL CLASSIC"
 }
 
 const HTP_STEP_COUNT: int = 5
@@ -208,6 +207,7 @@ var loadout_is_open: bool = false
 var loadout_focus: LoadoutFocus = LoadoutFocus.BALL
 
 var owned_ball_ids: Array[String] = []
+var owned_table_ids: Array[String] = []
 var selected_ball_index: int = 0
 var selected_board_index: int = 0
 
@@ -312,6 +312,14 @@ func _ready() -> void:
 	ball_right_arrow_area.input_event.connect(
 		_on_ball_right_arrow_input
 	)
+	
+	board_left_arrow_area.input_event.connect(
+		_on_board_left_arrow_input
+	)
+
+	board_right_arrow_area.input_event.connect(
+		_on_board_right_arrow_input
+	)
 	get_tree().paused = false
 	
 	_enable_mouse_menu_mode()
@@ -325,7 +333,7 @@ func _ready() -> void:
 	loadout_overlay.hide()
 
 	start_loadout_button.focus_mode = Control.FOCUS_NONE
-	start_loadout_button.pressed.connect(_confirm_loadout_and_start)
+	start_loadout_button.pressed.connect(_advance_loadout)
 	
 	ResourceLoader.load_threaded_request(MAIN_TWO_PATH)
 	
@@ -528,9 +536,23 @@ func open_loadout_menu(difficulty_id: String) -> void:
 	if selected_ball_index < 0:
 		selected_ball_index = 0
 
-	selected_board_index = 0
-	loadout_focus = LoadoutFocus.BALL
+	owned_table_ids.clear()
 
+	for table_id: String in SaveManager.owned_tables:
+		if TableCatalog.has_table(table_id):
+			owned_table_ids.append(table_id)
+
+	if owned_table_ids.is_empty():
+		owned_table_ids.append(TableCatalog.DEFAULT_TABLE_ID)
+
+	selected_board_index = owned_table_ids.find(
+		SaveManager.equipped_table_id
+	)
+
+	if selected_board_index < 0:
+		selected_board_index = 0
+
+	loadout_focus = LoadoutFocus.BALL
 	_refresh_loadout_menu()
 	
 func _unhandled_input(event: InputEvent) -> void:
@@ -564,16 +586,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		#get_viewport().set_input_as_handled()
 		
 	elif event.is_action_pressed("ui_accept"):
-		if loadout_focus == LoadoutFocus.START:
-			_confirm_loadout_and_start()
-		else:
-			loadout_focus = LoadoutFocus.START
-			_refresh_loadout_focus()
-
+		_advance_loadout()
 		get_viewport().set_input_as_handled()
 
 	elif event.is_action_pressed("ui_cancel"):
-		close_loadout_menu()
+		_on_loadout_back_button_pressed()
 		get_viewport().set_input_as_handled()
 		
 #func _move_loadout_focus(direction: int) -> void:
@@ -597,13 +614,14 @@ func _input(event: InputEvent) -> void:
 				focused_control.release_focus()
 				
 func _move_loadout_focus(direction: int) -> void:
-	if direction > 0:
-		loadout_focus = LoadoutFocus.START
-	else:
-		loadout_focus = LoadoutFocus.BALL
+	var next_focus: int = clampi(
+		int(loadout_focus) + direction,
+		int(LoadoutFocus.BALL),
+		int(LoadoutFocus.BOARD)
+	)
 
+	loadout_focus = next_focus as LoadoutFocus
 	_refresh_loadout_focus()
-	
 func _move_active_carousel(direction: int) -> void:
 	audio_click.play()
 	match loadout_focus:
@@ -620,19 +638,17 @@ func _move_active_carousel(direction: int) -> void:
 			_refresh_ball_carousel()
 
 		LoadoutFocus.BOARD:
-			if BOARD_IDS.is_empty():
+			if owned_table_ids.is_empty():
 				return
 
 			selected_board_index = wrapi(
 				selected_board_index + direction,
 				0,
-				BOARD_IDS.size()
+				owned_table_ids.size()
 			)
 
 			_refresh_board_carousel()
 
-		LoadoutFocus.START:
-			pass
 			
 func _refresh_loadout_menu() -> void:
 	_refresh_ball_carousel()
@@ -680,125 +696,49 @@ func _refresh_ball_carousel() -> void:
 			ball_preview.play(animations[0])
 			
 func _refresh_board_carousel() -> void:
-	if BOARD_IDS.is_empty():
-		board_name_label.text = "NO BOARDS"
+	if owned_table_ids.is_empty():
+		board_name_label.text = "NO TABLES"
 		return
 
-	var board_id: String = BOARD_IDS[selected_board_index]
+	var table_id: String = owned_table_ids[selected_board_index]
+	var table_data: Dictionary = TableCatalog.get_table(table_id)
 
 	board_name_label.text = str(
-		BOARD_NAMES.get(board_id, "BOARD")
-	)
+		table_data.get("display_name", "TABLE")
+	).to_upper()
 
-	if not board_preview.is_playing():
-		if board_preview.sprite_frames != null:
-			var animations: PackedStringArray = (
-				board_preview.sprite_frames.get_animation_names()
-			)
-
-			if not animations.is_empty():
-				board_preview.play(animations[0])
-				
-#func _refresh_loadout_focus() -> void:
-	#var active_color := Color.WHITE
-	#var inactive_color := Color(
-		#0.32,
-		#0.32,
-		#0.32,
-		#0.65
-	#)
-#
-	#ball_carousel.modulate = (
-		#active_color
-		#if loadout_focus == LoadoutFocus.BALL
-		#else inactive_color
-	#)
-#
-	#board_carousel.modulate = (
-		#active_color
-		#if loadout_focus == LoadoutFocus.BOARD
-		#else inactive_color
-	#)
-#
-	#if loadout_focus == LoadoutFocus.START:
-		#start_loadout_button.modulate = Color(
-			#1.0,
-			#0.667,
-			#0.0,
-			#1.0
-		#)
-	#else:
-		#start_loadout_button.modulate = inactive_color
-#
-	#ball_left_arrow.visible = (
-		#loadout_focus == LoadoutFocus.BALL
-	#)
-#
-	#ball_right_arrow.visible = (
-		#loadout_focus == LoadoutFocus.BALL
-	#)
-#
-	#board_left_arrow.visible = (
-		#loadout_focus == LoadoutFocus.BOARD
-	#)
-#
-	#board_right_arrow.visible = (
-		#loadout_focus == LoadoutFocus.BOARD
-	#)
-	
+	if board_preview.sprite_frames != null:
+		if board_preview.sprite_frames.has_animation(table_id):
+			board_preview.play(table_id)
+		else:
+			push_warning("Missing table preview animation: " + table_id)
+		
 func _refresh_loadout_focus() -> void:
-	var active_color := Color.WHITE
-	var inactive_color := Color(
-		0.32,
-		0.32,
-		0.32,
-		0.65
+	var on_ball: bool = loadout_focus == LoadoutFocus.BALL
+	var on_board: bool = loadout_focus == LoadoutFocus.BOARD
+
+	ball_carousel.visible = on_ball
+	board_carousel.visible = on_board
+
+	ball_left_arrow.visible = on_ball
+	ball_right_arrow.visible = on_ball
+
+	board_left_arrow.visible = on_board
+	board_right_arrow.visible = on_board
+
+	start_loadout_button.text = (
+		"NEXT" if on_ball else "START GAME"
 	)
-
-	ball_carousel.modulate = (
-		active_color
-		if loadout_focus == LoadoutFocus.BALL
-		else inactive_color
-	)
-
-	board_carousel.hide()
-
-	#if loadout_focus == LoadoutFocus.START:
-		#start_loadout_button.modulate = Color(
-			#1.0,
-			#0.667,
-			#0.0,
-			#1.0
-		#)
-	#else:
-		#start_loadout_button.modulate = Color(
-			#1.0,
-			#0.667,
-			#0.0,
-			#1.0
-		#)
-
-	ball_left_arrow.visible = (
-		loadout_focus == LoadoutFocus.BALL
-	)
-
-	ball_right_arrow.visible = (
-		loadout_focus == LoadoutFocus.BALL
-	)
-	
 	
 func _confirm_loadout_and_start() -> void:
-	if owned_ball_ids.is_empty():
-		return
-
-	if BOARD_IDS.is_empty():
+	if owned_ball_ids.is_empty() or owned_table_ids.is_empty():
 		return
 
 	var selected_ball_id: String = owned_ball_ids[
 		selected_ball_index
 	]
 
-	var selected_board_id: String = BOARD_IDS[
+	var selected_board_id: String = owned_table_ids[
 		selected_board_index
 	]
 
@@ -815,6 +755,17 @@ func _confirm_loadout_and_start() -> void:
 		push_warning(
 			"Could not equip selected Neuroball: %s"
 			% selected_ball_id
+		)
+		return
+
+	var table_equipped: bool = SaveManager.equip_table(
+		selected_board_id
+	)
+
+	if not table_equipped:
+		push_warning(
+			"Could not equip selected table: %s"
+			% selected_board_id
 		)
 		return
 
@@ -1131,10 +1082,13 @@ func _flash_loadout_arrow(
 
 
 func _on_loadout_back_button_pressed() -> void:
-	difficulty_select.show()
-	loadout_overlay.hide()
-	loadout_is_open = false
 	audio_click.play()
+
+	if loadout_focus == LoadoutFocus.BOARD:
+		loadout_focus = LoadoutFocus.BALL
+		_refresh_loadout_focus()
+	else:
+		close_loadout_menu()
 
 
 func _on_start_loadout_button_mouse_entered() -> void:
@@ -1147,3 +1101,52 @@ func _on_loadout_back_button_mouse_entered() -> void:
 
 func _on_next_button_mouse_entered() -> void:
 	click_sound.play()
+
+func _on_board_left_arrow_input(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int
+) -> void:
+	if not loadout_is_open:
+		return
+
+	if loadout_focus != LoadoutFocus.BOARD:
+		return
+
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
+		_move_active_carousel(-1)
+		_flash_loadout_arrow(board_left_arrow)
+
+
+func _on_board_right_arrow_input(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int
+) -> void:
+	if not loadout_is_open:
+		return
+
+	if loadout_focus != LoadoutFocus.BOARD:
+		return
+
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
+		_move_active_carousel(1)
+		_flash_loadout_arrow(board_right_arrow)
+		
+func _advance_loadout() -> void:
+	match loadout_focus:
+		LoadoutFocus.BALL:
+			audio_click.play()
+			loadout_focus = LoadoutFocus.BOARD
+			_refresh_loadout_focus()
+
+		LoadoutFocus.BOARD:
+			_confirm_loadout_and_start()

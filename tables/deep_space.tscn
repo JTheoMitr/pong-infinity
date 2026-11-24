@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvym6mnxb4mof"]
+
+[ext_resource type="Shader" uid="uid://drbmtwmjiruop" path="res://tables/deep_space.gdshader" id="1_e58dg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r2vd"]
+shader = ExtResource("1_e58dg")
+shader_parameter/background_color = Color(0.003, 0.005, 0.014, 1)
+shader_parameter/star_color = Color(0.78, 0.88, 1, 1)
+shader_parameter/star_density = 0.32
+shader_parameter/star_brightness = 0.8
+shader_parameter/drift_speed = 0.008
+shader_parameter/twinkle_speed = 1.2
+
+[node name="DeepSpace" type="Node2D"]
+
+[node name="Starfield" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_3r2vd")
+custom_minimum_size = Vector2(1152, 648)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1262,6 +1262,23 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("422_5pbfy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("423_k4kr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("424_01ug1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("425_trkm3")
+}],
+"loop": true,
+"name": &"abyss",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("1_u5e6v")
 }, {
 "duration": 1.0,

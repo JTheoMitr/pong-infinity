@@ -17159,7 +17159,7 @@ shape = SubResource("RectangleShape2D_pr3t1")
 position = Vector2(370, 0)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("767_q5cip")
-animation = &"sunset"
+animation = &"abyss"
 autoplay = "classic_green"
 
 [node name="RightArrow" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow"]

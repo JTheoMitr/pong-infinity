@@ -141,7 +141,10 @@ func load_save() -> void:
 #
 	#if inventory_changed:
 		#save()
-		
+	# TEMPORARY DEV UNLOCK — ABYSS
+	if not owned_tables.has("abyss"):
+		owned_tables.append("abyss")
+		save()
 		
 func save() -> bool:
 	var config := ConfigFile.new()

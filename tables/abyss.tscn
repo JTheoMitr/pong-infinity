@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2sjyr1nrc58n"]
+
+[ext_resource type="Shader" uid="uid://cuoovinql8li6" path="res://tables/abyss.gdshader" id="1_sq2pl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ol4lf"]
+shader = ExtResource("1_sq2pl")
+shader_parameter/surface_color = Color(0.4627451, 0.23137255, 0.38039216, 1)
+shader_parameter/middle_color = Color(0.05249779, 0.16406542, 0.35716766, 1)
+shader_parameter/deep_color = Color(0.03411542, 0.10146383, 0.22590643, 1)
+shader_parameter/water_speed = 0.25
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/ray_intensity = 0.055
+shader_parameter/ray_density = 8.0
+shader_parameter/particle_intensity = 0.045
+shader_parameter/particle_density = 25.0
+shader_parameter/shark_min_size = 0.25
+shader_parameter/shark_max_size = 1.2
+shader_parameter/megalodon_min_size = 1.5
+shader_parameter/megalodon_max_size = 2.5
+shader_parameter/megalodon_chance = 0.1
+shader_parameter/shark_interval = 40.0
+shader_parameter/shark_travel_time = 16.000000522500002
+shader_parameter/shark_opacity = 0.25
+shader_parameter/shark_min_depth = 0.05
+shader_parameter/shark_max_depth = 0.95
+shader_parameter/fish_size = 0.02000000060074
+shader_parameter/fish_interval = 15.0
+shader_parameter/fish_travel_time = 8.0000002375
+shader_parameter/fish_opacity = 0.2
+shader_parameter/fish_min_depth = 0.05
+shader_parameter/fish_max_depth = 0.95
+
+[node name="Abyss" type="Node2D"]
+
+[node name="Ocean" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ol4lf")
+custom_minimum_size = Vector2(1152, 648)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2

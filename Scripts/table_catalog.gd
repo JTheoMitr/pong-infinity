@@ -36,6 +36,16 @@ const TABLES: Dictionary = {
 		"shop_preview": TABLE_PREVIEW_FRAMES,
 		"preview_animation": "sunset",
 	},
+	
+	"abyss": {
+	"display_name": "Abyss",
+	"price": 200,
+	"scene": preload(
+		"res://tables/abyss.tscn"
+	),
+	"shop_preview": TABLE_PREVIEW_FRAMES,
+	"preview_animation": "abyss"
+	},
 }
 
 

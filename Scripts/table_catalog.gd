@@ -19,7 +19,7 @@ const TABLES: Dictionary = {
 	},
 
 	"deep_space": {
-		"display_name": "DeepSpace",
+		"display_name": "Space",
 		"price": 200,
 		"scene": preload(
 			"res://tables/deep_space.tscn"
@@ -38,13 +38,21 @@ const TABLES: Dictionary = {
 	},
 	
 	"abyss": {
-	"display_name": "Abyss",
+	"display_name": "Ocean",
 	"price": 200,
 	"scene": preload(
 		"res://tables/abyss.tscn"
 	),
 	"shop_preview": TABLE_PREVIEW_FRAMES,
 	"preview_animation": "abyss"
+	},
+	
+	"megacity": {
+	"display_name": "Megacity",
+	"price": 200,
+	"scene": preload("res://tables/megacity.tscn"),
+	"shop_preview": TABLE_PREVIEW_FRAMES,
+	"preview_animation": "megacity"
 	},
 }
 

@@ -145,7 +145,10 @@ func load_save() -> void:
 	if not owned_tables.has("abyss"):
 		owned_tables.append("abyss")
 		save()
-		
+	# TEMPORARY DEV UNLOCK — MEGACITY
+	if not owned_tables.has("megacity"):
+		owned_tables.append("megacity")
+		save()
 func save() -> bool:
 	var config := ConfigFile.new()
 

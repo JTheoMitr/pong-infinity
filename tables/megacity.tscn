@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4dasny6hus7g"]
+
+[ext_resource type="Shader" uid="uid://dl0u75h7vjvi0" path="res://tables/megacity.gdshader" id="1_04yn3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jc2h8"]
+shader = ExtResource("1_04yn3")
+shader_parameter/aspect_ratio = 1.7778
+shader_parameter/city_seed = 12.0
+shader_parameter/sky_top = Color(0.08, 0.04, 0.19, 1)
+shader_parameter/sky_middle = Color(0.24, 0.09, 0.34, 1)
+shader_parameter/sky_horizon = Color(0.36, 0.13, 0.38, 1)
+shader_parameter/sun_top_color = Color(1, 0.25877836, 0.5786375, 1)
+shader_parameter/sun_bottom_color = Color(0.75, 0.06, 0.4, 1)
+shader_parameter/sun_position = Vector2(0.5, 0.32)
+shader_parameter/sun_size = 0.27
+shader_parameter/sun_brightness = 0.85
+shader_parameter/sun_pulse_speed = 0.45
+shader_parameter/sun_pulse_strength = 0.12
+shader_parameter/sun_glow = 0.2
+shader_parameter/sun_glow_size = 0.16
+shader_parameter/sun_stripe_count = 14.0
+shader_parameter/sun_stripe_width = 0.55
+shader_parameter/distant_city_color = Color(0.18, 0.1, 0.27, 1)
+shader_parameter/middle_city_color = Color(0.1, 0.055, 0.17, 1)
+shader_parameter/foreground_city_color = Color(0.045, 0.025, 0.09, 1)
+shader_parameter/distant_density = 42.0
+shader_parameter/middle_density = 19.0
+shader_parameter/foreground_density = 9.0
+shader_parameter/distant_min_height = 0.35
+shader_parameter/distant_max_height = 0.58
+shader_parameter/middle_min_height = 0.3
+shader_parameter/middle_max_height = 0.72
+shader_parameter/foreground_min_height = 0.18
+shader_parameter/foreground_max_height = 0.43
+shader_parameter/center_clearance = 0.35
+shader_parameter/pyramid_chance = 0.35
+shader_parameter/window_cyan = Color(0.12, 0.8, 0.95, 1)
+shader_parameter/window_magenta = Color(0.9, 0.2, 0.65, 1)
+shader_parameter/window_warm = Color(1, 0.65, 0.3, 1)
+shader_parameter/window_brightness = 0.32
+shader_parameter/window_on_chance = 0.55
+shader_parameter/window_change_interval = 7.0
+shader_parameter/window_width = 0.38
+shader_parameter/window_height = 0.42
+shader_parameter/window_spacing = 0.024
+shader_parameter/neon_cyan = Color(0.05, 0.85, 1, 1)
+shader_parameter/neon_magenta = Color(1, 0.08, 0.55, 1)
+shader_parameter/neon_intensity = 0.45
+shader_parameter/neon_chance = 0.45
+shader_parameter/antenna_chance = 0.4
+shader_parameter/antenna_brightness = 0.65
+shader_parameter/haze_color = Color(0.42, 0.15, 0.45, 1)
+shader_parameter/haze_intensity = 0.065
+shader_parameter/haze_speed = 0.08
+
+[node name="MegaCity" type="Node2D"]
+
+[node name="Skyline" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_jc2h8")
+custom_minimum_size = Vector2(1152, 648)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2

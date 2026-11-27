@@ -10,6 +10,33 @@ shader_parameter/star_density = 0.32
 shader_parameter/star_brightness = 0.8
 shader_parameter/drift_speed = 0.008
 shader_parameter/twinkle_speed = 1.2
+shader_parameter/shooting_star_color = Color(0.85, 0.93, 1, 1)
+shader_parameter/shooting_star_interval = 25.0
+shader_parameter/shooting_star_chance = 0.85
+shader_parameter/shooting_star_min_duration = 0.8
+shader_parameter/shooting_star_max_duration = 1.5
+shader_parameter/shooting_star_min_length = 0.08
+shader_parameter/shooting_star_max_length = 0.2
+shader_parameter/shooting_star_size = 0.003
+shader_parameter/shooting_star_brightness = 0.85
+shader_parameter/shooting_star_glow = 0.25
+shader_parameter/shooting_star_min_distance = 0.35
+shader_parameter/shooting_star_max_distance = 0.85
+shader_parameter/black_hole_color = Color(0.92, 0.95, 1, 1)
+shader_parameter/black_hole_interval = 45.0
+shader_parameter/black_hole_chance = 0.75
+shader_parameter/black_hole_min_duration = 8.0
+shader_parameter/black_hole_max_duration = 12.0
+shader_parameter/black_hole_min_size = 0.035
+shader_parameter/black_hole_max_size = 0.12000000500148
+shader_parameter/black_hole_core_ratio = 0.2
+shader_parameter/black_hole_arms = 2
+shader_parameter/black_hole_spiral_turns = 1.5
+shader_parameter/black_hole_arm_width = 0.075
+shader_parameter/black_hole_rotation_speed = 0.65
+shader_parameter/black_hole_brightness = 0.550000026125
+shader_parameter/black_hole_glow = 0.15
+shader_parameter/black_hole_fade_time = 2.0
 
 [node name="DeepSpace" type="Node2D"]
 

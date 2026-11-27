@@ -90,6 +90,26 @@ uniform float antenna_chance : hint_range(0.0, 1.0) = 0.40;
 uniform float antenna_brightness : hint_range(0.0, 1.0) = 0.65;
 
 // ==========================================
+// HELICOPTER SETTINGS
+// ==========================================
+
+uniform vec4 helicopter_color : source_color = vec4(0.025, 0.015, 0.045, 1.0);
+
+uniform float helicopter_min_size : hint_range(0.01, 0.2) = 0.06;
+uniform float helicopter_max_size : hint_range(0.01, 0.3) = 0.12;
+
+uniform float helicopter_interval : hint_range(5.0, 120.0) = 35.0;
+uniform float helicopter_travel_time : hint_range(3.0, 30.0) = 12.0;
+uniform float helicopter_spawn_chance : hint_range(0.0, 1.0) = 0.85;
+
+uniform float helicopter_min_height : hint_range(0.0, 1.0) = 0.12;
+uniform float helicopter_max_height : hint_range(0.0, 1.0) = 0.38;
+
+uniform float helicopter_opacity : hint_range(0.0, 1.0) = 0.90;
+uniform float helicopter_rotor_speed : hint_range(1.0, 60.0) = 24.0;
+uniform float helicopter_bob : hint_range(0.0, 0.05) = 0.008;
+
+// ==========================================
 // ATMOSPHERIC HAZE
 // ==========================================
 
@@ -628,6 +648,291 @@ vec3 draw_city_layer(
 	return background;
 }
 
+
+// ==========================================
+// HELICOPTER SHAPE
+// ==========================================
+
+float helicopter_ellipse(
+	vec2 p,
+	vec2 center,
+	vec2 radius
+) {
+	float d = length((p - center) / radius);
+	return 1.0 - smoothstep(0.94, 1.0, d);
+}
+
+float helicopter_segment(
+	vec2 p,
+	vec2 a,
+	vec2 b,
+	float thickness
+) {
+	vec2 pa = p - a;
+	vec2 ba = b - a;
+
+	float h = clamp(
+		dot(pa, ba) / max(dot(ba, ba), 0.00001),
+		0.0,
+		1.0
+	);
+
+	float d = length(pa - ba * h);
+
+	return 1.0 - smoothstep(
+		thickness * 0.75,
+		thickness,
+		d
+	);
+}
+
+float helicopter_shape(vec2 p, float time) {
+
+	// Main fuselage.
+	float body = helicopter_ellipse(
+		p,
+		vec2(0.08, 0.0),
+		vec2(0.32, 0.14)
+	);
+
+	// Rounded cockpit.
+	float cockpit = helicopter_ellipse(
+		p,
+		vec2(0.29, 0.015),
+		vec2(0.17, 0.115)
+	);
+
+	// Upper engine housing.
+	float engine = box_mask(
+		p - vec2(0.0, -0.12),
+		vec2(0.13, 0.055)
+	);
+
+	// Tail boom.
+	float tail = helicopter_segment(
+		p,
+		vec2(-0.18, -0.025),
+		vec2(-0.68, -0.09),
+		0.035
+	);
+
+	// Vertical tail stabilizer.
+	float tail_fin = helicopter_segment(
+		p,
+		vec2(-0.66, -0.09),
+		vec2(-0.69, -0.23),
+		0.035
+	);
+
+	// Main rotor mast.
+	float mast = helicopter_segment(
+		p,
+		vec2(0.0, -0.14),
+		vec2(0.0, -0.24),
+		0.018
+	);
+
+	// Animated main rotor.
+	float rotor_width = mix(
+		0.12,
+		0.57,
+		abs(sin(time * helicopter_rotor_speed))
+	);
+
+	float rotor = box_mask(
+		p - vec2(0.0, -0.25),
+		vec2(rotor_width, 0.012)
+	);
+
+	// Animated tail rotor.
+	float tail_angle = time * helicopter_rotor_speed * 1.7;
+
+	vec2 tail_center = vec2(-0.68, -0.10);
+
+	vec2 tail_blade = vec2(
+		cos(tail_angle),
+		sin(tail_angle)
+	) * 0.085;
+
+	float tail_rotor = helicopter_segment(
+		p,
+		tail_center - tail_blade,
+		tail_center + tail_blade,
+		0.012
+	);
+
+	// Landing skid supports.
+	float front_support = helicopter_segment(
+		p,
+		vec2(0.23, 0.10),
+		vec2(0.27, 0.22),
+		0.016
+	);
+
+	float rear_support = helicopter_segment(
+		p,
+		vec2(-0.10, 0.10),
+		vec2(-0.14, 0.22),
+		0.016
+	);
+
+	// Landing skid.
+	float skid = helicopter_segment(
+		p,
+		vec2(-0.23, 0.22),
+		vec2(0.39, 0.22),
+		0.018
+	);
+
+	// Curved front of the landing skid.
+	float skid_tip = helicopter_segment(
+		p,
+		vec2(0.39, 0.22),
+		vec2(0.44, 0.17),
+		0.018
+	);
+
+	// Combine the silhouette.
+	float shape = max(body, cockpit);
+
+	shape = max(shape, engine);
+	shape = max(shape, tail);
+	shape = max(shape, tail_fin);
+	shape = max(shape, mast);
+	shape = max(shape, rotor);
+	shape = max(shape, tail_rotor);
+	shape = max(shape, front_support);
+	shape = max(shape, rear_support);
+	shape = max(shape, skid);
+	shape = max(shape, skid_tip);
+
+	return shape;
+}
+
+// ==========================================
+// HELICOPTER FLIGHT ANIMATION
+// ==========================================
+
+vec3 draw_helicopter(
+	vec2 uv,
+	vec3 background,
+	float time
+) {
+
+	float interval = max(helicopter_interval, 0.1);
+
+	float cycle = floor(time / interval);
+	float phase = mod(time, interval);
+
+	vec2 seed = vec2(cycle, city_seed + 83.0);
+
+	// Occasionally skip a flight.
+	float spawn_roll = hash(seed + vec2(7.0, 12.0));
+
+	if (spawn_roll >= helicopter_spawn_chance) {
+		return background;
+	}
+
+	// Randomized helicopter size.
+	float size = mix(
+		helicopter_min_size,
+		helicopter_max_size,
+		hash(seed + vec2(17.0, 31.0))
+	);
+
+	// Randomized flight direction.
+	float direction = mix(
+		-1.0,
+		1.0,
+		step(
+			0.5,
+			hash(seed + vec2(9.0, 21.0))
+		)
+	);
+
+	// Randomized flight duration.
+	float duration = helicopter_travel_time * mix(
+		0.85,
+		1.15,
+		hash(seed + vec2(41.0, 3.0))
+	);
+
+	duration = min(duration, interval * 0.90);
+	duration = max(duration, 0.1);
+
+	// Random departure time within the cycle.
+	float departure_delay = hash(
+		seed + vec2(23.0, 61.0)
+	) * max(interval - duration, 0.0);
+
+	float flight_phase = phase - departure_delay;
+
+	// Only render during an active flight.
+	if (flight_phase < 0.0 || flight_phase >= duration) {
+		return background;
+	}
+
+	float progress = flight_phase / duration;
+
+	// Ensure the entire helicopter starts and ends offscreen.
+	float margin = size * 0.85 / aspect_ratio + 0.03;
+
+	float helicopter_x = mix(
+		-margin,
+		1.0 + margin,
+		progress
+	);
+
+	if (direction < 0.0) {
+		helicopter_x = 1.0 - helicopter_x;
+	}
+
+	// Random flight altitude.
+	float helicopter_y = mix(
+		helicopter_min_height,
+		helicopter_max_height,
+		hash(seed + vec2(53.0, 11.0))
+	);
+
+	// Gentle vertical movement.
+	helicopter_y += sin(
+		time * 1.2 + cycle
+	) * helicopter_bob;
+
+	// Slight altitude change during the flight.
+	helicopter_y += sin(progress * 3.14159)
+		* (hash(seed + vec2(8.0, 73.0)) - 0.5)
+		* 0.035;
+
+	vec2 helicopter_uv = uv - vec2(
+		helicopter_x,
+		helicopter_y
+	);
+
+	// Correct proportions and face the direction of travel.
+	helicopter_uv.x *= aspect_ratio * direction;
+	helicopter_uv /= max(size, 0.001);
+
+	// Skip silhouette calculations outside its bounding area.
+	if (
+		abs(helicopter_uv.x) > 0.85 ||
+		abs(helicopter_uv.y) > 0.35
+	) {
+		return background;
+	}
+
+	float helicopter = helicopter_shape(
+		helicopter_uv,
+		time
+	);
+
+	return mix(
+		background,
+		helicopter_color.rgb,
+		helicopter * helicopter_opacity
+	);
+}
+
 // ==========================================
 // MAIN SHADER
 // ==========================================
@@ -658,6 +963,16 @@ void fragment() {
 	// --------------------------------------
 
 	color = draw_sun(
+		uv,
+		color,
+		time
+	);
+	
+	// --------------------------------------
+	// Passing helicopter
+	// --------------------------------------
+
+	color = draw_helicopter(
 		uv,
 		color,
 		time

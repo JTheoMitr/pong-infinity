@@ -12,9 +12,10 @@ const SHOP_BALL_IDS: Array[String] = [
 ]
 
 const SHOP_TABLE_IDS: Array[String] = [
-	"classic_green",
-	"deep_space",
-	"sunset"
+	"abyss",
+	"sunset",
+	"megacity",
+	"deep_space"
 ]
 
 const ZED_DIALOGUE: Array[Dictionary] = [

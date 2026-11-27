@@ -17159,9 +17159,8 @@ shape = SubResource("RectangleShape2D_pr3t1")
 position = Vector2(370, 0)
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("767_q5cip")
-animation = &"abyss"
+animation = &"deep_space"
 autoplay = "classic_green"
-frame_progress = 0.14466263
 
 [node name="RightArrow" type="AnimatedSprite2D" parent="CanvasLayer/LoadoutOverlay/BoardCarousel/PreviewRow"]
 position = Vector2(650, 0)
